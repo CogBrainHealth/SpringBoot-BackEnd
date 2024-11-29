@@ -69,8 +69,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        //expiredMs: 10분
-        String token = jwtUtil.createJwt(username, userId, role, 60*60*10L);
+        //expiredMs: 100분
+        String token = jwtUtil.createJwt(username, userId, role, 60*60*1000L);
 
         //HTTP 인증방식은 RFC7325 정의에 따라 Authorization: Bearer + 인증 토큰 형식으로 전달 되어야 함
         response.addHeader("Authorization", "Bearer " + token);

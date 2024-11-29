@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import server.brainboost.jwt.JWTFilter;
 import server.brainboost.jwt.JWTUtil;
 import server.brainboost.jwt.LoginFilter;
 
@@ -54,8 +55,12 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/login", "/", "/signup").permitAll()
+                        .requestMatchers("/hello").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll());
+
+        http
+                .addFilterBefore(new JWTFilter(jwtUtil), LoginFilter.class);
 
         //필터 추가 LoginFilter()는 인자를 받음
         http
