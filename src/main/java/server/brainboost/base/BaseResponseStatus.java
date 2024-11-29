@@ -10,6 +10,7 @@ public enum BaseResponseStatus {
     //요청 성공
     Success(true, 200, "ok"),
 
+    UNEXPECTED_ERROR(false, 1000,"unexpected error"),
     //user 오류 -> 2000번
     USER_NO_EXIST(false, 2000, "user is not exist");
 
