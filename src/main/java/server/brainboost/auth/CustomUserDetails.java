@@ -14,11 +14,21 @@ import java.util.Collection;
 public class CustomUserDetails implements UserDetails {
 
     private final UserEntity userEntity;
+    private final Long userId;
 
     public CustomUserDetails(UserEntity userEntity){
         this.userEntity = userEntity;
+        this.userId = userEntity.getUserId();
+    }
+    public CustomUserDetails(UserEntity userEntity, Long userId){
+        this.userEntity = userEntity;
+        this.userId = userId;
     }
 
+
+    public Long getUserId(){
+        return userId;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
