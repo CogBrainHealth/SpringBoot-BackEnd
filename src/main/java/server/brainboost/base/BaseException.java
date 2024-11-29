@@ -1,4 +1,4 @@
-package server.brainboost.config;
+package server.brainboost.base;
 
 import lombok.Getter;
 

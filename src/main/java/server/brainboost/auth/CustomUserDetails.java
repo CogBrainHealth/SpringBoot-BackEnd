@@ -1,0 +1,75 @@
+package server.brainboost.auth;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import server.brainboost.src.user.entity.UserEntity;
+
+import java.util.ArrayList;
+import java.util.Collection;
+
+//summary//
+//CustomUserDetails의 getUsername과 getPassword에 자동으로 사용자가 적은 id, password가 mapping 되어 로그인 검증을 진행함
+//진행 후, 로그인이 되면 success로 로그인이 실패하면 fail로 넘어간다
+//summary//
+public class CustomUserDetails implements UserDetails {
+
+    private final UserEntity userEntity;
+
+    public CustomUserDetails(UserEntity userEntity){
+        this.userEntity = userEntity;
+    }
+
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+
+        collection.add(new GrantedAuthority() {
+
+            @Override
+            public String getAuthority() {
+
+                return userEntity.getRole();
+            }
+        });
+
+        return collection;
+    }
+
+    @Override
+    public String getPassword() {
+
+        return userEntity.getPassword();
+    }
+
+    @Override
+    public String getUsername() {
+
+        return userEntity.getUsername();
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+
+        return true;
+    }
+}

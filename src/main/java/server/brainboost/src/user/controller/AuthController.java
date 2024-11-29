@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
-import server.brainboost.config.BaseResponse;
+import server.brainboost.base.BaseResponse;
 import server.brainboost.src.user.dto.SignUpDTO;
 import server.brainboost.src.user.service.AuthService;
 

@@ -1,4 +1,4 @@
-package server.brainboost.config;
+package server.brainboost.base;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EnumType;
@@ -7,6 +7,7 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import server.brainboost.config.Status;
 
 import java.time.LocalDateTime;
 
