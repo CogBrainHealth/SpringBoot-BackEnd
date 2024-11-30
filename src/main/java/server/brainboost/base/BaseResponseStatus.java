@@ -12,7 +12,8 @@ public enum BaseResponseStatus {
 
     UNEXPECTED_ERROR(false, 1000,"unexpected error"),
     //user 오류 -> 2000번
-    USER_NO_EXIST(false, 2000, "user is not exist");
+    USER_NO_EXIST(false, 2000, "user is not exist"),
+    REQUIRED_LOGIN(false, 2100, "로그인이 필요한 서비스 입니다");
 
 
     private final boolean isSuccess;

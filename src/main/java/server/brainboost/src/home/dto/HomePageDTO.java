@@ -21,4 +21,5 @@ public class HomePageDTO {
     private String todayGameName;
     private String todayGameImgUrl;
     private String todayGameDescription;
+
 }
