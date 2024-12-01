@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.src.game.dto.GameInterface;
 import server.brainboost.src.game.entity.GameTypeEntity;
 
 @Entity
@@ -40,4 +41,16 @@ public class TodayGameEntity extends BaseEntity {
     @Column(nullable = false)
     private String version;
 
+    public void changeDay(GameInterface gameInterface){
+
+        this.gameId = gameInterface.getId();
+        this.name = gameInterface.getName();
+        this.description = gameInterface.getDescription();
+        this.imgUrl = gameInterface.getImgUrl();
+        this.version = gameInterface.getVersion();
+
+    }
+
+
 }
+

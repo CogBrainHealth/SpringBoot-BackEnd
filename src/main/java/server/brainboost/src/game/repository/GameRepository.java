@@ -4,9 +4,11 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import server.brainboost.config.Status;
+import server.brainboost.src.game.dto.GameInterface;
 import server.brainboost.src.game.entity.GameEntity;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
@@ -16,5 +18,10 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
     List<GameEntity> findGameEntitiesByStatus(Status status);
 
+    @Query(value = "Select id, name, img_url, description, version \n" +
+            "From game\n" +
+            "Order by rand()\n" +
+            "Limit 1", nativeQuery = true)
+    Optional<GameInterface> findGameInterfaceOrderByRandom();
 
 }

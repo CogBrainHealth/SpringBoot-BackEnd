@@ -16,6 +16,7 @@ import server.brainboost.src.user.service.AuthService;
 @RequiredArgsConstructor
 public class AuthController {
 
+    //TODO 랜덤 닉네임 구현 생각해보기
     private final AuthService authService;
 
 

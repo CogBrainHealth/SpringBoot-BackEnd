@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
+import server.brainboost.src.game.dto.GameInterface;
+import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.home.dto.HomePageDTO;
 import server.brainboost.src.home.entity.TodayGameEntity;
 import server.brainboost.src.home.repository.TodayGameRepository;
@@ -18,6 +20,7 @@ public class HomeService {
     private final TodayGameRepository todayGameRepository;
     private final UserRepository userRepository;
 
+    private final GameRepository gameRepository;
     public HomePageDTO getHomePage(Long userId) throws BaseException {
 
         HomePageDTO homePageDTO;
@@ -56,4 +59,5 @@ public class HomeService {
         return homePageDTO;
 
     }
+
 }
