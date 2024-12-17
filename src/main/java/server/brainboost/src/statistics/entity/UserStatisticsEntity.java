@@ -1,4 +1,4 @@
-package server.brainboost.src.statistics;
+package server.brainboost.src.statistics.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
