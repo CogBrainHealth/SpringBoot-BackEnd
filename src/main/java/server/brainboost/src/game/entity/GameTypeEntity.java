@@ -3,9 +3,9 @@ package server.brainboost.src.game.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.config.TypeName;
 
 @Entity
 @Getter
@@ -19,8 +19,7 @@ public class GameTypeEntity extends BaseEntity {
     @Column(name = "id")
     private Long gameTypeId;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "type_name", nullable = false)
-    private String TypeName;
-
-
+    private TypeName typeName;
 }

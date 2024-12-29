@@ -2,6 +2,7 @@ package server.brainboost.src.game.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import server.brainboost.config.TypeName;
 
 @Getter
 @Setter
@@ -15,7 +16,7 @@ public class GameDetailsDTO {
     private String gameName;
     private String gameImgUrl;
     private String gameDescription;
-    private String gameTypeName;
+    private TypeName gameTypeName;
 
 
 }
