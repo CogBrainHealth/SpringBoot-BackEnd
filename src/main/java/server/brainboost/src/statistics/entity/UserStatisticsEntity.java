@@ -36,4 +36,16 @@ public class UserStatisticsEntity extends BaseEntity {
     @JoinColumn(name = "game_type_id")
     private GameTypeEntity gameType;
 
+    public UserStatisticsEntity(Long totalScore, Long count, UserEntity user, GameTypeEntity gameType){
+        this.totalScore = totalScore;
+        this.count = count;
+        this.user = user;
+        this.gameType = gameType;
+    }
+
+    public void updateUserStatisticEntity(Long score, Long count){
+        this.totalScore += score;
+        this.count += count;
+    }
+
 }

@@ -1,18 +1,25 @@
 package server.brainboost.src.game.service;
 
+import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
+import server.brainboost.config.TypeName;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.GameTypeEntity;
 import server.brainboost.src.game.repository.GameRepository;
+import server.brainboost.src.game.repository.GameTypeRepository;
+import server.brainboost.src.statistics.entity.GlobalStatisticsEntity;
 import server.brainboost.src.statistics.entity.UserStatisticsEntity;
+import server.brainboost.src.statistics.repository.GlobalStatisticsRepository;
+import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.entity.UserRecordEntity;
+import server.brainboost.src.user.repository.UserRecordRepository;
 import server.brainboost.src.user.repository.UserRepository;
 
 import java.util.List;
@@ -23,7 +30,10 @@ public class GameService {
 
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
-
+    private final UserStatisticsRepository userStatisticsRepository;
+    private final GameTypeRepository gameTypeRepository;
+    private final GlobalStatisticsRepository globalStatisticsRepository;
+    private final UserRecordRepository userRecordRepository;
 
     public GamePageDTO getGamePage(Long userId) {
 
@@ -56,6 +66,56 @@ public class GameService {
     }
 
     @Transactional
+    public GlobalStatisticsEntity updateGlobalStatistics(GameTypeEntity gameType, Long newScore) {
+        int retryCount = 3;
+        GlobalStatisticsEntity globalStatistics = null;
+
+        while (retryCount > 0) {
+            try {
+                globalStatistics = globalStatisticsRepository.findStatisticsEntityByGameType(gameType)
+                        .orElse(null);
+
+                if(globalStatistics == null){
+                    // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 globalStatistics 생성
+                    globalStatistics = new GlobalStatisticsEntity(newScore.longValue(), 1L, gameType);
+                }else{
+                    globalStatistics.updateGlobalStatisticsEntity(newScore.longValue(), 1L);
+                }
+
+                break;
+            } catch (OptimisticLockException e) {
+                retryCount--;
+                if (retryCount == 0) {
+                    throw new BaseException(BaseResponseStatus.DATA_CONFLICT);
+                }
+            }
+        }
+        return globalStatistics; // 성공적으로 저장했으면 종료
+    }
+
+    @Transactional
+    public UserStatisticsEntity updateUserStatistics(UserEntity user, GameTypeEntity gameType, Long newScore){
+        // 2번
+        UserStatisticsEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndGameType(user, gameType)
+                .orElse(null);
+
+        if(userStatistics == null){
+            // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 userStatistics 생성
+            userStatistics = new UserStatisticsEntity(newScore, 1L, user, gameType);
+        }else{
+            userStatistics.updateUserStatisticEntity(newScore, 1L);
+        }
+
+        return userStatistics;
+    }
+
+    public UserRecordEntity saveUserRecord(UserEntity user, GameEntity game, int newScore){
+        // 1번
+        UserRecordEntity userRecord = new UserRecordEntity(newScore, user, game);
+        return userRecord;
+    }
+
+    @Transactional
     public void saveMapNavigationResult(Long userId, MapNavigationResultDTO mapNavigationResultDTO) {
 
         String gameName = "지도보고 길찾기";
@@ -66,6 +126,8 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.SPATIAL_PERCEPTION)
+                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
         // 1. user record 작성 -> score 점수 작성
@@ -73,11 +135,21 @@ public class GameService {
         // 3. statistics 작성 -> DB에서 spatial_perception 값을 같이 찾기
         // 4. game record 작성 -> row data 그대로 작성
 
-        // 1번
-        UserRecordEntity userRecord = new UserRecordEntity(mapNavigationResultDTO.getScore(), user, game);
+        //1번
+        UserRecordEntity userRecord = saveUserRecord(user, game, mapNavigationResultDTO.getScore());
 
         // 2번
-        //UserStatisticsEntity userStatistics = new UserStatisticsEntity()
+        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, mapNavigationResultDTO.getScore().longValue());
+
+        //3번
+        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, mapNavigationResultDTO.getScore().longValue());
+
+        //4번
+        //TODO: row data 받은 내용 추후에 추가
+
+        userRecordRepository.save(userRecord);
+        userStatisticsRepository.save(userStatistics);
+        globalStatisticsRepository.save(globalStatistics);
     }
 
     @Transactional

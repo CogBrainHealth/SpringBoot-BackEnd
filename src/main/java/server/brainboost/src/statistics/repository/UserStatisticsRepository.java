@@ -2,6 +2,7 @@ package server.brainboost.src.statistics.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import server.brainboost.src.game.entity.GameTypeEntity;
 import server.brainboost.src.statistics.entity.UserStatisticsEntity;
 import server.brainboost.src.user.entity.UserEntity;
 
@@ -13,7 +14,7 @@ public interface UserStatisticsRepository extends JpaRepository<UserStatisticsEn
     @Query("select us from UserStatisticsEntity us inner join fetch us.user")
     List<UserStatisticsEntity> findUserStatisticsEntitiesByUser(UserEntity user);
 
-
+    Optional<UserStatisticsEntity> findUserStatisticsEntityByUserAndGameType(UserEntity user, GameTypeEntity gameType);
 
 
 }

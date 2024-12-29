@@ -19,7 +19,12 @@ public enum BaseResponseStatus {
     GAME_NO_EXIST(false, 3000, "game is not exist"),
     TODAY_GAME_NO_EXIST(false, 3005, "today game is not exist"),
 
-    GAME_TYPE_NO_EXIST(false, 3010, "game type is not exist");
+    GAME_TYPE_NO_EXIST(false, 3010, "game type is not exist"),
+
+
+    //global 오류 -> 5000번
+    DATA_CONFLICT(false, 5000, "데이터 충돌로 업데이트 실패");
+
 
     private final boolean isSuccess;
     private final int code;
