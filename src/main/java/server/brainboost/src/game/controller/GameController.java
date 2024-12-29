@@ -2,13 +2,19 @@ package server.brainboost.src.game.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.game.dto.GamePageDTO;
+import server.brainboost.src.game.dto.MapNavigationResultDTO;
+import server.brainboost.src.game.dto.MentalRotationDTO;
+import server.brainboost.src.game.dto.ScroopTestResultDTO;
 import server.brainboost.src.game.service.GameService;
 import server.brainboost.src.home.dto.HomePageDTO;
 import server.brainboost.utils.SecurityUtil;
@@ -36,6 +42,61 @@ public class GameController {
             return new BaseResponse<>(e.getStatus());
         }
     }
+
+    @PostMapping("/game/map-navigation/result")
+    @Operation(summary = "지도보고 길찾기 결과 저장 api", description = "MapNavigationResultDTO", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<String> saveMapNavigationResult(@RequestBody @Valid MapNavigationResultDTO mapNavigationResultDTO){
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            gameService.saveMapNavigationResult(userId, mapNavigationResultDTO);
+            return new BaseResponse<>("지도보고 길찾기 결과가 저장되었습니다.");
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+
+    @PostMapping("/game/scroop-test/result")
+    @Operation(summary = "scroop test 결과 저장 api", description = "scroopTestResultDTO", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<String> saveScroopTestResult(@RequestBody @Valid ScroopTestResultDTO scroopTestResultDTO){
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            gameService.saveScroopTestResult(userId, scroopTestResultDTO);
+            return new BaseResponse<>("scroop test 결과가 저장되었습니다.");
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+
+    @PostMapping("/game/mental-rotation/result")
+    @Operation(summary = "mental rotation 결과 저장 api", description = "mentalRotationResultDTO", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<String> saveMentalRotationResult(@RequestBody @Valid MentalRotationDTO mentalRotationDTO){
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            gameService.saveMentalRotationResult(userId, mentalRotationDTO);
+            return new BaseResponse<>("mental-rotation 결과가 저장되었습니다.");
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+
 
 
 }

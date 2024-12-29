@@ -17,7 +17,9 @@ public enum BaseResponseStatus {
 
     //game 오류 -> 3000번
     GAME_NO_EXIST(false, 3000, "game is not exist"),
-    TODAY_GAME_NO_EXIST(false, 3005, "today game is not exist");
+    TODAY_GAME_NO_EXIST(false, 3005, "today game is not exist"),
+
+    GAME_TYPE_NO_EXIST(false, 3010, "game type is not exist");
 
     private final boolean isSuccess;
     private final int code;

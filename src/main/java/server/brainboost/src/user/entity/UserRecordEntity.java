@@ -23,7 +23,7 @@ public class UserRecordEntity extends BaseEntity {
     private Long userRecordId;
 
     @Column(name = "score")
-    private Long score;
+    private Integer score;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -32,5 +32,11 @@ public class UserRecordEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private GameEntity game;
+
+    public UserRecordEntity(Integer score, UserEntity user, GameEntity game){
+        this.score = score;
+        this.user = user;
+        this.game = game;
+    }
 
 }

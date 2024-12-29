@@ -36,5 +36,4 @@ public class UserStatisticsEntity extends BaseEntity {
     @JoinColumn(name = "game_type_id")
     private GameTypeEntity gameType;
 
-
 }

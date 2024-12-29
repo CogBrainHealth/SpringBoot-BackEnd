@@ -16,7 +16,7 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
     @Query("select g from GameEntity g inner join fetch g.gameType where g.status =:status and g.gameType.status =:status")
     List<GameEntity> findGames(@Param("status")Status status);
 
-    List<GameEntity> findGameEntitiesByStatus(Status status);
+    Optional<GameEntity> findGameEntityByName(String name);
 
     @Query(value = "Select id, name, img_url, description, version \n" +
             "From game\n" +
