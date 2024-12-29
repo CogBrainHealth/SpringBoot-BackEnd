@@ -155,28 +155,76 @@ public class GameService {
     @Transactional
     public void saveScroopTestResult(Long userId, ScroopTestResultDTO scroopTestResultDTO) {
 
+        String gameName = "scroop test";
+
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        GameEntity game = gameRepository.findGameEntityByName(gameName)
+                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
+
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.ATTENTION)
+                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
         // 1. user record 작성 -> score 점수 작성
-        // 2. user statitics 작성 -> DB에서 attention 값을 찾기
-        // 3. statistics 작성 -> DB에서 attention 값을 같이 찾기
+        // 2. user statitics 작성 -> DB에서 ATTENTION 값을 찾기
+        // 3. statistics 작성 -> DB에서 ATTENTION 값을 같이 찾기
         // 4. game record 작성 -> row data 그대로 작성
+
+        //1번
+        UserRecordEntity userRecord = saveUserRecord(user, game,scroopTestResultDTO.getScore());
+
+        // 2번
+        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, scroopTestResultDTO.getScore().longValue());
+
+        //3번
+        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, scroopTestResultDTO.getScore().longValue());
+
+        //4번
+        //TODO: row data 받은 내용 추후에 추가
+
+        userRecordRepository.save(userRecord);
+        userStatisticsRepository.save(userStatistics);
+        globalStatisticsRepository.save(globalStatistics);
 
     }
 
 
     public void saveMentalRotationResult(Long userId, MentalRotationDTO mentalRotationDTO) {
 
+        String gameName = "mental rotation";
+
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        GameEntity game = gameRepository.findGameEntityByName(gameName)
+                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
+
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.MEMORY)
+                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
         // 1. user record 작성 -> score 점수 작성
-        // 2. user statitics 작성 -> DB에서 memory 값을 찾기
-        // 3. statistics 작성 -> DB에서 memory 값을 같이 찾기
+        // 2. user statitics 작성 -> DB에서 spatial_perception 값을 찾기
+        // 3. statistics 작성 -> DB에서 spatial_perception 값을 같이 찾기
         // 4. game record 작성 -> row data 그대로 작성
+
+        //1번
+        UserRecordEntity userRecord = saveUserRecord(user, game, mentalRotationDTO.getScore());
+
+        // 2번
+        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, mentalRotationDTO.getScore().longValue());
+
+        //3번
+        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, mentalRotationDTO.getScore().longValue());
+
+        //4번
+        //TODO: row data 받은 내용 추후에 추가
+
+        userRecordRepository.save(userRecord);
+        userStatisticsRepository.save(userStatistics);
+        globalStatisticsRepository.save(globalStatistics);
 
     }
 }
