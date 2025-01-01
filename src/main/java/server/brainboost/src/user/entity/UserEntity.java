@@ -6,6 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.src.medical.entity.MedicalChecklist;
+
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -35,7 +38,7 @@ public class UserEntity extends BaseEntity {
     private Character gender;
 
     @Column(name = "birth_date", nullable = false)
-    private String birthDate;
+    private LocalDate birthDate;
 
     //프로필 이미지
     @Column(nullable = true)
@@ -45,6 +48,11 @@ public class UserEntity extends BaseEntity {
     @Column
     private String role;
 
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "medical_checklist_id") // 외래 키 설정
+    private MedicalChecklist medicalChecklist;
+
+
     /**비즈니스 로직**/
     //임시 회원가입을 위한 생성자
     public UserEntity(String username, String password){
@@ -53,7 +61,7 @@ public class UserEntity extends BaseEntity {
         this.password = password;
         this.nickname = username;
         this.gender = 'M';
-        this.birthDate = "20000101";
+        this.birthDate = null;
         this.role = "ROLE_USER";
 
     }

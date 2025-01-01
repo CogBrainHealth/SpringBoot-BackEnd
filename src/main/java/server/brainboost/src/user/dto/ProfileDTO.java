@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.persistence.Column;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @Schema(description = "내 정보보기 DTO")
@@ -20,7 +22,7 @@ public class ProfileDTO {
     //enum 처리
     private Character gender;
 
-    private String birthDate;
+    private LocalDate birthDate;
 
     //프로필 이미지
     private String profileImgUrl;
