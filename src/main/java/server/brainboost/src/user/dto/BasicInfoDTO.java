@@ -23,7 +23,7 @@ public class BasicInfoDTO {
     @NotNull
     private Character gender;
 
-    @Schema(description = "나이", nullable = false, example = "20011213")
+    @Schema(description = "나이", nullable = false, example = "2001-12-13")
     private LocalDate birthDate;
 
 }

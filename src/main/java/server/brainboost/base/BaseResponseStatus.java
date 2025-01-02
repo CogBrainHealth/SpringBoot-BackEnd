@@ -13,6 +13,7 @@ public enum BaseResponseStatus {
     UNEXPECTED_ERROR(false, 1000,"unexpected error"),
     //user 오류 -> 2000번
     USER_NO_EXIST(false, 2000, "user is not exist"),
+    UNEXPECTED_GENDER(false, 2020, "성별이 올바르지 않습니다"),
     REQUIRED_LOGIN(false, 2100, "로그인이 필요한 서비스 입니다"),
 
     //game 오류 -> 3000번
