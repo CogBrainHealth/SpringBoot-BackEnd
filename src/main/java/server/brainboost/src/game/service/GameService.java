@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
-import server.brainboost.config.TypeName;
+import server.brainboost.config.GameTypeName;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.GameTypeEntity;
@@ -43,7 +43,7 @@ public class GameService {
 
         for(int i =0; i<gameEntityList.size() ; i++){
             GameEntity game = gameEntityList.get(i);
-            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(), game.getGameType().getTypeName());
+            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(), game.getGameType().getGameTypeName());
 
             long typeId = game.getGameType().getGameTypeId();
 
@@ -126,7 +126,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.SPATIAL_PERCEPTION)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.SPATIAL_PERCEPTION)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
@@ -163,7 +163,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.ATTENTION)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.ATTENTION)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
@@ -201,7 +201,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByTypeName(TypeName.MEMORY)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.MEMORY)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용

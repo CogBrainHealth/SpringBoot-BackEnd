@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.config.TypeName;
+import server.brainboost.config.GameTypeName;
 
 @Entity
 @Getter
@@ -20,6 +20,6 @@ public class GameTypeEntity extends BaseEntity {
     private Long gameTypeId;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "type_name", nullable = false)
-    private TypeName typeName;
+    @Column(name = "game_type_name", nullable = false)
+    private GameTypeName gameTypeName;
 }

@@ -32,5 +32,14 @@ public class AuthController {
         return new BaseResponse<>("ok");
     }
 
+    @GetMapping("/testing")
+    public String testConfig(){
+        return "성공";
+    }
+
+    @GetMapping("/hello")
+    public String testHello(){
+        return "성공";
+    }
 
 }
