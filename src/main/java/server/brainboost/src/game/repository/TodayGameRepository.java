@@ -1,7 +1,7 @@
-package server.brainboost.src.home.repository;
+package server.brainboost.src.game.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import server.brainboost.src.home.entity.TodayGameEntity;
+import server.brainboost.src.game.entity.TodayGameEntity;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package server.brainboost.src.home.entity;
+package server.brainboost.src.game.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;

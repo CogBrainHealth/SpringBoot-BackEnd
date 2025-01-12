@@ -7,8 +7,8 @@ import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.game.dto.GameInterface;
 import server.brainboost.src.game.repository.GameRepository;
-import server.brainboost.src.home.entity.TodayGameEntity;
-import server.brainboost.src.home.repository.TodayGameRepository;
+import server.brainboost.src.game.entity.TodayGameEntity;
+import server.brainboost.src.game.repository.TodayGameRepository;
 
 
 //TODO 여러 대의 instance에서 중복 schedule을 피하는 로직 짜기

@@ -15,6 +15,7 @@ import server.brainboost.src.game.dto.GamePageDTO;
 import server.brainboost.src.game.dto.MapNavigationResultDTO;
 import server.brainboost.src.game.dto.MentalRotationDTO;
 import server.brainboost.src.game.dto.ScroopTestResultDTO;
+import server.brainboost.src.game.dto.TodayGameDTO;
 import server.brainboost.src.game.service.GameService;
 import server.brainboost.src.home.dto.HomePageDTO;
 import server.brainboost.utils.SecurityUtil;
@@ -97,6 +98,20 @@ public class GameController {
 
     }
 
+    @GetMapping("/api/game/today/game")
+    @Operation(summary = "오늘의 게임 조회 api", description = "TodayGameDTO에 담긴 정보를 전달", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<TodayGameDTO> getTodayGame(){
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
+            return new BaseResponse<>(gameService.getTodayGame());
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+    }
 
 }
