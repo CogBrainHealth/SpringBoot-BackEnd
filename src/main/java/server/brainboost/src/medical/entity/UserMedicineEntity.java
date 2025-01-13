@@ -39,4 +39,9 @@ public class UserMedicineEntity extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
+	public UserMedicineEntity(MedicineTag medicineTag, UserEntity user){
+		this.medicineTag = medicineTag;
+		this.user = user;
+	}
+
 }

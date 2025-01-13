@@ -38,4 +38,10 @@ public class UserDiscomfortEntity extends BaseEntity {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
+
+	public UserDiscomfortEntity(DiscomfortTag discomfortTag, UserEntity user){
+		this.discomfortTag = discomfortTag;
+		this.user = user;
+	}
+
 }

@@ -39,4 +39,9 @@ public class UserPregnancyEntity extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
+	public UserPregnancyEntity(PregnancyTag pregnancyTag, UserEntity user){
+		this.pregnancyTag = pregnancyTag;
+		this.user = user;
+	}
+
 }

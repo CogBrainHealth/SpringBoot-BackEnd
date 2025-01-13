@@ -39,4 +39,9 @@ public class UserConditionEntity extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
+	public UserConditionEntity(ConditionTag conditionTag, UserEntity user){
+		this.conditionTag = conditionTag;
+		this.user = user;
+	}
+
 }

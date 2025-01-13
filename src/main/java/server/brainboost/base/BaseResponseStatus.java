@@ -22,6 +22,10 @@ public enum BaseResponseStatus {
 
     GAME_TYPE_NO_EXIST(false, 3010, "game type is not exist"),
 
+    //medical 오류 -> 4000번
+    MEDICAL_CHECKLIST_NO_EXIST(false, 4000, "기본 건강 정보를 아직 작성하지 않으셨습니다"),
+    MEDICAL_CHECKLIST_ALREADY_EXIST(false, 4001, "기본 건강 정보를 이미 작성하셨습니다"),
+
 
     //global 오류 -> 5000번
     DATA_CONFLICT(false, 5000, "데이터 충돌로 업데이트 실패");

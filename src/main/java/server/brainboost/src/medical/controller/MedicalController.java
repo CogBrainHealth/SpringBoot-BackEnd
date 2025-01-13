@@ -21,7 +21,7 @@ public class MedicalController {
 
     private final MedicalService medicalService;
 
-    @PatchMapping("/api/medicals/checklist")
+    @PostMapping("/api/medicals/checklist")
     @Operation(summary = "기본 건강 체크 리스트 작성/수정 api", description = "건강 ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),

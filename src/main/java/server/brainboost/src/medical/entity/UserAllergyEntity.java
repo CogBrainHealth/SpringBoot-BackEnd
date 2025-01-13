@@ -38,5 +38,9 @@ public class UserAllergyEntity extends BaseEntity {
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
+	public UserAllergyEntity(AllergyTag allergyTag, UserEntity user){
+		this.allergyTag = allergyTag;
+		this.user = user;
+	}
 
 }
