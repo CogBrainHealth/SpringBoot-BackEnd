@@ -74,23 +74,23 @@ public class MedicalChecklistEntity extends BaseEntity {
 
 
     //4번째 질문: 복용 중인 약 여부
-    private Boolean isTakingAntihyperlipidemic;     // 고지혈증약
-    private Boolean isTakingAntihypertensive;      // 고혈압약
-    private Boolean isTakingHormonal;              // 호르몬제
-    private Boolean isTakingImmunosuppressant;     // 면역억제제
-    private Boolean isTakingImmunotherapy;         // 부정맥 치료제
-    private Boolean isTakingNeuroleptic;           // 신경안정제
-    private Boolean isTakingAntacid;               // 위산분비억제제
-    private Boolean isTakingSteroid;               // 비스테로이드성 항염증제
-    private Boolean isTakingAnticoagulant;         // 항혈전제
-    private Boolean isTakingCNSDepressant;         // 중추신경억제제
-    private Boolean isTakingAntidepressant;        // 항우울증약
-    private Boolean isTakingAntihyperglycemic;     // 항응고약
-    private Boolean isTakingAntiplatelet;          // 항혈소판제
-    private Boolean isTakingAntidiabetic;          // 당뇨약
-    private Boolean isTakingSedative;              // 수면유도제
-    private Boolean isTakingBloodThinner;          // 혈전용해제
-    private Boolean isTakingNephrotoxicDrug;       // 신장에 영향을 미치는 약품
+    private Boolean isTakingAntihyperlipidemic;     // 고지혈증약 (ANTIHYPERLIPIDEMIC)
+    private Boolean isTakingAntihypertensive;       // 고혈압약 (ANTIHYPERTENSIVE)
+    private Boolean isTakingHormonal;               // 호르몬제 (HORMONAL)
+    private Boolean isTakingImmunosuppressant;      // 면역억제제 (IMMUNOSUPPRESSANT)
+    private Boolean isTakingAntiarrhythmic;         // 부정맥 치료제 (ANTIARRHYTHMIC)
+    private Boolean isTakingNeuroleptic;            // 신경안정제 (NEUROLEPTIC)
+    private Boolean isTakingAntacid;                // 위산분비억제제 (ANTACID)
+    private Boolean isTakingNSAID;                  // 비스테로이드성 항염증제 (NSAID)
+    private Boolean isTakingAntithromboticAgent;         // 항혈전제 (항혈전제에 해당, Enum: Antiplatelet)
+    private Boolean isTakingCNSDepressant;          // 중추신경억제제 (CNS_DEPRESSANT)
+    private Boolean isTakingAntidepressant;         // 항우울증약 (ANTIDEPRESSANT)
+    private Boolean isTakingAnticoagulant;          // 항응고약 (ANTICOAGULANT)
+    private Boolean isTakingAntiplatelet;           // 항혈소판제 (ANTIPLATELET)
+    private Boolean isTakingAntidiabetic;           // 당뇨약 (ANTIDIABETIC)
+    private Boolean isTakingSedative;               // 수면유도제 (SEDATIVE)
+    private Boolean isTakingBloodThinner;           // 혈전용해제 (BLOOD_THINNER)
+    private Boolean isTakingNephrotoxicDrug;        // 신장에 영향을 미치는 약품 (NEPHROTOXIC_DRUG)
 
 
     //5번째 질문: 일상에 불편한 점 존재 여부
@@ -155,14 +155,14 @@ public class MedicalChecklistEntity extends BaseEntity {
         this.isTakingAntihypertensive = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntihypertensive();
         this.isTakingHormonal = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingHormonal();
         this.isTakingImmunosuppressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingImmunosuppressant();
-        this.isTakingImmunotherapy = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingImmunotherapy();
+        this.isTakingAntiarrhythmic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntiarrhythmic();
         this.isTakingNeuroleptic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNeuroleptic();
         this.isTakingAntacid = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntacid();
-        this.isTakingSteroid = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingSteroid();
+        this.isTakingNSAID = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNSAID();
         this.isTakingAnticoagulant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAnticoagulant();
         this.isTakingCNSDepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingCNSDepressant();
         this.isTakingAntidepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntidepressant();
-        this.isTakingAntihyperglycemic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntihyperglycemic();
+        this.isTakingAntithromboticAgent = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntithromboticAgent();
         this.isTakingAntiplatelet = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntiplatelet();
         this.isTakingAntidiabetic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntidiabetic();
         this.isTakingSedative = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingSedative();
@@ -229,14 +229,14 @@ public class MedicalChecklistEntity extends BaseEntity {
         this.isTakingAntihypertensive = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntihypertensive();
         this.isTakingHormonal = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingHormonal();
         this.isTakingImmunosuppressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingImmunosuppressant();
-        this.isTakingImmunotherapy = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingImmunotherapy();
+        this.isTakingAntiarrhythmic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntiarrhythmic();
         this.isTakingNeuroleptic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNeuroleptic();
         this.isTakingAntacid = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntacid();
-        this.isTakingSteroid = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingSteroid();
+        this.isTakingNSAID= medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNSAID();
         this.isTakingAnticoagulant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAnticoagulant();
         this.isTakingCNSDepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingCNSDepressant();
         this.isTakingAntidepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntidepressant();
-        this.isTakingAntihyperglycemic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntihyperglycemic();
+        this.isTakingAntithromboticAgent = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntithromboticAgent();
         this.isTakingAntiplatelet = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntiplatelet();
         this.isTakingAntidiabetic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntidiabetic();
         this.isTakingSedative = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingSedative();
