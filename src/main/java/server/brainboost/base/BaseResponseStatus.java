@@ -28,7 +28,8 @@ public enum BaseResponseStatus {
 
 
     //global 오류 -> 5000번
-    DATA_CONFLICT(false, 5000, "데이터 충돌로 업데이트 실패");
+    DATA_CONFLICT(false, 5000, "데이터 충돌로 업데이트 실패"),
+    DATABASE_ERROR(false, 5100, "데이터베이스 오류");
 
 
     private final boolean isSuccess;

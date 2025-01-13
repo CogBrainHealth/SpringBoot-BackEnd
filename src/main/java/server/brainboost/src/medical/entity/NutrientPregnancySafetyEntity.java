@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.enums.AllergyTag;
+import server.brainboost.enums.Possibility;
 import server.brainboost.enums.PregnancyTag;
 
 @Entity
@@ -33,6 +34,10 @@ public class NutrientPregnancySafetyEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name = "pregnancy_tag")
 	private PregnancyTag pregnancyTag;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = true, name = "possibility")
+	private Possibility possibility;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nutrient_id")

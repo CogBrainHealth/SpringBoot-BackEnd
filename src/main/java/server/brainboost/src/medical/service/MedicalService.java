@@ -1,5 +1,6 @@
 package server.brainboost.src.medical.service;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.config.GameTypeName;
 import server.brainboost.config.Status;
 import server.brainboost.enums.AllergyTag;
 import server.brainboost.enums.ConditionTag;
@@ -19,6 +21,10 @@ import server.brainboost.src.medical.dto.DailyDiscomfortDTO;
 import server.brainboost.src.medical.dto.HealthConditionDTO;
 import server.brainboost.src.medical.dto.MedicalChecklistDTO;
 import server.brainboost.src.medical.dto.MedicationUsageDTO;
+import server.brainboost.src.medical.dto.NutrientDTO;
+import server.brainboost.src.medical.dto.NutrientMainDomainDTO;
+import server.brainboost.src.medical.dto.NutrientSubDomainDTO;
+import server.brainboost.src.medical.dto.NutrientSuggestionDto;
 import server.brainboost.src.medical.dto.ReproductiveHealthDTO;
 import server.brainboost.src.medical.entity.MedicalChecklistEntity;
 import server.brainboost.src.medical.entity.UserAllergyEntity;
@@ -27,6 +33,7 @@ import server.brainboost.src.medical.entity.UserDiscomfortEntity;
 import server.brainboost.src.medical.entity.UserMedicineEntity;
 import server.brainboost.src.medical.entity.UserPregnancyEntity;
 import server.brainboost.src.medical.repository.MedicalChecklistRepository;
+import server.brainboost.src.medical.repository.MedicalRepository;
 import server.brainboost.src.medical.repository.UserAllergyRepository;
 import server.brainboost.src.medical.repository.UserConditionRepository;
 import server.brainboost.src.medical.repository.UserDiscomfortRepository;
@@ -46,6 +53,7 @@ public class MedicalService {
     private final UserDiscomfortRepository userDiscomfortRepository;
     private final UserMedicineRepository userMedicineRepository;
     private final UserPregnancyRepository userPregnancyRepository;
+    private final MedicalRepository medicalRepository;
 
 
     @Transactional
@@ -101,6 +109,44 @@ public class MedicalService {
 
 
     }
+
+    @Transactional
+    public NutrientSuggestionDto recommendNutrients(Long userId, GameTypeName typeName) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        NutrientMainDomainDTO nutrientMainDomainDTO = new NutrientMainDomainDTO();
+        NutrientSubDomainDTO nutrientSubDomainDTO = new NutrientSubDomainDTO();
+
+        try{
+            if(user.getGender().equals('W')){
+                nutrientMainDomainDTO.setNutrientDTOList(medicalRepository.recommendMainNutrientsForWoman(userId, typeName));
+                nutrientSubDomainDTO.setNutrientDTOList(medicalRepository.recommendSubNutrientsForWoman(userId, typeName));
+            }
+            else{
+                nutrientMainDomainDTO.setNutrientDTOList(medicalRepository.recommendMainNutrientsForMan(userId, typeName));
+                nutrientSubDomainDTO.setNutrientDTOList(medicalRepository.recommendSubNutrientsForMan(userId, typeName));
+            }
+            return new NutrientSuggestionDto(nutrientMainDomainDTO, nutrientSubDomainDTO);
+        }catch (Exception e){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     private List<UserPregnancyEntity> createUserPregnancyList(ReproductiveHealthDTO reproductiveHealthDTO, UserEntity user){
         List<UserPregnancyEntity> userPregnancyEntityList = new ArrayList<>();
@@ -334,5 +380,6 @@ public class MedicalService {
 
         return userDiscomfortEntityList;
     }
+
 
 }
