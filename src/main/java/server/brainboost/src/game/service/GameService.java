@@ -24,6 +24,7 @@ import server.brainboost.src.user.entity.UserRecordEntity;
 import server.brainboost.src.user.repository.UserRecordRepository;
 import server.brainboost.src.user.repository.UserRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -231,24 +232,29 @@ public class GameService {
 
     }
 
-    /*public TodayGameDTO getTodayGame() {
+    public TodayGameDTO getTodayGame() {
 
-        TodayGameEntity todayGame = todayGameRepository.findByTodayGameId(1L).orElse(null);  // 값이 없으면 null을 반환
+        TodayGameEntity todayGame = todayGameRepository.findByDateWithGameAndGameType(LocalDate.now())
+            .orElse(null);
 
         TodayGameDTO todayGameDTO;
 
         if (todayGame != null) {
             // 오늘 게임 엔티티가 존재할 때 처리할 로직
             todayGameDTO = new TodayGameDTO(
-                todayGame.getGameId(),
-                todayGame.getName(),
-                todayGame.getImgUrl(),
-                todayGame.getDescription()
+                todayGame.getGame().getGameId(),
+                todayGame.getGame().getName(),
+                todayGame.getGame().getImgUrl(),
+                todayGame.getGame().getDescription(),
+                todayGame.getGame().getVersion(),
+                todayGame.getGame().getGameType().getCognitiveDomain()
             );
 
         } else {
             // 오늘 게임 엔티티가 존재하지 않을 때 처리할 로직
             todayGameDTO = new TodayGameDTO(
+                null,
+                null,
                 null,
                 null,
                 null,
@@ -260,5 +266,5 @@ public class GameService {
         return todayGameDTO;
 
 
-    }*/
+    }
 }

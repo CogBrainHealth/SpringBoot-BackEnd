@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import server.brainboost.config.CognitiveDomain;
 
 @Getter
 @Setter
@@ -20,5 +21,7 @@ public class TodayGameDTO {
 	private String todayGameName;
 	private String todayGameImgUrl;
 	private String todayGameDescription;
+	private String todayGameVersion;
+	private CognitiveDomain cognitiveDomain;
 
 }
