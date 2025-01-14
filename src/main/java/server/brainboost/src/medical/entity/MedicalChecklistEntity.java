@@ -177,10 +177,7 @@ public class MedicalChecklistEntity extends BaseEntity {
     }
 
 
-    //남성일 경우, 생성자
-
-
-    //여성의 경우 건강 리스트 수정
+    //update
     public void updateMedicalChecklist(MedicalChecklistDTO medicalChecklistDTO){
         this.isPregnant = medicalChecklistDTO.getReproductiveHealthDTO().getIsPregnant();
         this.isBreastfeeding = medicalChecklistDTO.getReproductiveHealthDTO().getIsBreastfeeding();
@@ -232,7 +229,7 @@ public class MedicalChecklistEntity extends BaseEntity {
         this.isTakingAntiarrhythmic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntiarrhythmic();
         this.isTakingNeuroleptic = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNeuroleptic();
         this.isTakingAntacid = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntacid();
-        this.isTakingNSAID= medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNSAID();
+        this.isTakingNSAID = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingNSAID();
         this.isTakingAnticoagulant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAnticoagulant();
         this.isTakingCNSDepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingCNSDepressant();
         this.isTakingAntidepressant = medicalChecklistDTO.getMedicationUsageDTO().getIsTakingAntidepressant();
@@ -247,8 +244,8 @@ public class MedicalChecklistEntity extends BaseEntity {
         this.isExperiencingMemoryLoss = medicalChecklistDTO.getDailyDiscomfortDTO().getIsExperiencingMemoryLoss();
         this.isExperiencingSensitivity = medicalChecklistDTO.getDailyDiscomfortDTO().getIsExperiencingSensitivity();
         this.isExperiencingDepression = medicalChecklistDTO.getDailyDiscomfortDTO().getIsExperiencingDepression();
-
     }
+
 
 
 

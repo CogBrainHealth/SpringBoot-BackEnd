@@ -111,6 +111,70 @@ public class MedicalService {
     }
 
     @Transactional
+    public void updateMedicalCheckList(Long userId, MedicalChecklistDTO medicalCheckListDTO) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        if(!(user.getGender().equals('M') || user.getGender().equals('W'))){
+            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
+        }
+
+        MedicalChecklistEntity medicalChecklist = user.getMedicalChecklist();
+
+        // 기존에 건강 체크 리스트를 작성하지 않은 경우
+        if(medicalChecklist == null){
+            throw new BaseException(BaseResponseStatus.MEDICAL_CHECKLIST_NO_EXIST);
+        }
+        else{ // 기존에 건강 체크 리스트가 작성된 경우
+
+            medicalChecklist.updateMedicalChecklist(medicalCheckListDTO);
+            medicalChecklistRepository.save(medicalChecklist);
+        }
+
+        // 각 user_info 정보 삭제
+        medicalChecklistRepository.deleteUserAllergy(user);
+        medicalChecklistRepository.deleteUserCondition(user);
+        medicalChecklistRepository.deleteUserDiscomfort(user);
+        medicalChecklistRepository.deleteUserMedicine(user);
+        medicalChecklistRepository.deleteUserPregnancy(user);
+
+        List<UserPregnancyEntity> userPregnancyEntityList;
+        List<UserConditionEntity> userConditionEntityList;
+        List<UserAllergyEntity> userAllergyEntityList;
+        List<UserMedicineEntity> userMedicineEntityList;
+        List<UserDiscomfortEntity> userDiscomfortEntityList;
+
+        // 각 user_medical info 에 정보 넣기
+        if(user.getGender().equals('M')){
+            userConditionEntityList = createUserConditionList(medicalCheckListDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalCheckListDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalCheckListDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListDTO.getDailyDiscomfortDTO(), user);
+
+        }
+        else{
+            userPregnancyEntityList = createUserPregnancyList(medicalCheckListDTO.getReproductiveHealthDTO(), user);
+            userConditionEntityList = createUserConditionList(medicalCheckListDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalCheckListDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalCheckListDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListDTO.getDailyDiscomfortDTO(), user);
+
+            userPregnancyRepository.saveAll(userPregnancyEntityList);
+        }
+
+        userConditionRepository.saveAll(userConditionEntityList);
+        userAllergyRepository.saveAll(userAllergyEntityList);
+        userMedicineRepository.saveAll(userMedicineEntityList);
+        userDiscomfortRepository.saveAll(userDiscomfortEntityList);
+
+
+    }
+
+
+
+
+    @Transactional
     public NutrientSuggestionDto recommendNutrients(Long userId, GameTypeName typeName) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
@@ -380,6 +444,5 @@ public class MedicalService {
 
         return userDiscomfortEntityList;
     }
-
 
 }

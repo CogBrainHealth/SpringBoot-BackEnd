@@ -6,6 +6,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -25,7 +26,7 @@ public class MedicalController {
     private final MedicalService medicalService;
 
     @PostMapping("/api/medical/checklist")
-    @Operation(summary = "기본 건강 체크 리스트 작성/수정 api", description = "건강 ", responses = {
+    @Operation(summary = "기본 건강 체크 리스트 작성 api", description = "건강 ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
@@ -43,6 +44,28 @@ public class MedicalController {
        }
 
     }
+
+    @PatchMapping("/api/medical/checklist")
+    @Operation(summary = "기본 건강 체크 리스트 수정 api", description = "건강 ", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<String> updateMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
+
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            medicalService.updateMedicalCheckList(userId, medicalCheckListDTO);
+            return new BaseResponse<>("기본 건강 체크 리스트가 수정됐습니다");
+
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+
+
 
     @GetMapping("/api/medical/nutrient/recommend/attention")
     @Operation(summary = "주의력 부문 영양성분 추천 api", description = "건강 ", responses = {
