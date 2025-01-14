@@ -9,8 +9,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class AttemptAutenticationDTO {
+public class LoginDTO {
 
     private String username;
-    private String password;
+
 }

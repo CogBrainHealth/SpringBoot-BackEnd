@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
@@ -15,14 +16,27 @@ import server.brainboost.src.user.repository.UserRepository;
 public class CustomUserDetailsService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserEntity userEntity = userRepository.findUserEntityByUsername(username)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElse(null);
 
-        return new CustomUserDetails(userEntity);
+        Boolean isNewUser;
+
+        //신규 유저
+        if(userEntity == null){
+            userEntity = new UserEntity(username);
+            userEntity.setPassword(bCryptPasswordEncoder.encode("1234"));
+            userRepository.save(userEntity);
+            isNewUser = Boolean.TRUE;
+        }else{
+            isNewUser = Boolean.FALSE;
+        }
+
+        return new CustomUserDetails(userEntity, isNewUser);
 
     }
 }

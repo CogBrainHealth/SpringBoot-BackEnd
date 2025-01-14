@@ -55,7 +55,7 @@ public class UserEntity extends BaseEntity {
 
     /**비즈니스 로직**/
     //임시 회원가입을 위한 생성자
-    public UserEntity(String username, String password){
+   /* public UserEntity(String username, String password){
 
         this.username = username;
         this.password = password;
@@ -63,7 +63,13 @@ public class UserEntity extends BaseEntity {
         this.gender = 'M';
         this.birthDate = null;
         this.role = "ROLE_USER";
+    }*/
 
+    public UserEntity(String username){
+        this.username = username;
+        this.nickname = username;
+        this.gender = 'W';
+        this.role = "ROLE_USER";
     }
 
 

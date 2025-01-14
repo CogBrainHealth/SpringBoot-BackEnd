@@ -40,7 +40,7 @@ public class UserController {
 
 
     //TODO: builder 패턴 도입 하기
-    @GetMapping("/api/users/{user_id}/profile")
+    @GetMapping("/api/user/profile")
     @Operation(summary = "내 정보 보기 api", description = "profileDTO에 담긴 정보를 가져오기", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),

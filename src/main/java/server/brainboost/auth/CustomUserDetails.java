@@ -15,10 +15,12 @@ public class CustomUserDetails implements UserDetails {
 
     private final UserEntity userEntity;
     private final Long userId;
+    private Boolean isNewUser;
 
-    public CustomUserDetails(UserEntity userEntity){
+    public CustomUserDetails(UserEntity userEntity, Boolean isNewUser){
         this.userEntity = userEntity;
         this.userId = userEntity.getUserId();
+        this.isNewUser = isNewUser;
     }
     public CustomUserDetails(UserEntity userEntity, Long userId){
         this.userEntity = userEntity;
@@ -29,6 +31,7 @@ public class CustomUserDetails implements UserDetails {
     public Long getUserId(){
         return userId;
     }
+    public Boolean getIsNewUser() { return isNewUser; }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

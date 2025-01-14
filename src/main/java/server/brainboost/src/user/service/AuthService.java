@@ -21,7 +21,7 @@ public class AuthService {
 
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 
-        UserEntity newUser = new UserEntity(username, encodedPassword);
+        UserEntity newUser = new UserEntity(username);
 
         userRepository.save(newUser);
     }

@@ -12,7 +12,11 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.brainboost.auth.CustomUserDetails;
-import server.brainboost.src.user.dto.AttemptAutenticationDTO;
+import server.brainboost.base.BaseException;
+import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.src.user.dto.IsNewUserDTO;
+import server.brainboost.src.user.dto.LoginDTO;
+import server.brainboost.utils.ResponseUtil;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -33,16 +37,19 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //ObjectMapper 이용 시, json 형식으로 로그인 요청을 받을 수 있다.(username, password)
         ObjectMapper om = new ObjectMapper();
-        AttemptAutenticationDTO attemptAutenticationDTO;
+        LoginDTO loginDTO;
 
         try {
-            attemptAutenticationDTO = om.readValue(request.getInputStream(), AttemptAutenticationDTO.class);
+            loginDTO = om.readValue(request.getInputStream(), LoginDTO.class);
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            //throw new RuntimeException(e);
+
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.NO_VALID_LOGINDTO));
+            return null;
         }
 
-        String username = attemptAutenticationDTO.getUsername();
-        String password = attemptAutenticationDTO.getPassword();
+        String username = loginDTO.getUsername();
+        String password = "1234";
 
         System.out.println(username + " " + password);
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
@@ -54,7 +61,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     //로그인 성공시 실행하는 메소드 (여기서 JWT를 발급하면 됨)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) {
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException{
         System.out.println("success");
 
         //UserDetailsS
@@ -74,11 +81,15 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //HTTP 인증방식은 RFC7325 정의에 따라 Authorization: Bearer + 인증 토큰 형식으로 전달 되어야 함
         response.addHeader("Authorization", "Bearer " + token);
+
+        // 응답 상태 코드 및 본문 설정
+        ResponseUtil.handleResponse(response, new IsNewUserDTO(customUserDetails.getIsNewUser()));
     }
 
     //로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         System.out.println("fail");
+        ResponseUtil.handleException(response,HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.FAILED_LOGIN));
     }
 }
