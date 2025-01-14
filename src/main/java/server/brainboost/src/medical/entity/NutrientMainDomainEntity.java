@@ -16,8 +16,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.config.GameTypeName;
-import server.brainboost.enums.MedicineTag;
+import server.brainboost.config.CognitiveDomain;
 
 @Entity
 @Getter
@@ -32,7 +31,7 @@ public class NutrientMainDomainEntity extends BaseEntity {
 
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name = "cognitive_domain")
-	private GameTypeName gameTypeName;
+	private CognitiveDomain cognitiveDomain;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nutrient_id")

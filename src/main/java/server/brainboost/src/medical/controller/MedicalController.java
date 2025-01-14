@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 import server.brainboost.src.medical.dto.MedicalChecklistDTO;
 import server.brainboost.src.medical.dto.NutrientSuggestionDto;
 import server.brainboost.src.medical.service.MedicalService;
@@ -78,7 +78,7 @@ public class MedicalController {
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, GameTypeName.ATTENTION);
+            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.ATTENTION);
             return new BaseResponse<>(nutrientSuggestionDto);
 
         }catch (BaseException e){
@@ -97,7 +97,7 @@ public class MedicalController {
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, GameTypeName.SPATIAL_PERCEPTION);
+            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.SPATIAL_PERCEPTION);
             return new BaseResponse<>(nutrientSuggestionDto);
 
         }catch (BaseException e){
@@ -116,7 +116,7 @@ public class MedicalController {
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, GameTypeName.MEMORY);
+            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.MEMORY);
             return new BaseResponse<>(nutrientSuggestionDto);
 
         }catch (BaseException e){

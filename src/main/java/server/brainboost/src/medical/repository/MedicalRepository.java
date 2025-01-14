@@ -2,7 +2,6 @@ package server.brainboost.src.medical.repository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 import javax.sql.DataSource;
@@ -11,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 import server.brainboost.enums.Possibility;
 import server.brainboost.src.medical.dto.NutrientDTO;
 
@@ -24,7 +23,7 @@ public class MedicalRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<NutrientDTO> recommendMainNutrientsForMan(Long userId, GameTypeName typeName) throws Exception{
+	public List<NutrientDTO> recommendMainNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
@@ -83,7 +82,7 @@ public class MedicalRepository {
 	}
 
 
-	public List<NutrientDTO> recommendSubNutrientsForMan(Long userId, GameTypeName typeName) throws Exception{
+	public List<NutrientDTO> recommendSubNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
@@ -141,7 +140,7 @@ public class MedicalRepository {
 		return nutrientDTOList;
 	}
 
-	public List<NutrientDTO> recommendMainNutrientsForWoman(Long userId, GameTypeName typeName) throws Exception{
+	public List<NutrientDTO> recommendMainNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
@@ -209,7 +208,7 @@ public class MedicalRepository {
 	}
 
 
-	public List<NutrientDTO> recommendSubNutrientsForWoman(Long userId, GameTypeName typeName) throws Exception{
+	public List<NutrientDTO> recommendSubNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 

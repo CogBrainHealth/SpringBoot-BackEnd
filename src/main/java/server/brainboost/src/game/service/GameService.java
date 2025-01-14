@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.GameTypeEntity;
@@ -15,7 +15,6 @@ import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.repository.GameTypeRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
-import server.brainboost.src.home.dto.HomePageDTO;
 import server.brainboost.src.statistics.entity.GlobalStatisticsEntity;
 import server.brainboost.src.statistics.entity.UserStatisticsEntity;
 import server.brainboost.src.statistics.repository.GlobalStatisticsRepository;
@@ -47,7 +46,7 @@ public class GameService {
 
         for(int i =0; i<gameEntityList.size() ; i++){
             GameEntity game = gameEntityList.get(i);
-            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(), game.getGameType().getGameTypeName());
+            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(), game.getGameType().getCognitiveDomain());
 
             long typeId = game.getGameType().getGameTypeId();
 
@@ -130,7 +129,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.SPATIAL_PERCEPTION)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByCognitiveDomain(CognitiveDomain.SPATIAL_PERCEPTION)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
@@ -167,7 +166,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.ATTENTION)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByCognitiveDomain(CognitiveDomain.ATTENTION)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
@@ -205,7 +204,7 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByGameTypeName(GameTypeName.MEMORY)
+        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByCognitiveDomain(CognitiveDomain.MEMORY)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용

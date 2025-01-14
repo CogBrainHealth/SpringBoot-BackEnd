@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 import server.brainboost.src.statistics.dto.MyGameStatisticsDTO;
 import server.brainboost.src.statistics.entity.UserStatisticsEntity;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
@@ -42,16 +42,16 @@ public class StatisticsService {
 
             int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
 
-            if(userStatistics.getGameType().getGameTypeName() == GameTypeName.ATTENTION){
+            if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.ATTENTION){
 
                 myGameStatisticsDTO.setAttentionScore(score);
                 totalScore += score;
-            }else if(userStatistics.getGameType().getGameTypeName() == GameTypeName.SPATIAL_PERCEPTION){
+            }else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
 
                 myGameStatisticsDTO.setSpatialPerceptionScore(score);
                 totalScore += score;
             }
-            else if(userStatistics.getGameType().getGameTypeName() == GameTypeName.MEMORY){
+            else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.MEMORY){
 
                 myGameStatisticsDTO.setMemoryScore(score);
                 totalScore += score;

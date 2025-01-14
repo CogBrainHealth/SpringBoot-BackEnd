@@ -2,7 +2,7 @@ package server.brainboost.src.game.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 
 @Getter
 @Setter
@@ -16,7 +16,7 @@ public class GameDetailsDTO {
     private String gameName;
     private String gameImgUrl;
     private String gameDescription;
-    private GameTypeName gameTypeName;
+    private CognitiveDomain cognitiveDomain;
 
 
 }

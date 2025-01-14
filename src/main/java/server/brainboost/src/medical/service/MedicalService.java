@@ -1,6 +1,5 @@
 package server.brainboost.src.medical.service;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -9,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.config.GameTypeName;
+import server.brainboost.config.CognitiveDomain;
 import server.brainboost.config.Status;
 import server.brainboost.enums.AllergyTag;
 import server.brainboost.enums.ConditionTag;
@@ -21,7 +20,6 @@ import server.brainboost.src.medical.dto.DailyDiscomfortDTO;
 import server.brainboost.src.medical.dto.HealthConditionDTO;
 import server.brainboost.src.medical.dto.MedicalChecklistDTO;
 import server.brainboost.src.medical.dto.MedicationUsageDTO;
-import server.brainboost.src.medical.dto.NutrientDTO;
 import server.brainboost.src.medical.dto.NutrientMainDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSubDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSuggestionDto;
@@ -175,7 +173,7 @@ public class MedicalService {
 
 
     @Transactional
-    public NutrientSuggestionDto recommendNutrients(Long userId, GameTypeName typeName) {
+    public NutrientSuggestionDto recommendNutrients(Long userId, CognitiveDomain typeName) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
             .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));

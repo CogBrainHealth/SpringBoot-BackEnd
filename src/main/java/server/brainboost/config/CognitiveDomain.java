@@ -1,6 +1,6 @@
 package server.brainboost.config;
 
-public enum GameTypeName {
+public enum CognitiveDomain {
 
     ATTENTION, SPATIAL_PERCEPTION, MEMORY
 
