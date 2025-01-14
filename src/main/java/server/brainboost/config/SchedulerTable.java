@@ -1,11 +1,14 @@
 package server.brainboost.config;
 
+import java.time.LocalDate;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.game.dto.GameInterface;
+import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.TodayGameRepository;
@@ -24,14 +27,13 @@ public class SchedulerTable {
         GameInterface gameInterface = gameRepository.findGameInterfaceOrderByRandom()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.GAME_NO_EXIST));
 
-        TodayGameEntity todayGame = todayGameRepository.findByTodayGameId(1L)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.TODAY_GAME_NO_EXIST));
+        GameEntity game = gameRepository.findGameEntityByGameId(gameInterface.getId())
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.GAME_NO_EXIST));
 
-        todayGame.changeDay(gameInterface);
-
+        TodayGameEntity todayGame = new TodayGameEntity(LocalDate.now(), game);
         todayGameRepository.save(todayGame);
 
-        System.out.println("DB 변경");
+        System.out.println("오늘의 게임 변경");
     }
 
 

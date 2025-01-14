@@ -231,7 +231,7 @@ public class GameService {
 
     }
 
-    public TodayGameDTO getTodayGame() {
+    /*public TodayGameDTO getTodayGame() {
 
         TodayGameEntity todayGame = todayGameRepository.findByTodayGameId(1L).orElse(null);  // 값이 없으면 null을 반환
 
@@ -260,5 +260,5 @@ public class GameService {
         return todayGameDTO;
 
 
-    }
+    }*/
 }

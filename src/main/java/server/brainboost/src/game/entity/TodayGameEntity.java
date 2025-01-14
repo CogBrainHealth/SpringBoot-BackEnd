@@ -1,5 +1,7 @@
 package server.brainboost.src.game.entity;
 
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -11,7 +13,7 @@ import server.brainboost.src.game.entity.GameTypeEntity;
 
 @Entity
 @Getter
-@Table(name = "today_game")
+@Table(name = "today_game", uniqueConstraints = @UniqueConstraint(columnNames = "date"))
 @NoArgsConstructor
 @DynamicInsert
 public class TodayGameEntity extends BaseEntity {
@@ -21,34 +23,17 @@ public class TodayGameEntity extends BaseEntity {
     @Column(name = "id")
     private Long todayGameId;
 
-    @Column(name="game_id")
-    private Long gameId;
+    @Column(name = "date", nullable = false)
+    private LocalDate date;
 
-    @Column(nullable = false)
-    private String name;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "game_id")
+    private GameEntity game;
 
-    //게임 평점 기능 추가 시 도입
-   /* @Column(nullable = false)
-    private double totalRating;*/
 
-    @Column(nullable = false)
-    private String description;
-
-    //프로필 이미지
-    @Column(nullable = true)
-    private String imgUrl;
-
-    @Column(nullable = false)
-    private String version;
-
-    public void changeDay(GameInterface gameInterface){
-
-        this.gameId = gameInterface.getId();
-        this.name = gameInterface.getName();
-        this.description = gameInterface.getDescription();
-        this.imgUrl = gameInterface.getImgUrl();
-        this.version = gameInterface.getVersion();
-
+    public TodayGameEntity(LocalDate date, GameEntity game){
+        this.date = date;
+        this.game = game;
     }
 
 

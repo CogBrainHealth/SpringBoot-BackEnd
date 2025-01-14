@@ -11,9 +11,9 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("brainboost API Document")
+                .title("cog콕 API Document")
                 .version("v0.0.1")
-                .description("brainboost의 API 명세서입니다.");
+                .description("cog콕의 API 명세서입니다.");
         return new OpenAPI()
                 .components(new Components())
                 .info(info);

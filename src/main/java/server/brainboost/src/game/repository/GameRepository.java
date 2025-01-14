@@ -18,6 +18,8 @@ public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
     Optional<GameEntity> findGameEntityByName(String name);
 
+    Optional<GameEntity> findGameEntityByGameId(Long id);
+
     @Query(value = "Select id, name, img_url, description, version \n" +
             "From game\n" +
             "Order by rand()\n" +
