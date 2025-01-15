@@ -9,7 +9,10 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.brainboost.auth.CustomUserDetails;
+import server.brainboost.base.BaseException;
+import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.entity.UserEntity;
+import server.brainboost.utils.ResponseUtil;
 
 import java.io.IOException;
 
@@ -44,14 +47,30 @@ public class JWTFilter extends OncePerRequestFilter {
         String token = authorization.split(" ")[1];
 
         //토큰 소멸 시간 검증
-        if (jwtUtil.isExpired(token)) {
+        try{
+            if (jwtUtil.isExpired(token)) {
 
+                System.out.println("token expired");
+                filterChain.doFilter(request, response);
+
+                //조건이 해당되면 메소드 종료 (필수)
+                return;
+            }
+        }catch (io.jsonwebtoken.security.SignatureException e){
+            ResponseUtil.handleException(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            return;
+        }catch (io.jsonwebtoken.MalformedJwtException e){
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            return;
+        }catch (io.jsonwebtoken.ExpiredJwtException e){
             System.out.println("token expired");
-            filterChain.doFilter(request, response);
-
+            //filterChain.doFilter(request, response);
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.EXPIRED_TOKEN));
             //조건이 해당되면 메소드 종료 (필수)
             return;
+
         }
+
 
         //이 후 과정은 액세스 토큰이 정상적으로 발급된 경우이다.
 
