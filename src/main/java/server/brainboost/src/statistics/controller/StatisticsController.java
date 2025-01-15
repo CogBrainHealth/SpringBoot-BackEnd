@@ -3,6 +3,9 @@ package server.brainboost.src.statistics.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.base.BaseException;
@@ -25,15 +28,16 @@ public class StatisticsController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<MyGameStatisticsDTO> getMyGameStatistics(){
+    public ResponseEntity<BaseResponse<MyGameStatisticsDTO>> getMyGameStatistics(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            return new BaseResponse<>(statisticsService.getMyGameStatistics(userId));
+            return ResponseEntity.ok(new BaseResponse<>(statisticsService.getMyGameStatistics(userId)));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 

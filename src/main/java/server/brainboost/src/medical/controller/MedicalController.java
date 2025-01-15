@@ -5,6 +5,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,17 +32,18 @@ public class MedicalController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> createMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
+    public ResponseEntity<BaseResponse<String>> createMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
 
        try{
            Long userId = SecurityUtil.getCurrentUserId()
                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
            medicalService.createMedicalCheckList(userId, medicalCheckListDTO);
-           return new BaseResponse<>("기본 건강 체크 리스트가 작성됐습니다");
+           return ResponseEntity.ok(new BaseResponse<>("기본 건강 체크 리스트가 작성됐습니다"));
 
        }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+           HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+           return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
        }
 
     }
@@ -50,17 +53,18 @@ public class MedicalController {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> updateMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
+    public ResponseEntity<BaseResponse<String>> updateMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             medicalService.updateMedicalCheckList(userId, medicalCheckListDTO);
-            return new BaseResponse<>("기본 건강 체크 리스트가 수정됐습니다");
+            return ResponseEntity.ok(new BaseResponse<>("기본 건강 체크 리스트가 수정됐습니다"));
 
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -70,17 +74,19 @@ public class MedicalController {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<MedicalChecklistDTO> getMedicalCheckList(){
+    public ResponseEntity<BaseResponse<MedicalChecklistDTO>> getMedicalCheckList(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             MedicalChecklistDTO medicalChecklistDTO = medicalService.getMedicalCheckList(userId);
-            return new BaseResponse<>(medicalChecklistDTO);
+            return ResponseEntity.ok(new BaseResponse<>(medicalChecklistDTO));
 
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
+
         }
 
     }

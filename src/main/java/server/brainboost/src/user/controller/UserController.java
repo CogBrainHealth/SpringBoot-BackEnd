@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
@@ -25,15 +28,16 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> setBasicInfo(@Valid @RequestBody BasicInfoDTO basicInfoDTO){
+    public ResponseEntity<BaseResponse<String>> setBasicInfo(@Valid @RequestBody BasicInfoDTO basicInfoDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             userService.setBasicInfo(userId, basicInfoDTO);
-            return new BaseResponse<>("기본 정보가 작성되었습니다");
+            return ResponseEntity.ok(new BaseResponse<>("기본 정보가 작성되었습니다"));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -45,15 +49,16 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<ProfileDTO> getProfile(){
+    public ResponseEntity<BaseResponse<ProfileDTO>> getProfile(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            return new BaseResponse<>(userService.getProfile(userId));
+            return ResponseEntity.ok(new BaseResponse<>(userService.getProfile(userId)));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 

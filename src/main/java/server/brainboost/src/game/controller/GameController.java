@@ -4,6 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,14 +35,15 @@ public class GameController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<GamePageDTO> getGamePage(){
+    public ResponseEntity<BaseResponse<GamePageDTO>> getGamePage(){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            return new BaseResponse<>(gameService.getGamePage(userId));
+            return ResponseEntity.ok(new BaseResponse<>(gameService.getGamePage(userId)));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -48,15 +52,16 @@ public class GameController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> saveMapNavigationResult(@RequestBody @Valid MapNavigationResultDTO mapNavigationResultDTO){
+    public ResponseEntity<BaseResponse<String>> saveMapNavigationResult(@RequestBody @Valid MapNavigationResultDTO mapNavigationResultDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             gameService.saveMapNavigationResult(userId, mapNavigationResultDTO);
-            return new BaseResponse<>("지도보고 길찾기 결과가 저장되었습니다.");
+            return ResponseEntity.ok(new BaseResponse<>("지도보고 길찾기 결과가 저장되었습니다."));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -66,15 +71,16 @@ public class GameController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> saveScroopTestResult(@RequestBody @Valid ScroopTestResultDTO scroopTestResultDTO){
+    public ResponseEntity<BaseResponse<String>> saveScroopTestResult(@RequestBody @Valid ScroopTestResultDTO scroopTestResultDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             gameService.saveScroopTestResult(userId, scroopTestResultDTO);
-            return new BaseResponse<>("scroop test 결과가 저장되었습니다.");
+            return ResponseEntity.ok(new BaseResponse<>("scroop test 결과가 저장되었습니다."));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -84,15 +90,16 @@ public class GameController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<String> saveMentalRotationResult(@RequestBody @Valid MentalRotationDTO mentalRotationDTO){
+    public ResponseEntity<BaseResponse<String>> saveMentalRotationResult(@RequestBody @Valid MentalRotationDTO mentalRotationDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             gameService.saveMentalRotationResult(userId, mentalRotationDTO);
-            return new BaseResponse<>("mental-rotation 결과가 저장되었습니다.");
+            return ResponseEntity.ok(new BaseResponse<>("mental-rotation 결과가 저장되었습니다."));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
 
     }
@@ -102,14 +109,15 @@ public class GameController {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
-    public BaseResponse<TodayGameDTO> getTodayGame(){
+    public ResponseEntity<BaseResponse<TodayGameDTO>> getTodayGame(){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            return new BaseResponse<>(gameService.getTodayGame());
+            return ResponseEntity.ok(new BaseResponse<>(gameService.getTodayGame()));
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
