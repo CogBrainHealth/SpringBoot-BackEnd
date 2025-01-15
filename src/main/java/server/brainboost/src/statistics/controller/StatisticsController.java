@@ -10,7 +10,6 @@ import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.statistics.dto.MyGameStatisticsDTO;
 import server.brainboost.src.statistics.service.StatisticsService;
-import server.brainboost.src.user.dto.ProfileDTO;
 import server.brainboost.src.user.service.UserService;
 import server.brainboost.utils.SecurityUtil;
 
@@ -21,8 +20,8 @@ public class StatisticsController {
     private final UserService userService;
     private final StatisticsService statisticsService;
 
-    @GetMapping("/statistics")
-    @Operation(summary = "내 점수 보기 api", description = "MyGameScoreDTO에서 정보 가져오기", responses = {
+    @GetMapping("/api/statistics/score")
+    @Operation(summary = "총합 점수 및 각 영역 점수 조회 api", description = "MyGameScoreDTO에서 정보 가져오기", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
@@ -38,6 +37,23 @@ public class StatisticsController {
         }
     }
 
+    /*@GetMapping("/api/statistics/{cognitive_domain}")
+    @Operation(summary = "해당 영역의 점소 보기 api", description = "MyGameScoreDTO에서 정보 가져오기", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<MyCognitiveDomainDTO> getMyCertainDomainStatistics(@PathVariable("cognitive_domain")CognitiveDomain cognitiveDomain){
+
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            return new BaseResponse<>(statisticsService.getMyCertainDomainStatistics(userId, cognitiveDomain));
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }*/
 
 
 

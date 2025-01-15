@@ -64,4 +64,12 @@ public class StatisticsService {
 
 
     }
+
+   /* public MyCognitiveDomainDTO getMyCertainDomainStatistics(Long userId, CognitiveDomain cognitiveDomain) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+            .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+
+    }*/
 }

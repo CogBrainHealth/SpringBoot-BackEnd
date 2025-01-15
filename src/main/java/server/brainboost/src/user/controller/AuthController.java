@@ -20,7 +20,7 @@ public class AuthController {
     private final AuthService authService;
 
 
-    @PostMapping("/signup")
+/*    @PostMapping("/signup")
     @Operation(summary = "임시 회원가입 api", description = "SignUpDto에 담긴 정보를 토대로 회원가입", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
@@ -30,9 +30,9 @@ public class AuthController {
         authService.signUp(signUpDTO);
 
         return new BaseResponse<>("ok");
-    }
+    }*/
 
-    @GetMapping("/testing")
+   /* @GetMapping("/testing")
     public String testConfig(){
         return "성공";
     }
@@ -40,6 +40,6 @@ public class AuthController {
     @GetMapping("/hello")
     public String testHello(){
         return "성공";
-    }
+    }*/
 
 }

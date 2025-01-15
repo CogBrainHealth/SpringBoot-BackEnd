@@ -65,6 +65,27 @@ public class MedicalController {
 
     }
 
+    @GetMapping("/api/medical/checklist")
+    @Operation(summary = "기본 건강 체크 리스트 조회 api", description = "건강 ", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+    })
+    public BaseResponse<MedicalChecklistDTO> getMedicalCheckList(){
+
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            MedicalChecklistDTO medicalChecklistDTO = medicalService.getMedicalCheckList(userId);
+            return new BaseResponse<>(medicalChecklistDTO);
+
+        }catch (BaseException e){
+            return new BaseResponse<>(e.getStatus());
+        }
+
+    }
+
+
 
 
     @GetMapping("/api/medical/nutrient/recommend/attention")

@@ -20,8 +20,8 @@ public class UserController {
 
     private final UserService userService;
 
-    @PatchMapping("/api/users/profile")
-    @Operation(summary = "기본 정보 작성 api", description = "건강 ", responses = {
+    @PatchMapping("/api/user/profile")
+    @Operation(summary = "기본 정보 작성/수정 api", description = "신규 유저의 경우, 기본 정보를 작성하거나 내 설정에서 기본 정보를 수정하는 api ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })

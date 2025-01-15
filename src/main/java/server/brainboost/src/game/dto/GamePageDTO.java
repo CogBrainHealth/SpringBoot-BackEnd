@@ -14,9 +14,9 @@ import java.util.List;
 @NoArgsConstructor
 public class GamePageDTO {
 
-    private List<GameDetailsDTO> typeAList = new ArrayList<>();
-    private List<GameDetailsDTO> typeBList = new ArrayList<>();
-    private List<GameDetailsDTO> typeCList = new ArrayList<>();
+    private List<GameDetailsDTO> attentionGameList = new ArrayList<>();
+    private List<GameDetailsDTO> spatialPerceptionGameList = new ArrayList<>();
+    private List<GameDetailsDTO> memoryGameList = new ArrayList<>();
 
 
 

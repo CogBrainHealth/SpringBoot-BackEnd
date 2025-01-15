@@ -16,6 +16,7 @@ public class GameDetailsDTO {
     private String gameName;
     private String gameImgUrl;
     private String gameDescription;
+    private String gameVersion;
     private CognitiveDomain cognitiveDomain;
 
 

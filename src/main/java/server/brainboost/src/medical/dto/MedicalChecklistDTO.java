@@ -6,7 +6,7 @@ import lombok.*;
 
 @Getter
 @Setter
-@Schema(description = "개인 정보 건강 리스트 작성을 위해 받아올 DTO")
+@Schema(description = "개인 정보 건강 리스트 정보를 가져올 DTO")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor

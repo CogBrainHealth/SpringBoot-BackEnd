@@ -47,21 +47,21 @@ public class GameService {
 
         for(int i =0; i<gameEntityList.size() ; i++){
             GameEntity game = gameEntityList.get(i);
-            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(), game.getGameType().getCognitiveDomain());
+            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(),game.getVersion() ,game.getGameType().getCognitiveDomain());
 
-            long typeId = game.getGameType().getGameTypeId();
+            CognitiveDomain cognitiveDomain = game.getGameType().getCognitiveDomain();
 
-            //TypeA
-            if(typeId == 1){
-                gamePageDTO.getTypeAList().add(gameDetailsDTO);
+            //attention
+            if(cognitiveDomain == CognitiveDomain.ATTENTION){
+                gamePageDTO.getAttentionGameList().add(gameDetailsDTO);
             }
-            //TypeB
-            else if(typeId == 2){
-                gamePageDTO.getTypeBList().add(gameDetailsDTO);
+            //spatial_perception
+            else if(cognitiveDomain == CognitiveDomain.SPATIAL_PERCEPTION){
+                gamePageDTO.getSpatialPerceptionGameList().add(gameDetailsDTO);
             }
-            //TypeC
-            else if(typeId == 3){
-                gamePageDTO.getTypeCList().add(gameDetailsDTO);
+            //memory
+            else if(cognitiveDomain == CognitiveDomain.MEMORY){
+                gamePageDTO.getMemoryGameList().add(gameDetailsDTO);
             }
         }
 

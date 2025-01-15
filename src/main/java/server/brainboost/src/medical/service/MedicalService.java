@@ -169,7 +169,121 @@ public class MedicalService {
 
     }
 
+    public MedicalChecklistDTO getMedicalCheckList(Long userId) {
+        UserEntity user = userRepository.findUserEntityLeftJoinMedicalChecklistByUserId(userId)
+            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
 
+        if(!(user.getGender().equals('M') || user.getGender().equals('W'))){
+            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
+        }
+
+        MedicalChecklistEntity medicalChecklist = user.getMedicalChecklist();
+
+        MedicalChecklistDTO medicalChecklistDTO = new MedicalChecklistDTO();
+        ReproductiveHealthDTO reproductiveHealthDTO = null;
+        HealthConditionDTO healthConditionDTO = null;
+        AllergyStatusDTO allergyStatusDTO = null;
+        MedicationUsageDTO medicationUsageDTO = null;
+        DailyDiscomfortDTO dailyDiscomfortDTO = null;
+
+        // 기존에 건강 체크 리스트를 작성하지 않은 경우
+        if(medicalChecklist == null){
+            throw new BaseException(BaseResponseStatus.MEDICAL_CHECKLIST_NO_EXIST);
+        }
+
+        if(user.getGender().equals('W')){
+           reproductiveHealthDTO = new ReproductiveHealthDTO(
+               medicalChecklist.getIsPregnant(),
+               medicalChecklist.getIsBreastfeeding(),
+               medicalChecklist.getIsPlanningChild(),
+               medicalChecklist.getIsMenopause()
+           );
+        }
+
+        //남녀 모두 있는 항목
+        healthConditionDTO = new HealthConditionDTO(
+            medicalChecklist.getIsHyperlipidemiaCondition(),
+            medicalChecklist.getIsHypertensionCondition(),
+            medicalChecklist.getIsLiverCondition(),
+            medicalChecklist.getIsOsteoporosisCondition(),
+            medicalChecklist.getIsDiabetesCondition(),
+            medicalChecklist.getIsJointCondition(),
+            medicalChecklist.getIsAllergyCondition(),
+            medicalChecklist.getIsKidneyCondition(),
+            medicalChecklist.getIsHypotensionCondition(),
+            medicalChecklist.getIsVascularCondition(),
+            medicalChecklist.getIsGallbladderCondition(),
+            medicalChecklist.getIsCancerCondition(),
+            medicalChecklist.getIsAsthmaCondition(),
+            medicalChecklist.getIsCirculatoryCondition(),
+            medicalChecklist.getIsStomachCondition(),
+            medicalChecklist.getIsSkinCondition(),
+            medicalChecklist.getIsPostSurgeryCondition(),
+            medicalChecklist.getIsHeartCondition()
+        );
+
+        //남녀 모두 있는 항목
+        allergyStatusDTO = new AllergyStatusDTO(
+            medicalChecklist.getIsUnknownAllergy(),
+            medicalChecklist.getIsPeanutAllergy(),
+            medicalChecklist.getIsShellfishAllergy(),
+            medicalChecklist.getIsEstrogenAllergy(),
+            medicalChecklist.getIsLacquerAllergy(),
+            medicalChecklist.getIsBarleyAllergy(),
+            medicalChecklist.getIsCaffeineAllergy(),
+            medicalChecklist.getIsSpecificAllergy(),
+            medicalChecklist.getIsSoyAllergy(),
+            medicalChecklist.getIsPollenAllergy(),
+            medicalChecklist.getIsDairyAllergy(),
+            medicalChecklist.getIsFigAllergy(),
+            medicalChecklist.getIsHopExtractAllergy(),
+            medicalChecklist.getIsNutAllergy(),
+            medicalChecklist.getIsMountainAshAllergy(),
+            medicalChecklist.getIsEveningPrimroseAllergy(),
+            medicalChecklist.getIsWheatAllergy(),
+            medicalChecklist.getIsEggAllergy(),
+            medicalChecklist.getIsPropolisAllergy(),
+            medicalChecklist.getIsGinsengAllergy(),
+            medicalChecklist.getIsCitrusAllergy()
+        );
+
+        //남녀 모두 있는 항목
+        medicationUsageDTO = new MedicationUsageDTO(
+            medicalChecklist.getIsTakingAntihyperlipidemic(),
+            medicalChecklist.getIsTakingAntihypertensive(),
+            medicalChecklist.getIsTakingHormonal(),
+            medicalChecklist.getIsTakingImmunosuppressant(),
+            medicalChecklist.getIsTakingAntiarrhythmic(),
+            medicalChecklist.getIsTakingNeuroleptic(),
+            medicalChecklist.getIsTakingAntacid(),
+            medicalChecklist.getIsTakingNSAID(),
+            medicalChecklist.getIsTakingAntithromboticAgent(),
+            medicalChecklist.getIsTakingCNSDepressant(),
+            medicalChecklist.getIsTakingAntidepressant(),
+            medicalChecklist.getIsTakingAnticoagulant(),
+            medicalChecklist.getIsTakingAntiplatelet(),
+            medicalChecklist.getIsTakingAntidiabetic(),
+            medicalChecklist.getIsTakingSedative(),
+            medicalChecklist.getIsTakingBloodThinner(),
+            medicalChecklist.getIsTakingNephrotoxicDrug()
+        );
+
+        dailyDiscomfortDTO = new DailyDiscomfortDTO(
+            medicalChecklist.getIsExperiencingSleepDifficulty(),
+            medicalChecklist.getIsExperiencingStress(),
+            medicalChecklist.getIsExperiencingMemoryLoss(),
+            medicalChecklist.getIsExperiencingSensitivity(),
+            medicalChecklist.getIsExperiencingDepression()
+        );
+
+        medicalChecklistDTO.setReproductiveHealthDTO(reproductiveHealthDTO);
+        medicalChecklistDTO.setHealthConditionDTO(healthConditionDTO);
+        medicalChecklistDTO.setAllergyStatusDTO(allergyStatusDTO);
+        medicalChecklistDTO.setMedicationUsageDTO(medicationUsageDTO);
+        medicalChecklistDTO.setDailyDiscomfortDTO(dailyDiscomfortDTO);
+
+        return medicalChecklistDTO;
+    }
 
 
     @Transactional
@@ -442,5 +556,6 @@ public class MedicalService {
 
         return userDiscomfortEntityList;
     }
+
 
 }

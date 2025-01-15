@@ -11,6 +11,7 @@ import server.brainboost.src.user.entity.UserEntity;
 
 public interface MedicalChecklistRepository extends JpaRepository<MedicalChecklistEntity, Long> {
 
+
 	@Modifying
 	@Transactional
 	@Query("DELETE FROM UserAllergyEntity ua WHERE ua.user = :user")

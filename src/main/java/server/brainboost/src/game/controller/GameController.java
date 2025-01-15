@@ -17,7 +17,6 @@ import server.brainboost.src.game.dto.MentalRotationDTO;
 import server.brainboost.src.game.dto.ScroopTestResultDTO;
 import server.brainboost.src.game.dto.TodayGameDTO;
 import server.brainboost.src.game.service.GameService;
-import server.brainboost.src.home.dto.HomePageDTO;
 import server.brainboost.utils.SecurityUtil;
 
 @RestController
@@ -28,8 +27,8 @@ public class GameController {
 
 
     //TODO 1. List<Entity> 로 받은 것들 DTO로 받는 방법 생각하기  2. fetch join이 필수인지 생각해보기 3.new arrayList
-    @GetMapping("/game")
-    @Operation(summary = "훈련 기본화면 api", description = "GamePageDTO에 담긴 정보를 전달", responses = {
+    @GetMapping("/api/game/info")
+    @Operation(summary = "모든 게임 정보 조회 api", description = "모든 게임을 주의력, 공간지각능력, 기억력 부문으로 나눠 정보를 조회", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
     })
