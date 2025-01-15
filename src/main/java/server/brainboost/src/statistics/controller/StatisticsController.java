@@ -24,9 +24,11 @@ public class StatisticsController {
     private final StatisticsService statisticsService;
 
     @GetMapping("/api/statistics/score")
-    @Operation(summary = "총합 점수 및 각 영역 점수 조회 api", description = "MyGameScoreDTO에서 정보 가져오기", responses = {
+    @Operation(summary = "총합 점수 및 각 영역 점수 조회 api", description = "전체 점수 + 주의력 영역 점수 + 공간지각능력 점수 + 기억력 점수", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<MyGameStatisticsDTO>> getMyGameStatistics(){
 

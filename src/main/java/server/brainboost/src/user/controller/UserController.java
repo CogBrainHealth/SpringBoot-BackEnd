@@ -27,6 +27,8 @@ public class UserController {
     @Operation(summary = "기본 정보 작성/수정 api", description = "신규 유저의 경우, 기본 정보를 작성하거나 내 설정에서 기본 정보를 수정하는 api ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<String>> setBasicInfo(@Valid @RequestBody BasicInfoDTO basicInfoDTO){
         try{
@@ -45,9 +47,11 @@ public class UserController {
 
     //TODO: builder 패턴 도입 하기
     @GetMapping("/api/user/profile")
-    @Operation(summary = "내 정보 보기 api", description = "profileDTO에 담긴 정보를 가져오기", responses = {
+    @Operation(summary = "내 정보 보기 api", description = "내 정보 조회", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<ProfileDTO>> getProfile(){
 

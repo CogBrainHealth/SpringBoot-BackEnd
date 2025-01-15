@@ -14,8 +14,13 @@ import java.util.List;
 @NoArgsConstructor
 public class GamePageDTO {
 
+    @Schema(description = "주의력 영역에 해당하는 게임 리스트")
     private List<GameDetailsDTO> attentionGameList = new ArrayList<>();
+
+    @Schema(description = "공간지각능력 영역에 해당하는 게임 리스트")
     private List<GameDetailsDTO> spatialPerceptionGameList = new ArrayList<>();
+
+    @Schema(description = "기억력 영역에 해당하는 게임 리스트")
     private List<GameDetailsDTO> memoryGameList = new ArrayList<>();
 
 

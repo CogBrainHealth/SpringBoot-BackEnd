@@ -34,6 +34,7 @@ public class GameController {
     @Operation(summary = "모든 게임 정보 조회 api", description = "모든 게임을 주의력, 공간지각능력, 기억력 부문으로 나눠 정보를 조회", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다")
     })
     public ResponseEntity<BaseResponse<GamePageDTO>> getGamePage(){
         try{
@@ -47,10 +48,14 @@ public class GameController {
         }
     }
 
-    @PostMapping("/game/map-navigation/result")
-    @Operation(summary = "지도보고 길찾기 결과 저장 api", description = "MapNavigationResultDTO", responses = {
+    @PostMapping("/api/game/map-navigation/result")
+    @Operation(summary = "지도보고 길찾기 결과 저장 api", description = "게임 후 플레이 내용을 저장", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<String>> saveMapNavigationResult(@RequestBody @Valid MapNavigationResultDTO mapNavigationResultDTO){
         try{
@@ -66,10 +71,14 @@ public class GameController {
 
     }
 
-    @PostMapping("/game/scroop-test/result")
-    @Operation(summary = "scroop test 결과 저장 api", description = "scroopTestResultDTO", responses = {
+    @PostMapping("/api/game/scroop-test/result")
+    @Operation(summary = "scroop test 결과 저장 api", description = "게임 후 플레이 내용을 저장", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<String>> saveScroopTestResult(@RequestBody @Valid ScroopTestResultDTO scroopTestResultDTO){
         try{
@@ -85,10 +94,14 @@ public class GameController {
 
     }
 
-    @PostMapping("/game/mental-rotation/result")
-    @Operation(summary = "mental rotation 결과 저장 api", description = "mentalRotationResultDTO", responses = {
+    @PostMapping("/api/game/mental-rotation/result")
+    @Operation(summary = "mental rotation 결과 저장 api", description = "게임 후 플레이 내용을 저장", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
     public ResponseEntity<BaseResponse<String>> saveMentalRotationResult(@RequestBody @Valid MentalRotationDTO mentalRotationDTO){
         try{
@@ -105,9 +118,10 @@ public class GameController {
     }
 
     @GetMapping("/api/game/today")
-    @Operation(summary = "오늘의 게임 조회 api", description = "TodayGameDTO에 담긴 정보를 전달", responses = {
+    @Operation(summary = "오늘의 게임 조회 api", description = "매일 0시에 오늘의 게임이 바뀌며 오늘의 게임을 조회", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
     })
     public ResponseEntity<BaseResponse<TodayGameDTO>> getTodayGame(){
         try{

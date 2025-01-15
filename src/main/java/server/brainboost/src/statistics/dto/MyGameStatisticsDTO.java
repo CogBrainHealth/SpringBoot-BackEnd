@@ -12,9 +12,16 @@ import lombok.*;
 @NoArgsConstructor
 public class MyGameStatisticsDTO {
 
+    @Schema(description = "전체 점수")
     private int totalScore;
+
+    @Schema(description = "주의력 영역 점수")
     private int attentionScore;
+
+    @Schema(description = "공간지각능력 점수")
     private int SpatialPerceptionScore;
+
+    @Schema(description = "기억력 영역 점수")
     private int MemoryScore;
 
 

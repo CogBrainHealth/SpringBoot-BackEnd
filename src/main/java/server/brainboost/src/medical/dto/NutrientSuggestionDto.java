@@ -15,7 +15,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class NutrientSuggestionDto {
 
+	@Schema(description = "주요 추천 영양성분")
 	private NutrientMainDomainDTO nutrientMainDomainDTO;
+
+	@Schema(description = "보조 추천 영양성분")
 	private NutrientSubDomainDTO nutrientSubDomainDTO;
 
 }

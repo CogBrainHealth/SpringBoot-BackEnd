@@ -28,9 +28,13 @@ public class MedicalController {
     private final MedicalService medicalService;
 
     @PostMapping("/api/medical/checklist")
-    @Operation(summary = "기본 건강 체크 리스트 작성 api", description = "건강 ", responses = {
+    @Operation(summary = "기본 건강 체크 리스트 작성 api", description = "체크리스트 작성", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
+            @ApiResponse(responseCode = "500", description = "기본 건강 정보를 이미 작성하셨습니다"),
     })
     public ResponseEntity<BaseResponse<String>> createMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
 
@@ -49,9 +53,13 @@ public class MedicalController {
     }
 
     @PatchMapping("/api/medical/checklist")
-    @Operation(summary = "기본 건강 체크 리스트 수정 api", description = "건강 ", responses = {
+    @Operation(summary = "기본 건강 체크 리스트 수정 api", description = "체크리스트 수정 ", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     })
     public ResponseEntity<BaseResponse<String>> updateMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
 
@@ -70,9 +78,13 @@ public class MedicalController {
     }
 
     @GetMapping("/api/medical/checklist")
-    @Operation(summary = "기본 건강 체크 리스트 조회 api", description = "건강 ", responses = {
+    @Operation(summary = "기본 건강 체크 리스트 조회 api", description = "체크 리스트 조회", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     })
     public ResponseEntity<BaseResponse<MedicalChecklistDTO>> getMedicalCheckList(){
 
@@ -95,9 +107,12 @@ public class MedicalController {
 
 
     @GetMapping("/api/medical/nutrient/recommend/attention")
-    @Operation(summary = "주의력 부문 영양성분 추천 api", description = "건강 ", responses = {
+    @Operation(summary = "주의력 부문 영양성분 추천 api", description = "단일 영역 영양성분 추천(주요 성분과 보조 성분으로 나눠 추천) ", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
     public BaseResponse<NutrientSuggestionDto> recommendAttentionNutrients(){
 
@@ -114,9 +129,12 @@ public class MedicalController {
     }
 
     @GetMapping("/api/medical/nutrient/recommend/spatial-perception")
-    @Operation(summary = "공간지각능력 부문 영양성분 추천 api", description = "건강 ", responses = {
+    @Operation(summary = "공간지각능력 부문 영양성분 추천 api", description = "단일 영역 영양성분 추천(주요 성분과 보조 성분으로 나눠 추천) ", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
     public BaseResponse<NutrientSuggestionDto> recommendSpatialPerceptionNutrients(){
 
@@ -133,9 +151,12 @@ public class MedicalController {
     }
 
     @GetMapping("/api/medical/nutrient/recommend/memory")
-    @Operation(summary = "기억력 부문 영양성분 추천 api", description = "건강 ", responses = {
+    @Operation(summary = "기억력 부문 영양성분 추천 api", description = "단일 영역 영양성분 추천(주요 성분과 보조 성분으로 나눠 추천) ", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
     public BaseResponse<NutrientSuggestionDto> recommendMemoryNutrients(){
 
