@@ -30,7 +30,7 @@ public class UserEntity extends BaseEntity {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false, length = 10)
+    @Column(nullable = false)
     private String nickname;
 
     //enum 처리
