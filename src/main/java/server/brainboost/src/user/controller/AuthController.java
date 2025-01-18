@@ -29,7 +29,6 @@ import server.brainboost.utils.ResponseUtil;
 public class AuthController {
 
     private final AuthService authService;
-    private final JWTUtil jwtUtil;
 
     //TODO scheduler을 통해 기간이 지난 refresh data 정리하기
     @PostMapping("/reissue")
@@ -51,6 +50,22 @@ public class AuthController {
 
     }
 
+    @PostMapping("/logout")
+    @Operation(summary = "로그아웃 api", description = "refresh 토큰 유효성 검사 후 refresh storage에서 토큰 삭제", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "401", description = "refresh 토큰이 만료되었습니다"),
+        @ApiResponse(responseCode = "401", description = "refresh 토큰이 올바르지 않습니다")
+    })
+    public ResponseEntity<BaseResponse<String>> logout(@Valid @RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+        try{
+            authService.logout(refreshTokenRequestDTO);
+            return ResponseEntity.ok(new BaseResponse<>("로그아웃에 성공했습니다"));
+        }catch (BaseException e){
+            HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
+        }
+    }
 
 
 }

@@ -101,6 +101,10 @@ public class SecurityConfig {
                 .sessionManagement((session) -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
+        // logout 필터 비활성화
+        http
+            .logout(logout -> logout.disable());
+
         return http.build();
     }
 }
