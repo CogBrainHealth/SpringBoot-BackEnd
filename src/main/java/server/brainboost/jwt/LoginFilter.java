@@ -16,10 +16,14 @@ import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.dto.IsNewUserDTO;
 import server.brainboost.src.user.dto.LoginDTO;
+import server.brainboost.src.user.dto.LoginResponseDTO;
+import server.brainboost.src.user.entity.RefreshEntity;
+import server.brainboost.src.user.repository.RefreshRepository;
 import server.brainboost.utils.ResponseUtil;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Iterator;
 
 @RequiredArgsConstructor
@@ -27,6 +31,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
@@ -76,14 +81,21 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         String role = auth.getAuthority();
 
-        //expiredMs: 24시간
-        String token = jwtUtil.createJwt(username, userId, role, 24*60*60*1000L);
+        // 토큰 생성
+        // access token : 7일
+        String accessToken = jwtUtil.createJwt("access", username, userId, role, 7*24*60*60*1000L);
+        // refresh token : 30일
+        String refreshToken = jwtUtil.createJwt("refresh", username, userId, role, 30*24*60*60*1000L);
 
-        //HTTP 인증방식은 RFC7325 정의에 따라 Authorization: Bearer + 인증 토큰 형식으로 전달 되어야 함
-        response.addHeader("Authorization", "Bearer " + token);
+        //refresh Toekn 저장
+        addRefreshEntity(username, refreshToken, 30*24*60*60*1000L);
+
+        // HTTP 인증방식은 RFC7325 정의에 따라 Authorization: Bearer + 인증 토큰 형식으로 전달 되어야 함
+        // response.addHeader("Authorization", "Bearer " + token);
+
 
         // 응답 상태 코드 및 본문 설정
-        ResponseUtil.handleResponse(response, new IsNewUserDTO(customUserDetails.getIsNewUser()));
+        ResponseUtil.handleResponse(response, new LoginResponseDTO(customUserDetails.getIsNewUser(), accessToken, refreshToken));
     }
 
     //로그인 실패시 실행하는 메소드
@@ -91,5 +103,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         System.out.println("fail");
         ResponseUtil.handleException(response,HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.FAILED_LOGIN));
+    }
+
+    private void addRefreshEntity(String username, String refresh, Long expiredMs) {
+
+        Date date = new Date(System.currentTimeMillis() + expiredMs);
+
+        RefreshEntity refreshEntity = new RefreshEntity();
+        refreshEntity.setUsername(username);
+        refreshEntity.setRefresh(refresh);
+        refreshEntity.setExpiration(date.toString());
+
+        refreshRepository.save(refreshEntity);
     }
 }

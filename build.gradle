@@ -34,6 +34,9 @@ dependencies {
 	//jdbc
 	implementation 'org.springframework.boot:spring-boot-starter-jdbc'
 
+	//validation 검증
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	//mustache 사용
 	implementation 'org.springframework.boot:spring-boot-starter-mustache'
 

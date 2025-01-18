@@ -29,13 +29,18 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        //request에서 Authorization 헤더를 찾음
-        String authorization= request.getHeader("Authorization");
+        String accessToken = null;
+        try{
+            //request에서 Authorization 헤더를 찾음
+            accessToken = request.getHeader("Authorization");
+        }catch (IllegalArgumentException e){
+            ResponseUtil.handleException(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.HEADER_ERROR));
+        }
 
         //Authorization 헤더 검증
-        if (authorization == null || !authorization.startsWith("Bearer ")) {
+        if (accessToken == null) {
 
-            System.out.println("token null");
+            System.out.println("Authorization이 비어있습니다");
             filterChain.doFilter(request, response);
 
             //조건이 해당되면 메소드 종료 (필수)
@@ -43,12 +48,10 @@ public class JWTFilter extends OncePerRequestFilter {
         }
 
         System.out.println("authorization now");
-        //Bearer 부분 제거 후 순수 토큰만 획득
-        String token = authorization.split(" ")[1];
 
         //토큰 소멸 시간 검증
         try{
-            if (jwtUtil.isExpired(token)) {
+            if (jwtUtil.isExpired(accessToken)) {
 
                 System.out.println("token expired");
                 filterChain.doFilter(request, response);
@@ -57,15 +60,15 @@ public class JWTFilter extends OncePerRequestFilter {
                 return;
             }
         }catch (io.jsonwebtoken.security.SignatureException e){
-            ResponseUtil.handleException(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            ResponseUtil.handleException(response,HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.INVALID_TOKEN));
             return;
         }catch (io.jsonwebtoken.MalformedJwtException e){
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR, new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            ResponseUtil.handleException(response, HttpServletResponse.SC_UNAUTHORIZED, new BaseException(BaseResponseStatus.INVALID_TOKEN));
             return;
         }catch (io.jsonwebtoken.ExpiredJwtException e){
             System.out.println("token expired");
             //filterChain.doFilter(request, response);
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.EXPIRED_TOKEN));
+            ResponseUtil.handleException(response, HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.EXPIRED_ACCESS_TOKEN));
             //조건이 해당되면 메소드 종료 (필수)
             return;
 
@@ -75,9 +78,9 @@ public class JWTFilter extends OncePerRequestFilter {
         //이 후 과정은 액세스 토큰이 정상적으로 발급된 경우이다.
 
         //토큰에서 username과 role 획득
-        String username = jwtUtil.getUsername(token);
-        Long userId = jwtUtil.getUserId(token);
-        String role = jwtUtil.getRole(token);
+        String username = jwtUtil.getUsername(accessToken);
+        Long userId = jwtUtil.getUserId(accessToken);
+        String role = jwtUtil.getRole(accessToken);
 
         //userEntity를 생성하여 값 set
         UserEntity userEntity = new UserEntity();

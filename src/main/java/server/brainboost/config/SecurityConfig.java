@@ -18,6 +18,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import server.brainboost.jwt.JWTFilter;
 import server.brainboost.jwt.JWTUtil;
 import server.brainboost.jwt.LoginFilter;
+import server.brainboost.src.user.repository.RefreshRepository;
 
 import java.util.Collections;
 import java.util.List;
@@ -29,6 +30,7 @@ public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JWTUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -82,7 +84,7 @@ public class SecurityConfig {
         //경로별 인가 작업
         http
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login", "/", "/signup").permitAll()
+                        .requestMatchers("/login", "/", "/signup", "/reissue", "/swagger-ui/index.html").permitAll()
                         .requestMatchers("/hello").hasRole("USER")
                         .requestMatchers("/admin").hasRole("ADMIN")
                         .anyRequest().permitAll());
@@ -92,7 +94,7 @@ public class SecurityConfig {
 
         //필터 추가 LoginFilter()는 인자를 받음
         http
-                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil), UsernamePasswordAuthenticationFilter.class);
+                .addFilterAt(new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository), UsernamePasswordAuthenticationFilter.class);
 
         //세션 설정
         http
