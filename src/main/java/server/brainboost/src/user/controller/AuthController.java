@@ -62,7 +62,7 @@ public class AuthController {
             authService.logout(refreshTokenRequestDTO);
             return ResponseEntity.ok(new BaseResponse<>("로그아웃에 성공했습니다"));
         }catch (BaseException e){
-            HttpStatus httpStatus = HttpStatus.BAD_REQUEST;
+            HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
             return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }

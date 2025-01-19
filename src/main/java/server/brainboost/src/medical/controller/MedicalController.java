@@ -114,17 +114,18 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public BaseResponse<NutrientSuggestionDto> recommendAttentionNutrients(){
+    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendAttentionNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.ATTENTION);
-            return new BaseResponse<>(nutrientSuggestionDto);
+            return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -136,17 +137,18 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public BaseResponse<NutrientSuggestionDto> recommendSpatialPerceptionNutrients(){
+    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendSpatialPerceptionNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.SPATIAL_PERCEPTION);
-            return new BaseResponse<>(nutrientSuggestionDto);
+            return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 
@@ -158,17 +160,18 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public BaseResponse<NutrientSuggestionDto> recommendMemoryNutrients(){
+    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendMemoryNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.MEMORY);
-            return new BaseResponse<>(nutrientSuggestionDto);
+            return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){
-            return new BaseResponse<>(e.getStatus());
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
         }
     }
 

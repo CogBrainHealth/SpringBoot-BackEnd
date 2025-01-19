@@ -24,7 +24,7 @@ public class BaseEntity {
     private LocalDateTime updateAt;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "status", nullable = false)
+    @Column(name = "status", nullable = false, columnDefinition = "ENUM('ACTIVE', 'INACTIVE') DEFAULT 'ACTIVE'")
     protected Status status = Status.ACTIVE;
 
     public void changeToActive(){
