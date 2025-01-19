@@ -54,7 +54,7 @@ public class AuthService {
         }catch (io.jsonwebtoken.MalformedJwtException e){
             throw new BaseException(BaseResponseStatus.INVALID_TOKEN);
         }catch (io.jsonwebtoken.ExpiredJwtException e){
-            throw new BaseException(BaseResponseStatus.INVALID_TOKEN);
+            throw new BaseException(BaseResponseStatus.EXPIRED_REFRESH_TOKEN);
         }
 
         // 토큰이 refresh인지 검사
@@ -112,7 +112,7 @@ public class AuthService {
         }catch (io.jsonwebtoken.MalformedJwtException e){
             throw new BaseException(BaseResponseStatus.INVALID_TOKEN);
         }catch (io.jsonwebtoken.ExpiredJwtException e){
-            throw new BaseException(BaseResponseStatus.INVALID_TOKEN);
+            throw new BaseException(BaseResponseStatus.EXPIRED_REFRESH_TOKEN);
         }
 
         // 토큰이 refresh인지 검사
