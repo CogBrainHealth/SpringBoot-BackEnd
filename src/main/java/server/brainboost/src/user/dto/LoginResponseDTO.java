@@ -16,6 +16,7 @@ import lombok.Setter;
 public class LoginResponseDTO {
 
 	private Boolean isNewUser;
+	private Boolean isPremium;
 	private String accessToken;
 	private String refreshToken;
 

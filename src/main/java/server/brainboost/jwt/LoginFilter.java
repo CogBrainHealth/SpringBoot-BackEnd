@@ -95,7 +95,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
         // 응답 상태 코드 및 본문 설정
-        ResponseUtil.handleResponse(response, new LoginResponseDTO(customUserDetails.getIsNewUser(), accessToken, refreshToken));
+        ResponseUtil.handleResponse(response, new LoginResponseDTO(customUserDetails.getIsNewUser(), customUserDetails.getIsPremium(), accessToken, refreshToken));
     }
 
     //로그인 실패시 실행하는 메소드

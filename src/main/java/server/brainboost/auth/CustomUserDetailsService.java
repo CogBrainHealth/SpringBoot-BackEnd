@@ -30,13 +30,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         if(userEntity == null){
             userEntity = new UserEntity(username);
             userEntity.setPassword(bCryptPasswordEncoder.encode("1234"));
+            userEntity.setIsPremium(Boolean.FALSE);
             userRepository.save(userEntity);
             isNewUser = Boolean.TRUE;
         }else{
             isNewUser = Boolean.FALSE;
         }
 
-        return new CustomUserDetails(userEntity, isNewUser);
+        return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());
 
     }
 }
