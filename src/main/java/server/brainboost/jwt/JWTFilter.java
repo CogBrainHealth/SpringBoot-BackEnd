@@ -29,6 +29,18 @@ public class JWTFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
+        //jwt 토큰 만료 -> 소셜 로그인 시도 ->jwt 토큰 만료.., 의 무한루프를 해결하기 위한 코드
+        String requestUri = request.getRequestURI();
+        if (requestUri.matches("^\\/login(?:\\/.*)?$")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+        if (requestUri.matches("^\\/oauth2(?:\\/.*)?$")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+
         String accessToken = null;
         try{
             //request에서 Authorization 헤더를 찾음

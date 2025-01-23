@@ -42,7 +42,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //ObjectMapper 이용 시, json 형식으로 로그인 요청을 받을 수 있다.(username, password)
         ObjectMapper om = new ObjectMapper();
-        LoginDTO loginDTO;
+        LoginDTO loginDTO = null;
 
         try {
             loginDTO = om.readValue(request.getInputStream(), LoginDTO.class);
@@ -50,6 +50,20 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             //throw new RuntimeException(e);
 
             ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.NO_VALID_LOGINDTO));
+            return null;
+        }
+
+        if(loginDTO == null){
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
+                BaseResponseStatus.NO_VALID_LOGINDTO));
+
+            return null;
+        }
+
+        if(loginDTO.getUsername() == null || loginDTO.getUsername().isBlank()){
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
+                BaseResponseStatus.NO_VALID_LOGINDTO));
+
             return null;
         }
 
