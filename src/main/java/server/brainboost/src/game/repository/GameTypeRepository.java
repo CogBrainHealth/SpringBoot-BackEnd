@@ -1,7 +1,7 @@
 package server.brainboost.src.game.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.src.game.entity.GameTypeEntity;
 
 import java.util.Optional;

@@ -10,7 +10,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.enums.Possibility;
 import server.brainboost.src.medical.dto.NutrientDTO;
 
@@ -28,7 +28,7 @@ public class MedicalRepository {
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
     	FROM nutrient AS n 
-    	INNER JOIN nutrient_main_domain AS nmd ON n.id = nmd.nutrient_id
+    	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'MAIN'
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
@@ -87,7 +87,7 @@ public class MedicalRepository {
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
     	FROM nutrient AS n 
-    	INNER JOIN nutrient_sub_domain AS nmd ON n.id = nmd.nutrient_id
+    	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'SUB' 
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
@@ -145,7 +145,7 @@ public class MedicalRepository {
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
     	FROM nutrient AS n 
-    	INNER JOIN nutrient_main_domain AS nmd ON n.id = nmd.nutrient_id
+    	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'MAIN'
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
@@ -213,7 +213,7 @@ public class MedicalRepository {
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
     	FROM nutrient AS n 
-    	INNER JOIN nutrient_sub_domain AS nmd ON n.id = nmd.nutrient_id
+    	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'SUB'
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 

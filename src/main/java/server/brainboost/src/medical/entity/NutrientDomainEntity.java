@@ -16,14 +16,15 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.enums.DomainType;
 
 @Entity
 @Getter
-@Table(name = "nutrient_sub_domain")
+@Table(name = "nutrient_domain")
 @NoArgsConstructor
 @DynamicInsert
-public class NutrientSubDomainEntity extends BaseEntity {
+public class NutrientDomainEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -32,6 +33,10 @@ public class NutrientSubDomainEntity extends BaseEntity {
 	@Enumerated(EnumType.STRING)
 	@Column(nullable = false, name = "cognitive_domain")
 	private CognitiveDomain cognitiveDomain;
+
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, name = "domain_type")
+	private DomainType domainType;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nutrient_id")

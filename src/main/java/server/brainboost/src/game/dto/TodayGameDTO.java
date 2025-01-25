@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 
 @Getter
 @Setter

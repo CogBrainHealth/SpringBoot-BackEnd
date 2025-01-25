@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.config.Status;
 import server.brainboost.enums.AllergyTag;
 import server.brainboost.enums.ConditionTag;

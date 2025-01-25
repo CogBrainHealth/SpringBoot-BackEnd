@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 
 @Entity
 @Getter

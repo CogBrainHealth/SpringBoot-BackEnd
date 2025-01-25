@@ -2,7 +2,7 @@ package server.brainboost.src.game.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import server.brainboost.config.CognitiveDomain;
+import server.brainboost.enums.CognitiveDomain;
 
 @Getter
 @Setter

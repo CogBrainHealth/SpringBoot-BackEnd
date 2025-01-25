@@ -1,4 +1,4 @@
-package server.brainboost.config;
+package server.brainboost.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
