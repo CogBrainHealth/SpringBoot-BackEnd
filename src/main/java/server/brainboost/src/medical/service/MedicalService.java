@@ -20,11 +20,13 @@ import server.brainboost.src.medical.dto.DailyDiscomfortDTO;
 import server.brainboost.src.medical.dto.HealthConditionDTO;
 import server.brainboost.src.medical.dto.MedicalChecklistDTO;
 import server.brainboost.src.medical.dto.MedicationUsageDTO;
+import server.brainboost.src.medical.dto.NutrientDetails;
 import server.brainboost.src.medical.dto.NutrientMainDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSubDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSuggestionDto;
 import server.brainboost.src.medical.dto.ReproductiveHealthDTO;
 import server.brainboost.src.medical.entity.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.NutrientEntity;
 import server.brainboost.src.medical.entity.UserAllergyEntity;
 import server.brainboost.src.medical.entity.UserConditionEntity;
 import server.brainboost.src.medical.entity.UserDiscomfortEntity;
@@ -32,6 +34,7 @@ import server.brainboost.src.medical.entity.UserMedicineEntity;
 import server.brainboost.src.medical.entity.UserPregnancyEntity;
 import server.brainboost.src.medical.repository.MedicalChecklistRepository;
 import server.brainboost.src.medical.repository.MedicalRepository;
+import server.brainboost.src.medical.repository.NutrientRepository;
 import server.brainboost.src.medical.repository.UserAllergyRepository;
 import server.brainboost.src.medical.repository.UserConditionRepository;
 import server.brainboost.src.medical.repository.UserDiscomfortRepository;
@@ -52,6 +55,7 @@ public class MedicalService {
     private final UserMedicineRepository userMedicineRepository;
     private final UserPregnancyRepository userPregnancyRepository;
     private final MedicalRepository medicalRepository;
+    private final NutrientRepository nutrientRepository;
 
 
     @Transactional
@@ -558,4 +562,31 @@ public class MedicalService {
     }
 
 
+
+	public void changeNutrientDetails() {
+
+        NutrientEntity nutrient = nutrientRepository.findNutrientEntityById(15L)
+            .orElse(null);
+
+        if(nutrient == null){
+            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+        }
+
+        NutrientDetails details = new NutrientDetails(
+            true,
+            List.of("세포막 안정화 및 신경 세포 보호", "신경전달물질 합성 촉진", "항산화 및 항염증 작용", "혈중 콜레스테롤 수치 감소", "궤양성 대장염 환자의 증상 완화 및 소화 능력 개선 ", "지방 간 예방 및 간 기능 개선", "피부 보습과 탄력 개선", "탈모 개선", "모유의 점성 감소"),
+            List.of("인지질의 일종으로, 세포막의 주요 구성요소", "두뇌 세의 구성 성분이자 뇌 신경 전달물질의 합성에 사용됨", "특히, 콜린이 풍부하여 아세틸콜린 부족으로 발생하는 기억력 감퇴를 예방하는 데 유익", "주요 공급원으로는 달걀, 노른자, 콩, 해바라기씨, 땅콩 등이 있음"),
+            List.of("1일 1.2-1.8g", "지용성이므로 식사와 함께 섭취 권장", "위장이 약한 경우 식후 복용 추천"),
+            List.of("설사, 복통 등의 위장장애 및 알러지"),
+            List.of("임신 및 수유 중: 레시틴은 태아와 영유아의 뇌 발달에 도움을 줄 수 있으나, 섭취 전 전문가와 상담하는 것이 좋음"),
+            List.of("난황", "계란", "대두", "해바라기씨", "땅콩"),
+            List.of("항응고제", "항콜린제"),
+            List.of("알레르기 질환", "비염", "결막염", "혈액응고장애"),
+            List.of("레시틴은 뇌 기능과 기억력 개선에 도움을 줄 수 있는 안전한 성분입니다. 특히, 콜린이 풍부하여 아세틸콜린 부족으로 발생하는 기억력 감퇴를 예방하는 데 유익합니다. 다만, 알레르기(난황, 대두)에 민감한 분들은 섭취 전에 성분을 확인해야 합니다. 또한, 항응고제 복용 중이라면 전문가 상담 후 복용하세요.")
+        );
+
+        nutrient.setDetailsFromObject(details);
+        nutrientRepository.save(nutrient);
+
+    }
 }

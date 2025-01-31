@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,6 +18,7 @@ import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.src.medical.dto.MedicalChecklistDTO;
+import server.brainboost.src.medical.dto.NutrientDetails;
 import server.brainboost.src.medical.dto.NutrientSuggestionDto;
 import server.brainboost.src.medical.service.MedicalService;
 import server.brainboost.utils.SecurityUtil;
@@ -175,5 +177,25 @@ public class MedicalController {
         }
     }
 
+    @PostMapping("/api/medical/nutrient/wrtie/details")
+    @Operation(summary = "nutrient 영양소 정보를 젖아하는 api", description = "테스트 api) ", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
+    })
+    public ResponseEntity<BaseResponse<String>> getNutrientInfo(){
+
+        try{
+
+            medicalService.changeNutrientDetails();
+            return ResponseEntity.ok(new BaseResponse<>("정상적으로 영양성분 정보가 저장되었습니다"));
+
+        }catch (BaseException e){
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
+        }
+
+    }
 
 }
