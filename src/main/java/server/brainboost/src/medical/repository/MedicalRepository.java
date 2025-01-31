@@ -26,7 +26,7 @@ public class MedicalRepository {
 	public List<NutrientDTO> recommendMainNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
-    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
+    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
     	FROM nutrient AS n 
     	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'MAIN'
     	WHERE nmd.cognitive_domain = ?
@@ -70,7 +70,7 @@ public class MedicalRepository {
 				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
-					String description = null;
+					String description = rs.getString("nutrient_details");
 
 					return new NutrientDTO(nutrientId, nutrientName, description);
 				}
@@ -85,7 +85,7 @@ public class MedicalRepository {
 	public List<NutrientDTO> recommendSubNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
-    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
+    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details  
     	FROM nutrient AS n 
     	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'SUB' 
     	WHERE nmd.cognitive_domain = ?
@@ -129,7 +129,7 @@ public class MedicalRepository {
 				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
-					String description = null;
+					String description = rs.getString("nutrient_details");
 
 					return new NutrientDTO(nutrientId, nutrientName, description);
 				}
@@ -143,7 +143,7 @@ public class MedicalRepository {
 	public List<NutrientDTO> recommendMainNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
-    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
+    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
     	FROM nutrient AS n 
     	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'MAIN'
     	WHERE nmd.cognitive_domain = ?
@@ -196,7 +196,7 @@ public class MedicalRepository {
 				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
-					String description = null;
+					String description = rs.getString("nutrient_details");
 
 					return new NutrientDTO(nutrientId, nutrientName, description);
 				}
@@ -211,7 +211,7 @@ public class MedicalRepository {
 	public List<NutrientDTO> recommendSubNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
-    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name 
+    	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
     	FROM nutrient AS n 
     	INNER JOIN nutrient_domain AS nmd ON n.id = nmd.nutrient_id AND nmd.domain_type = 'SUB'
     	WHERE nmd.cognitive_domain = ?
@@ -264,7 +264,7 @@ public class MedicalRepository {
 				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
-					String description = null;
+					String description = rs.getString("nutrient_details");
 
 					return new NutrientDTO(nutrientId, nutrientName, description);
 				}
