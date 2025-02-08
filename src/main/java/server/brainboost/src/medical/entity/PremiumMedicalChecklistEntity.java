@@ -72,5 +72,25 @@ public class PremiumMedicalChecklistEntity extends BaseEntity {
 		this.totalScore = premiumMedicalChecklistDTO.getTotalScore();
 	}
 
+	public void updatePremiumChecklistEntity(PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+		this.number1 = premiumMedicalChecklistDTO.getNumber1();
+		this.number2 = premiumMedicalChecklistDTO.getNumber2();
+		this.number3 = premiumMedicalChecklistDTO.getNumber3();
+		this.number4 = premiumMedicalChecklistDTO.getNumber4();
+		this.number5 = premiumMedicalChecklistDTO.getNumber5();
+		this.number6 = premiumMedicalChecklistDTO.getNumber6();
+		this.number7 = premiumMedicalChecklistDTO.getNumber7();
+		this.number8 = premiumMedicalChecklistDTO.getNumber8();
+		this.number9 = premiumMedicalChecklistDTO.getNumber9();
+		this.number10 = premiumMedicalChecklistDTO.getNumber10();
+		this.number11 = premiumMedicalChecklistDTO.getNumber11();
+		this.number12 = premiumMedicalChecklistDTO.getNumber12();
+		this.number13 = premiumMedicalChecklistDTO.getNumber13();
+
+		this.localTime = premiumMedicalChecklistDTO.getLocalTime();
+
+		this.totalScore = premiumMedicalChecklistDTO.getTotalScore();
+	}
+
 
 }

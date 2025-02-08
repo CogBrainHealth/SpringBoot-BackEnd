@@ -108,6 +108,34 @@ public class MedicalController {
 
     }
 
+    @PostMapping("/api/medical/premium/checklist")
+    @Operation(summary = "프리미엄 건강 체크 리스트 수정 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 수정 ", responses = {
+        @ApiResponse(responseCode = "200", description = "성공"),
+        @ApiResponse(responseCode = "400", description = "파라미터 오류"),
+        @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+        @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+        @ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
+        @ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
+    })
+    public ResponseEntity<BaseResponse<String>> updatePremiumMedicalCheckList(@Valid @RequestBody
+    PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+
+        try{
+            Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+
+            medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistDTO);
+            return ResponseEntity.ok(new BaseResponse<>("프리미엄 건강 체크 리스트가 작성됐습니다"));
+
+        }catch (BaseException e){
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
+
+        }
+
+
+    }
+
 
     @GetMapping("/api/medical/checklist")
     @Operation(summary = "기본 건강 체크 리스트 조회 api", description = "체크 리스트 조회", responses = {

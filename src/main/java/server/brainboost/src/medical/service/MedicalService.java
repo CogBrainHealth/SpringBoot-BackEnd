@@ -615,4 +615,25 @@ public class MedicalService {
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
 
     }
+
+    public void updatePremiumMedicalCheckList(Long userId, PremiumMedicalChecklistDTO premiumMedicalChecklistDTO) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        if(user.getIsPremium().equals(Boolean.FALSE)){
+            throw new BaseException(BaseResponseStatus.USER_NO_PREMIUM);
+        }
+
+        PremiumMedicalChecklistEntity premiumMedicalChecklist =
+           premiumMedicalChecklistRepository.findPremiumMedicalChecklistEntityByUser(user)
+               .orElse(null);
+
+        if(premiumMedicalChecklist == null){
+            throw new BaseException(BaseResponseStatus.PREMIUM_MEDICAL_CHECKLIST_NO_EXIST);
+        }
+
+        premiumMedicalChecklist.updatePremiumChecklistEntity(premiumMedicalChecklistDTO);
+        premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
+    }
 }
