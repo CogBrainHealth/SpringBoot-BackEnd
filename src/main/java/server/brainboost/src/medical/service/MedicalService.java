@@ -24,9 +24,11 @@ import server.brainboost.src.medical.dto.NutrientDetails;
 import server.brainboost.src.medical.dto.NutrientMainDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSubDomainDTO;
 import server.brainboost.src.medical.dto.NutrientSuggestionDto;
+import server.brainboost.src.medical.dto.PremiumMedicalChecklistDTO;
 import server.brainboost.src.medical.dto.ReproductiveHealthDTO;
 import server.brainboost.src.medical.entity.MedicalChecklistEntity;
 import server.brainboost.src.medical.entity.NutrientEntity;
+import server.brainboost.src.medical.entity.PremiumMedicalChecklistEntity;
 import server.brainboost.src.medical.entity.UserAllergyEntity;
 import server.brainboost.src.medical.entity.UserConditionEntity;
 import server.brainboost.src.medical.entity.UserDiscomfortEntity;
@@ -35,6 +37,7 @@ import server.brainboost.src.medical.entity.UserPregnancyEntity;
 import server.brainboost.src.medical.repository.MedicalChecklistRepository;
 import server.brainboost.src.medical.repository.MedicalRepository;
 import server.brainboost.src.medical.repository.NutrientRepository;
+import server.brainboost.src.medical.repository.PremiumMedicalChecklistRepository;
 import server.brainboost.src.medical.repository.UserAllergyRepository;
 import server.brainboost.src.medical.repository.UserConditionRepository;
 import server.brainboost.src.medical.repository.UserDiscomfortRepository;
@@ -56,6 +59,7 @@ public class MedicalService {
     private final UserPregnancyRepository userPregnancyRepository;
     private final MedicalRepository medicalRepository;
     private final NutrientRepository nutrientRepository;
+    private final PremiumMedicalChecklistRepository premiumMedicalChecklistRepository;
 
 
     @Transactional
@@ -589,6 +593,26 @@ public class MedicalService {
 
         nutrient.setDetailsFromObject(details);
         nutrientRepository.save(nutrient);
+
+    }
+
+	public void createPremiumMedicalCheckList(Long userId, PremiumMedicalChecklistDTO premiumMedicalChecklistDTO) throws BaseException{
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        if(user.getIsPremium().equals(Boolean.FALSE)){
+            throw new BaseException(BaseResponseStatus.USER_NO_PREMIUM);
+        }
+
+        Boolean isExistUser = premiumMedicalChecklistRepository.existsByUser(user);
+
+        if(isExistUser.equals(Boolean.TRUE)){
+            throw new BaseException(BaseResponseStatus.PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST);
+        }
+
+        PremiumMedicalChecklistEntity premiumMedicalChecklist = new PremiumMedicalChecklistEntity(premiumMedicalChecklistDTO, user);
+        premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
 
     }
 }

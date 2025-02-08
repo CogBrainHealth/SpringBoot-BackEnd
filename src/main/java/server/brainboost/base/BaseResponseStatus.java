@@ -20,6 +20,7 @@ public enum BaseResponseStatus {
     UNEXPECTED_GENDER(false, 2500, "성별이 올바르지 않습니다"),
     REQUIRED_LOGIN(false, 2100, "로그인이 필요한 서비스 입니다"),
     USER_NO_EXIST(false, 2200, "존재하지 않는 유저입니다"),
+    USER_NO_PREMIUM(false, 2210, "프리미엄 유저가 아닙니다"),
 
     //game 오류 -> 3000번
     GAME_NO_EXIST(false, 3000, "game is not exist"),
@@ -30,6 +31,8 @@ public enum BaseResponseStatus {
     //medical 오류 -> 4000번
     MEDICAL_CHECKLIST_NO_EXIST(false, 4000, "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     MEDICAL_CHECKLIST_ALREADY_EXIST(false, 4001, "기본 건강 정보를 이미 작성하셨습니다"),
+    PREMIUM_MEDICAL_CHECKLIST_NO_EXIST(false, 4010, "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
+    PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST(false, 4011, "프리미엄 건강 정보를 이미 작성하셨습니다"),
 
 
     //global 오류 -> 5000번
