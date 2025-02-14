@@ -108,7 +108,7 @@ public class MedicalController {
 
     }
 
-    @PostMapping("/api/medical/premium/checklist")
+    @PatchMapping("/api/medical/premium/checklist")
     @Operation(summary = "프리미엄 건강 체크 리스트 수정 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 수정 ", responses = {
         @ApiResponse(responseCode = "200", description = "성공"),
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
