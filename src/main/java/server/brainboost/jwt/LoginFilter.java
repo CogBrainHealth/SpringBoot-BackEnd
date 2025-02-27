@@ -67,8 +67,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             return null;
         }
 
+        if(loginDTO.getPassword() == null || loginDTO.getPassword().isBlank()){
+            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
+                BaseResponseStatus.NO_VALID_LOGINDTO));
+
+            return null;
+        }
+
         String username = loginDTO.getUsername();
-        String password = "1234";
+        //String password = "1234";
+        String password = loginDTO.getPassword();
 
         System.out.println(username + " " + password);
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함

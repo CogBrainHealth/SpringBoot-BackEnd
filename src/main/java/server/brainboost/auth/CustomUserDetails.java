@@ -29,6 +29,11 @@ public class CustomUserDetails implements UserDetails {
         this.userId = userId;
     }
 
+    // 임시 로그인
+    public CustomUserDetails(UserEntity userEntity){
+        this.userEntity = userEntity;
+        this.userId = userEntity.getUserId();
+    }
 
     public Long getUserId(){
         return userId;
