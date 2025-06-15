@@ -21,6 +21,7 @@ public enum BaseResponseStatus {
     REQUIRED_LOGIN(false, 2100, "로그인이 필요한 서비스 입니다"),
     USER_NO_EXIST(false, 2200, "존재하지 않는 유저입니다"),
     USER_NO_PREMIUM(false, 2210, "프리미엄 유저가 아닙니다"),
+    USER_ALREADY_EXIST(false, 2250, "해당 유저가 이미 존재합니다"),
 
     //game 오류 -> 3000번
     GAME_NO_EXIST(false, 3000, "game is not exist"),

@@ -4,17 +4,14 @@ import java.util.Date;
 
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import server.brainboost.base.BaseException;
-import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.jwt.JWTUtil;
 import server.brainboost.src.user.dto.RefreshTokenRequestDTO;
-import server.brainboost.src.user.dto.SignUpDTO;
+import server.brainboost.src.user.dto.JoinDTO;
 import server.brainboost.src.user.dto.TokenResponseDTO;
 import server.brainboost.src.user.entity.RefreshEntity;
 import server.brainboost.src.user.entity.UserEntity;
@@ -29,10 +26,10 @@ public class AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-    public void signUp(SignUpDTO signUpDTO) {
+    public void signUp(JoinDTO joinDTO) {
 
-        String username = signUpDTO.getUsername();
-        String password = signUpDTO.getPassword();
+        String username = joinDTO.getUsername();
+        String password = joinDTO.getPassword();
 
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 

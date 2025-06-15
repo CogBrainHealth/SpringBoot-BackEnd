@@ -17,4 +17,6 @@ public interface UserRepository extends JpaRepository<UserEntity, Long> {
 
     @Query("select u from UserEntity as u LEFT join FETCH u.medicalChecklist where u.userId =:userId")
     Optional<UserEntity> findUserEntityLeftJoinMedicalChecklistByUserId(@Param("userId")Long userId);
+
+    boolean existsAllByUsername(String username);
 }

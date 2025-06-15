@@ -13,7 +13,8 @@ import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.dto.BasicInfoDTO;
 import server.brainboost.src.user.dto.ProfileDTO;
-import server.brainboost.src.user.dto.SignUpDTO;
+import server.brainboost.src.user.dto.JoinDTO;
+import server.brainboost.src.user.dto.UserIdResponseDTO;
 import server.brainboost.src.user.service.UserService;
 import server.brainboost.utils.SecurityUtil;
 
@@ -22,6 +23,22 @@ import server.brainboost.utils.SecurityUtil;
 public class UserController {
 
     private final UserService userService;
+
+    @PostMapping("/api/join")
+    @Operation(summary = "회원가입 api", description = "계정 생성", responses = {
+            @ApiResponse(responseCode = "200", description = "성공"),
+            @ApiResponse(responseCode = "400", description = "파라미터 오류")
+    })
+    public ResponseEntity<BaseResponse<UserIdResponseDTO>> join(@Valid @RequestBody JoinDTO joinDTO) {
+
+        try{
+            return ResponseEntity.ok(new BaseResponse<>(userService.join(joinDTO)));
+        }catch (BaseException e){
+            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
+            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
+        }
+    }
+
 
     @PatchMapping("/api/user/profile")
     @Operation(summary = "기본 정보 작성/수정 api", description = "신규 유저의 경우, 기본 정보를 작성하거나 내 설정에서 기본 정보를 수정하는 api ", responses = {
