@@ -22,7 +22,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        /*UserEntity userEntity = userRepository.findUserEntityByUsername(username)
+        UserEntity userEntity = userRepository.findUserEntityByUsername(username)
                 .orElse(null);
 
         Boolean isNewUser;
@@ -38,15 +38,8 @@ public class CustomUserDetailsService implements UserDetailsService {
             isNewUser = Boolean.FALSE;
         }
 
-        return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());*/
+        return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());
 
-
-        // 임시 로그인
-        UserEntity user = userRepository.findUserEntityByUsername(username)
-            .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        System.out.println("현재 userId는 " + user.getUserId());
-        return new CustomUserDetails(user, Boolean.FALSE, user.getIsPremium());
 
     }
 }
