@@ -23,20 +23,9 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
         UserEntity userEntity = userRepository.findUserEntityByUsername(username)
-                .orElse(null);
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        Boolean isNewUser;
-
-        //신규 유저
-        if(userEntity == null){
-            userEntity = new UserEntity(username);
-            userEntity.setPassword(bCryptPasswordEncoder.encode("1234"));
-            userEntity.setIsPremium(Boolean.FALSE);
-            userRepository.save(userEntity);
-            isNewUser = Boolean.TRUE;
-        }else{
-            isNewUser = Boolean.FALSE;
-        }
+        Boolean isNewUser = Boolean.FALSE;
 
         return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());
 
