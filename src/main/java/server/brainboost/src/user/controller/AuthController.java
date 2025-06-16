@@ -2,27 +2,20 @@ package server.brainboost.src.user.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
-import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.jwt.JWTUtil;
 import server.brainboost.src.user.dto.RefreshTokenRequestDTO;
-import server.brainboost.src.user.dto.SignUpDTO;
 import server.brainboost.src.user.dto.TokenResponseDTO;
 import server.brainboost.src.user.service.AuthService;
-import server.brainboost.utils.ResponseUtil;
 
 @RestController
 @RequiredArgsConstructor

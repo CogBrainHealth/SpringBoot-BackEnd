@@ -5,12 +5,11 @@ import lombok.*;
 
 @Getter
 @Setter
-@Schema(description = "회원가입 요청 DTO")
+@Schema(description = "us DTO")
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class SignUpDTO {
+public class UserIdResponseDTO {
 
-    private String username;
-    private String password;
+    Long userId;
 }

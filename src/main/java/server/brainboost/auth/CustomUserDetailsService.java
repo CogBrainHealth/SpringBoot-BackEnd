@@ -22,31 +22,13 @@ public class CustomUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
-        /*UserEntity userEntity = userRepository.findUserEntityByUsername(username)
-                .orElse(null);
+        UserEntity userEntity = userRepository.findUserEntityByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException(username));
 
-        Boolean isNewUser;
+        Boolean isNewUser = Boolean.FALSE;
 
-        //신규 유저
-        if(userEntity == null){
-            userEntity = new UserEntity(username);
-            userEntity.setPassword(bCryptPasswordEncoder.encode("1234"));
-            userEntity.setIsPremium(Boolean.FALSE);
-            userRepository.save(userEntity);
-            isNewUser = Boolean.TRUE;
-        }else{
-            isNewUser = Boolean.FALSE;
-        }
+        return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());
 
-        return new CustomUserDetails(userEntity, isNewUser, userEntity.getIsPremium());*/
-
-
-        // 임시 로그인
-        UserEntity user = userRepository.findUserEntityByUsername(username)
-            .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        System.out.println("현재 userId는 " + user.getUserId());
-        return new CustomUserDetails(user, Boolean.FALSE, user.getIsPremium());
 
     }
 }
