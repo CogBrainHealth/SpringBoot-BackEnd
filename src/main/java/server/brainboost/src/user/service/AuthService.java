@@ -26,10 +26,10 @@ public class AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-    public void signUp(UserRequestDTO.JoinDTO joinDTO) {
+    public void signUp(UserRequestDTO.JoinRequestDTO joinRequestDTO) {
 
-        String username = joinDTO.getUsername();
-        String password = joinDTO.getPassword();
+        String username = joinRequestDTO.getUsername();
+        String password = joinRequestDTO.getPassword();
 
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 

@@ -76,11 +76,11 @@ public class UserEntity extends BaseEntity {
         this.role = "ROLE_USER";
     }
 
-    public UserEntity(UserRequestDTO.JoinDTO joinDTO){
-        this.username = joinDTO.getUsername();
-        this.nickname = joinDTO.getNickname();
-        this.gender = joinDTO.getGender();
-        this.birthDate = joinDTO.getBirthDate();
+    public UserEntity(UserRequestDTO.JoinRequestDTO joinRequestDTO){
+        this.username = joinRequestDTO.getUsername();
+        this.nickname = joinRequestDTO.getNickname();
+        this.gender = joinRequestDTO.getGender();
+        this.birthDate = joinRequestDTO.getBirthDate();
         this.role = "ROLE_USER";
     }
 

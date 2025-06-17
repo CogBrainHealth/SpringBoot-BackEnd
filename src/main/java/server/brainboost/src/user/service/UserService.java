@@ -28,36 +28,56 @@ public class UserService {
         return profileDTO;
     }
 
-    public void setBasicInfo(Long userId, BasicInfoDTO basicInfoDTO){
 
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        user.setNickname(basicInfoDTO.getNickname());
-        user.setGender(basicInfoDTO.getGender());
-        user.setBirthDate(basicInfoDTO.getBirthDate());
-
-        userRepository.save(user);
-    }
-
-    public UserResponseDTO.UserIdResponseDTO join(@Valid UserRequestDTO.JoinDTO joinDTO) throws BaseException {
+    public UserResponseDTO.UserIdResponseDTO join(@Valid UserRequestDTO.JoinRequestDTO joinRequestDTO) throws BaseException {
 
         //TODO 에러 handler 및 로직 수정하기
-        if(!(joinDTO.getGender().equals('W') || joinDTO.getGender().equals('M'))){
+        if(!(joinRequestDTO.getGender().equals('W') || joinRequestDTO.getGender().equals('M'))){
             throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
         }
 
-       if(userRepository.existsAllByUsername(joinDTO.getUsername())) {
+       if(userRepository.existsAllByUsername(joinRequestDTO.getUsername())) {
            throw new BaseException(BaseResponseStatus.USER_ALREADY_EXIST);
        }
 
         UserEntity userEntity;
 
-        userEntity = new UserEntity(joinDTO);
-        userEntity.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
+        userEntity = new UserEntity(joinRequestDTO);
+        userEntity.setPassword(bCryptPasswordEncoder.encode(joinRequestDTO.getPassword()));
         userEntity.setIsPremium(Boolean.FALSE);
         userRepository.save(userEntity);
 
         return new UserResponseDTO.UserIdResponseDTO(userEntity.getUserId());
+    }
+
+    public void setNickName(Long userId, UserRequestDTO.@Valid NicknameRequestDTO nicknameRequestDTO) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        user.setNickname(nicknameRequestDTO.getNickname());
+
+        userRepository.save(user);
+
+    }
+
+    public void setGender(Long userId, UserRequestDTO.@Valid GenderRequestDTO genderRequestDTO) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        user.setGender(genderRequestDTO.getGender());
+
+        userRepository.save(user);
+    }
+
+    public void setBirthDate(Long userId, UserRequestDTO.@Valid BirthDateRequestDTO birthDateRequestDTO) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
+
+        user.setBirthDate(birthDateRequestDTO.getBirthDate());
+
+        userRepository.save(user);
     }
 }
