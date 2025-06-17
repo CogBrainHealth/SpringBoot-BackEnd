@@ -12,7 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
-import server.brainboost.src.error.dto.FrontendErrorDTO;
+import server.brainboost.src.error.dto.ErrorRequestDTO;
 import server.brainboost.src.error.service.ErrorService;
 
 @RestController
@@ -21,12 +21,12 @@ public class ErrorController {
 
 	private final ErrorService errorService;
 
-	@PostMapping("/frontend/error/log")
+	@PostMapping("/api/error/log")
 	@Operation(summary = "서버로 프론트엔드 에러 로그를 보내는 api", description = "에러 제목, 에러 메세지가 필수로 들어가야합니다 ", responses = {
 		@ApiResponse(responseCode = "200", description = "성공"),
 		@ApiResponse(responseCode = "400", description = "파라미터 오류"),
 	})
-	public ResponseEntity<BaseResponse<String>> sendErrorMessageToServer(@Valid @RequestBody FrontendErrorDTO frontendErrorDTO){
+	public ResponseEntity<BaseResponse<String>> sendErrorMessageToServer(@Valid @RequestBody ErrorRequestDTO.FrontendErrorDTO frontendErrorDTO){
 
 		try{
 			errorService.sendErrorMessageToServer(frontendErrorDTO);

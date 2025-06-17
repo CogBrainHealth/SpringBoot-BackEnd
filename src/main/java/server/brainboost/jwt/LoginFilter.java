@@ -14,9 +14,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.user.dto.IsNewUserDTO;
-import server.brainboost.src.user.dto.LoginDTO;
-import server.brainboost.src.user.dto.LoginResponseDTO;
+import server.brainboost.src.user.dto.UserRequestDTO;
+import server.brainboost.src.user.dto.UserResponseDTO;
 import server.brainboost.src.user.entity.RefreshEntity;
 import server.brainboost.src.user.repository.RefreshRepository;
 import server.brainboost.utils.ResponseUtil;
@@ -42,10 +41,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         //ObjectMapper 이용 시, json 형식으로 로그인 요청을 받을 수 있다.(username, password)
         ObjectMapper om = new ObjectMapper();
-        LoginDTO loginDTO = null;
+        UserRequestDTO.LoginRequestDTO loginRequestDTO = null;
 
         try {
-            loginDTO = om.readValue(request.getInputStream(), LoginDTO.class);
+            loginRequestDTO = om.readValue(request.getInputStream(), UserRequestDTO.LoginRequestDTO.class);
         } catch (IOException e) {
             //throw new RuntimeException(e);
 
@@ -53,29 +52,29 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
             return null;
         }
 
-        if(loginDTO == null){
+        if(loginRequestDTO == null){
             ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
                 BaseResponseStatus.NO_VALID_LOGINDTO));
 
             return null;
         }
 
-        if(loginDTO.getUsername() == null || loginDTO.getUsername().isBlank()){
+        if(loginRequestDTO.getUsername() == null || loginRequestDTO.getUsername().isBlank()){
             ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
                 BaseResponseStatus.NO_VALID_LOGINDTO));
 
             return null;
         }
 
-        if(loginDTO.getPassword() == null || loginDTO.getPassword().isBlank()){
+        if(loginRequestDTO.getPassword() == null || loginRequestDTO.getPassword().isBlank()){
             ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
                 BaseResponseStatus.NO_VALID_LOGINDTO));
 
             return null;
         }
 
-        String username = loginDTO.getUsername();
-        String password = loginDTO.getPassword();
+        String username = loginRequestDTO.getUsername();
+        String password = loginRequestDTO.getPassword();
 
         System.out.println(username + " " + password);
         //스프링 시큐리티에서 username과 password를 검증하기 위해서는 token에 담아야 함
@@ -116,7 +115,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
 
         // 응답 상태 코드 및 본문 설정
-        ResponseUtil.handleResponse(response, new LoginResponseDTO(customUserDetails.getIsNewUser(), customUserDetails.getIsPremium(), accessToken, refreshToken));
+        ResponseUtil.handleResponse(response, new UserResponseDTO.LoginResponseDTO(customUserDetails.getIsNewUser(), customUserDetails.getIsPremium(), accessToken, refreshToken));
     }
 
     //로그인 실패시 실행하는 메소드

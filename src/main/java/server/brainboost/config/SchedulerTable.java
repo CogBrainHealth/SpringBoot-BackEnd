@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.game.dto.GameInterface;
+import server.brainboost.src.game.dto.inter.GameInterface;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.entity.TodayGameEntity;

@@ -7,10 +7,7 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
-import server.brainboost.src.user.dto.BasicInfoDTO;
-import server.brainboost.src.user.dto.JoinDTO;
-import server.brainboost.src.user.dto.ProfileDTO;
-import server.brainboost.src.user.dto.UserIdResponseDTO;
+import server.brainboost.src.user.dto.*;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
 
@@ -21,12 +18,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public ProfileDTO getProfile(Long userId) {
+    public UserResponseDTO.ProfileDTO getProfile(Long userId) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
 
-        ProfileDTO profileDTO = new ProfileDTO(userId, user.getNickname(), user.getGender(), user.getBirthDate(), user.getProfileImgUrl(), user.getRole());
+        UserResponseDTO.ProfileDTO profileDTO = new UserResponseDTO.ProfileDTO(userId, user.getNickname(), user.getGender(), user.getBirthDate(), user.getProfileImgUrl(), user.getRole());
 
         return profileDTO;
     }
@@ -43,7 +40,7 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public UserIdResponseDTO join(@Valid JoinDTO joinDTO) throws BaseException {
+    public UserResponseDTO.UserIdResponseDTO join(@Valid UserRequestDTO.JoinDTO joinDTO) throws BaseException {
 
         //TODO 에러 handler 및 로직 수정하기
         if(!(joinDTO.getGender().equals('W') || joinDTO.getGender().equals('M'))){
@@ -61,6 +58,6 @@ public class UserService {
         userEntity.setIsPremium(Boolean.FALSE);
         userRepository.save(userEntity);
 
-        return new UserIdResponseDTO(userEntity.getUserId());
+        return new UserResponseDTO.UserIdResponseDTO(userEntity.getUserId());
     }
 }

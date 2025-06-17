@@ -11,10 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.user.dto.BasicInfoDTO;
-import server.brainboost.src.user.dto.ProfileDTO;
-import server.brainboost.src.user.dto.JoinDTO;
-import server.brainboost.src.user.dto.UserIdResponseDTO;
+import server.brainboost.src.user.dto.*;
 import server.brainboost.src.user.service.UserService;
 import server.brainboost.utils.SecurityUtil;
 
@@ -29,7 +26,7 @@ public class UserController {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류")
     })
-    public ResponseEntity<BaseResponse<UserIdResponseDTO>> join(@Valid @RequestBody JoinDTO joinDTO) {
+    public ResponseEntity<BaseResponse<UserResponseDTO.UserIdResponseDTO>> join(@Valid @RequestBody UserRequestDTO.JoinDTO joinDTO) {
 
         try{
             return ResponseEntity.ok(new BaseResponse<>(userService.join(joinDTO)));
@@ -70,7 +67,7 @@ public class UserController {
             @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
             @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<ProfileDTO>> getProfile(){
+    public ResponseEntity<BaseResponse<UserResponseDTO.ProfileDTO>> getProfile(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()

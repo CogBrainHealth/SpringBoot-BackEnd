@@ -1,4 +1,4 @@
-package server.brainboost.src.game.dto;
+package server.brainboost.src.game.dto.inter;
 
 public interface GameInterface {
 

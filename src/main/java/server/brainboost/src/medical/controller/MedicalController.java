@@ -9,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -17,10 +16,7 @@ import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.src.medical.dto.MedicalChecklistDTO;
-import server.brainboost.src.medical.dto.NutrientDetails;
-import server.brainboost.src.medical.dto.NutrientSuggestionDto;
-import server.brainboost.src.medical.dto.PremiumMedicalChecklistDTO;
+import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.service.MedicalService;
 import server.brainboost.utils.SecurityUtil;
 
@@ -39,7 +35,7 @@ public class MedicalController {
             @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
             @ApiResponse(responseCode = "500", description = "기본 건강 정보를 이미 작성하셨습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> createMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
+    public ResponseEntity<BaseResponse<String>> createMedicalCheckList(@Valid @RequestBody MedicalRequestDTO.MedicalChecklistDTO medicalCheckListDTO){
 
        try{
            Long userId = SecurityUtil.getCurrentUserId()
@@ -64,7 +60,7 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
         @ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> updateMedicalCheckList(@Valid @RequestBody MedicalChecklistDTO medicalCheckListDTO){
+    public ResponseEntity<BaseResponse<String>> updateMedicalCheckList(@Valid @RequestBody MedicalRequestDTO.MedicalChecklistDTO medicalCheckListDTO){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
@@ -90,7 +86,7 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 이미 작성하셨습니다"),
     })
     public ResponseEntity<BaseResponse<String>> createPremiumMedicalCheckList(@Valid @RequestBody
-        PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+                                                                              MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
@@ -118,7 +114,7 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
     })
     public ResponseEntity<BaseResponse<String>> updatePremiumMedicalCheckList(@Valid @RequestBody
-    PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+                                                                              MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
@@ -146,13 +142,13 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
         @ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     })
-    public ResponseEntity<BaseResponse<MedicalChecklistDTO>> getMedicalCheckList(){
+    public ResponseEntity<BaseResponse<MedicalRequestDTO.MedicalChecklistDTO>> getMedicalCheckList(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            MedicalChecklistDTO medicalChecklistDTO = medicalService.getMedicalCheckList(userId);
+            MedicalRequestDTO.MedicalChecklistDTO medicalChecklistDTO = medicalService.getMedicalCheckList(userId);
             return ResponseEntity.ok(new BaseResponse<>(medicalChecklistDTO));
 
         }catch (BaseException e){
@@ -174,13 +170,13 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendAttentionNutrients(){
+    public ResponseEntity<BaseResponse<MedicalResponseDTO.NutrientSuggestionDto>> recommendAttentionNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.ATTENTION);
+            MedicalResponseDTO.NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.ATTENTION);
             return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){
@@ -197,13 +193,13 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendSpatialPerceptionNutrients(){
+    public ResponseEntity<BaseResponse<MedicalResponseDTO.NutrientSuggestionDto>> recommendSpatialPerceptionNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.SPATIAL_PERCEPTION);
+            MedicalResponseDTO.NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.SPATIAL_PERCEPTION);
             return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){
@@ -220,13 +216,13 @@ public class MedicalController {
         @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
         @ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public ResponseEntity<BaseResponse<NutrientSuggestionDto>> recommendMemoryNutrients(){
+    public ResponseEntity<BaseResponse<MedicalResponseDTO.NutrientSuggestionDto>> recommendMemoryNutrients(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.MEMORY);
+            MedicalResponseDTO.NutrientSuggestionDto nutrientSuggestionDto = medicalService.recommendNutrients(userId, CognitiveDomain.MEMORY);
             return ResponseEntity.ok(new BaseResponse<>(nutrientSuggestionDto));
 
         }catch (BaseException e){

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.statistics.dto.MyGameStatisticsDTO;
+import server.brainboost.src.statistics.dto.StatisticResponse;
 import server.brainboost.src.statistics.service.StatisticsService;
 import server.brainboost.src.user.service.UserService;
 import server.brainboost.utils.SecurityUtil;
@@ -30,7 +30,7 @@ public class StatisticsController {
             @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
             @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<MyGameStatisticsDTO>> getMyGameStatistics(){
+    public ResponseEntity<BaseResponse<StatisticResponse.GameStatisticsDTO>> getMyGameStatistics(){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()

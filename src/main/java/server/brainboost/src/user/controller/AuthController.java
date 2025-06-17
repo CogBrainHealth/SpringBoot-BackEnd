@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
-import server.brainboost.src.user.dto.RefreshTokenRequestDTO;
-import server.brainboost.src.user.dto.TokenResponseDTO;
+import server.brainboost.src.user.dto.AuthRequestDTO;
+import server.brainboost.src.user.dto.AuthResponseDTO;
 import server.brainboost.src.user.service.AuthService;
 
 @RestController
@@ -31,10 +31,10 @@ public class AuthController {
         @ApiResponse(responseCode = "401", description = "refresh 토큰이 만료되었습니다"),
         @ApiResponse(responseCode = "401", description = "refresh 토큰이 올바르지 않습니다")
     })
-    public ResponseEntity<BaseResponse<TokenResponseDTO>> reissue(@Valid @RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+    public ResponseEntity<BaseResponse<AuthResponseDTO.TokenResponseDTO>> reissue(@Valid @RequestBody AuthRequestDTO.RefreshTokenRequestDTO refreshTokenRequestDTO){
 
         try{
-            TokenResponseDTO tokenResponseDTO = authService.reissue(refreshTokenRequestDTO);
+            AuthResponseDTO.TokenResponseDTO tokenResponseDTO = authService.reissue(refreshTokenRequestDTO);
             return ResponseEntity.ok(new BaseResponse<>(tokenResponseDTO));
         }catch (BaseException e) {
             HttpStatus httpStatus = HttpStatus.UNAUTHORIZED;
@@ -50,7 +50,7 @@ public class AuthController {
         @ApiResponse(responseCode = "401", description = "refresh 토큰이 만료되었습니다"),
         @ApiResponse(responseCode = "401", description = "refresh 토큰이 올바르지 않습니다")
     })
-    public ResponseEntity<BaseResponse<String>> logout(@Valid @RequestBody RefreshTokenRequestDTO refreshTokenRequestDTO){
+    public ResponseEntity<BaseResponse<String>> logout(@Valid @RequestBody AuthRequestDTO.RefreshTokenRequestDTO refreshTokenRequestDTO){
         try{
             authService.logout(refreshTokenRequestDTO);
             return ResponseEntity.ok(new BaseResponse<>("로그아웃에 성공했습니다"));

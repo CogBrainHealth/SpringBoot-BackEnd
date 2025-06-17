@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.src.medical.dto.PremiumMedicalChecklistDTO;
+import server.brainboost.src.medical.dto.MedicalRequestDTO;
 import server.brainboost.src.user.entity.UserEntity;
 
 @Entity
@@ -51,7 +51,7 @@ public class PremiumMedicalChecklistEntity extends BaseEntity {
 	@JoinColumn(name = "user_id") // 외래 키 설정
 	private UserEntity user;
 
-	public PremiumMedicalChecklistEntity(PremiumMedicalChecklistDTO premiumMedicalChecklistDTO, UserEntity user){
+	public PremiumMedicalChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO, UserEntity user){
 		this.number1 = premiumMedicalChecklistDTO.getNumber1();
 		this.number2 = premiumMedicalChecklistDTO.getNumber2();
 		this.number3 = premiumMedicalChecklistDTO.getNumber3();
@@ -72,7 +72,7 @@ public class PremiumMedicalChecklistEntity extends BaseEntity {
 		this.totalScore = premiumMedicalChecklistDTO.getTotalScore();
 	}
 
-	public void updatePremiumChecklistEntity(PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+	public void updatePremiumChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
 		this.number1 = premiumMedicalChecklistDTO.getNumber1();
 		this.number2 = premiumMedicalChecklistDTO.getNumber2();
 		this.number3 = premiumMedicalChecklistDTO.getNumber3();

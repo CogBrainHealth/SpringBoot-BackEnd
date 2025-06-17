@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.src.medical.dto.MedicalChecklistDTO;
+import server.brainboost.src.medical.dto.MedicalRequestDTO;
 import server.brainboost.src.user.entity.UserEntity;
 
 
@@ -107,7 +107,7 @@ public class MedicalChecklistEntity extends BaseEntity {
 
     //여성일 경우, 생성자
     @Builder
-    public MedicalChecklistEntity(MedicalChecklistDTO medicalChecklistDTO, UserEntity user) {
+    public MedicalChecklistEntity(MedicalRequestDTO.MedicalChecklistDTO medicalChecklistDTO, UserEntity user) {
         this.isPregnant = medicalChecklistDTO.getReproductiveHealthDTO().getIsPregnant();
         this.isBreastfeeding = medicalChecklistDTO.getReproductiveHealthDTO().getIsBreastfeeding();
         this.isPlanningChild = medicalChecklistDTO.getReproductiveHealthDTO().getIsPlanningChild();
@@ -178,7 +178,7 @@ public class MedicalChecklistEntity extends BaseEntity {
 
 
     //update
-    public void updateMedicalChecklist(MedicalChecklistDTO medicalChecklistDTO){
+    public void updateMedicalChecklist(MedicalRequestDTO.MedicalChecklistDTO medicalChecklistDTO){
         this.isPregnant = medicalChecklistDTO.getReproductiveHealthDTO().getIsPregnant();
         this.isBreastfeeding = medicalChecklistDTO.getReproductiveHealthDTO().getIsBreastfeeding();
         this.isPlanningChild = medicalChecklistDTO.getReproductiveHealthDTO().getIsPlanningChild();

@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.enums.Possibility;
-import server.brainboost.src.medical.dto.NutrientDTO;
+import server.brainboost.src.medical.dto.MedicalResponseDTO;
 
 @Repository
 public class MedicalRepository {
@@ -23,7 +23,7 @@ public class MedicalRepository {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	public List<NutrientDTO> recommendMainNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
+	public List<MedicalResponseDTO.NutrientDTO> recommendMainNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
@@ -64,15 +64,15 @@ public class MedicalRepository {
       	);
    			 """;
 
-		List<NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
-			new RowMapper<NutrientDTO>() {
+		List<MedicalResponseDTO.NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
+			new RowMapper<MedicalResponseDTO.NutrientDTO>() {
 				@Override
-				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public MedicalResponseDTO.NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
 					String description = rs.getString("nutrient_details");
 
-					return new NutrientDTO(nutrientId, nutrientName, description);
+					return new MedicalResponseDTO.NutrientDTO(nutrientId, nutrientName, description);
 				}
 			},
 			typeName.name(), userId, userId, userId, userId
@@ -82,7 +82,7 @@ public class MedicalRepository {
 	}
 
 
-	public List<NutrientDTO> recommendSubNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
+	public List<MedicalResponseDTO.NutrientDTO> recommendSubNutrientsForMan(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details  
@@ -123,15 +123,15 @@ public class MedicalRepository {
       	);
    			 """;
 
-		List<NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
-			new RowMapper<NutrientDTO>() {
+		List<MedicalResponseDTO.NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
+			new RowMapper<MedicalResponseDTO.NutrientDTO>() {
 				@Override
-				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public MedicalResponseDTO.NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
 					String description = rs.getString("nutrient_details");
 
-					return new NutrientDTO(nutrientId, nutrientName, description);
+					return new MedicalResponseDTO.NutrientDTO(nutrientId, nutrientName, description);
 				}
 			},
 			typeName.name(), userId, userId, userId, userId
@@ -140,7 +140,7 @@ public class MedicalRepository {
 		return nutrientDTOList;
 	}
 
-	public List<NutrientDTO> recommendMainNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
+	public List<MedicalResponseDTO.NutrientDTO> recommendMainNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
@@ -190,15 +190,15 @@ public class MedicalRepository {
       	);
    			 """;
 
-		List<NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
-			new RowMapper<NutrientDTO>() {
+		List<MedicalResponseDTO.NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
+			new RowMapper<MedicalResponseDTO.NutrientDTO>() {
 				@Override
-				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public MedicalResponseDTO.NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
 					String description = rs.getString("nutrient_details");
 
-					return new NutrientDTO(nutrientId, nutrientName, description);
+					return new MedicalResponseDTO.NutrientDTO(nutrientId, nutrientName, description);
 				}
 			},
 			typeName.name(), userId, userId, Possibility.AMBIGUOUS.name(), Possibility.IMPOSSIBLE.name(), userId, userId, userId
@@ -208,7 +208,7 @@ public class MedicalRepository {
 	}
 
 
-	public List<NutrientDTO> recommendSubNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
+	public List<MedicalResponseDTO.NutrientDTO> recommendSubNutrientsForWoman(Long userId, CognitiveDomain typeName) throws Exception{
 
 		String sql = """
     	SELECT n.id AS nutrient_id, n.nutrient_name AS nutrient_name, n.details AS nutrient_details 
@@ -258,15 +258,15 @@ public class MedicalRepository {
       	);
    			 """;
 
-		List<NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
-			new RowMapper<NutrientDTO>() {
+		List<MedicalResponseDTO.NutrientDTO> nutrientDTOList = jdbcTemplate.query(sql,
+			new RowMapper<MedicalResponseDTO.NutrientDTO>() {
 				@Override
-				public NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
+				public MedicalResponseDTO.NutrientDTO mapRow(ResultSet rs, int rowNum) throws SQLException {
 					Long nutrientId = rs.getLong("nutrient_id");
 					String nutrientName = rs.getString("nutrient_name");
 					String description = rs.getString("nutrient_details");
 
-					return new NutrientDTO(nutrientId, nutrientName, description);
+					return new MedicalResponseDTO.NutrientDTO(nutrientId, nutrientName, description);
 				}
 			},
 			typeName.name(), userId, userId, Possibility.AMBIGUOUS.name(), Possibility.IMPOSSIBLE.name(), userId, userId, userId

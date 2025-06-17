@@ -39,33 +39,33 @@ public class GameService {
     private final UserRecordRepository userRecordRepository;
     private final TodayGameRepository todayGameRepository;
 
-    public GamePageDTO getGamePage(Long userId) {
+    public GameResponseDTO.GameByCognitionDTO getGamePage(Long userId) {
 
-        GamePageDTO gamePageDTO = new GamePageDTO();
+        GameResponseDTO.GameByCognitionDTO gameByCognitionDTO = new GameResponseDTO.GameByCognitionDTO();
 
         List<GameEntity> gameEntityList = gameRepository.findGames(Status.ACTIVE);
 
         for(int i =0; i<gameEntityList.size() ; i++){
             GameEntity game = gameEntityList.get(i);
-            GameDetailsDTO gameDetailsDTO = new GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(),game.getVersion() ,game.getGameType().getCognitiveDomain());
+            GameResponseDTO.GameDetailsDTO gameDetailsDTO = new GameResponseDTO.GameDetailsDTO(game.getGameId(), game.getName(), game.getImgUrl(), game.getDescription(),game.getVersion() ,game.getGameType().getCognitiveDomain());
 
             CognitiveDomain cognitiveDomain = game.getGameType().getCognitiveDomain();
 
             //attention
             if(cognitiveDomain == CognitiveDomain.ATTENTION){
-                gamePageDTO.getAttentionGameList().add(gameDetailsDTO);
+                gameByCognitionDTO.getAttentionGameList().add(gameDetailsDTO);
             }
             //spatial_perception
             else if(cognitiveDomain == CognitiveDomain.SPATIAL_PERCEPTION){
-                gamePageDTO.getSpatialPerceptionGameList().add(gameDetailsDTO);
+                gameByCognitionDTO.getSpatialPerceptionGameList().add(gameDetailsDTO);
             }
             //memory
             else if(cognitiveDomain == CognitiveDomain.MEMORY){
-                gamePageDTO.getMemoryGameList().add(gameDetailsDTO);
+                gameByCognitionDTO.getMemoryGameList().add(gameDetailsDTO);
             }
         }
 
-        return gamePageDTO;
+        return gameByCognitionDTO;
 
     }
 
@@ -120,7 +120,7 @@ public class GameService {
     }
 
     @Transactional
-    public void saveMapNavigationResult(Long userId, MapNavigationResultDTO mapNavigationResultDTO) {
+    public void saveMapNavigationResult(Long userId, GameRequestDTO.MapNavigationResultDTO mapNavigationResultDTO) {
 
         String gameName = "지도보고 길찾기";
 
@@ -157,7 +157,7 @@ public class GameService {
     }
 
     @Transactional
-    public void saveScroopTestResult(Long userId, ScroopTestResultDTO scroopTestResultDTO) {
+    public void saveScroopTestResult(Long userId, GameRequestDTO.ScroopTestResultDTO scroopTestResultDTO) {
 
         String gameName = "scroop test";
 
@@ -195,7 +195,7 @@ public class GameService {
     }
 
 
-    public void saveMentalRotationResult(Long userId, MentalRotationDTO mentalRotationDTO) {
+    public void saveMentalRotationResult(Long userId, GameRequestDTO.MentalRotationDTO mentalRotationDTO) {
 
         String gameName = "mental rotation";
 
@@ -232,16 +232,16 @@ public class GameService {
 
     }
 
-    public TodayGameDTO getTodayGame() {
+    public GameResponseDTO.GameDetailsDTO getTodayGame() {
 
         TodayGameEntity todayGame = todayGameRepository.findByDateWithGameAndGameType(LocalDate.now())
             .orElse(null);
 
-        TodayGameDTO todayGameDTO;
+        GameResponseDTO.GameDetailsDTO gameDetailsDTO;
 
         if (todayGame != null) {
             // 오늘 게임 엔티티가 존재할 때 처리할 로직
-            todayGameDTO = new TodayGameDTO(
+            gameDetailsDTO = new GameResponseDTO.GameDetailsDTO(
                 todayGame.getGame().getGameId(),
                 todayGame.getGame().getName(),
                 todayGame.getGame().getImgUrl(),
@@ -252,7 +252,7 @@ public class GameService {
 
         } else {
             // 오늘 게임 엔티티가 존재하지 않을 때 처리할 로직
-            todayGameDTO = new TodayGameDTO(
+            gameDetailsDTO = new GameResponseDTO.GameDetailsDTO(
                 null,
                 null,
                 null,
@@ -263,7 +263,7 @@ public class GameService {
 
         }
 
-        return todayGameDTO;
+        return gameDetailsDTO;
 
 
     }
