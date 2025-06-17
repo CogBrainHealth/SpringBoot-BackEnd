@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.src.medical.entity.MedicalChecklistEntity;
+import server.brainboost.src.user.dto.JoinDTO;
 
 import java.time.LocalDate;
 
@@ -72,6 +73,14 @@ public class UserEntity extends BaseEntity {
         this.username = username;
         this.nickname = username;
         this.gender = 'W';
+        this.role = "ROLE_USER";
+    }
+
+    public UserEntity(JoinDTO joinDTO){
+        this.username = joinDTO.getUsername();
+        this.nickname = joinDTO.getNickname();
+        this.gender = joinDTO.getGender();
+        this.birthDate = joinDTO.getBirthDate();
         this.role = "ROLE_USER";
     }
 
