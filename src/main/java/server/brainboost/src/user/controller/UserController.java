@@ -37,7 +37,7 @@ public class UserController {
     }
 
 
-    @PatchMapping("/api/user/nickname")
+    @PatchMapping("/api/users/nickname")
     @Operation(summary = "닉네임 수정 api", description = "닉네임 정보를 수정하는 api ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
@@ -58,7 +58,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/api/user/gender")
+    @PatchMapping("/api/users/gender")
     @Operation(summary = "성별 수정 api", description = "성별 정보를 수정하는 api ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
@@ -79,7 +79,7 @@ public class UserController {
 
     }
 
-    @PatchMapping("/api/user/birthdate")
+    @PatchMapping("/api/users/birthdate")
     @Operation(summary = "생년월일 수정 api", description = "생년월일 정보를 수정하는 api ", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
@@ -103,7 +103,7 @@ public class UserController {
 
 
     //TODO: builder 패턴 도입 하기
-    @GetMapping("/api/user/profile")
+    @GetMapping("/api/users/profile")
     @Operation(summary = "내 정보 보기 api", description = "내 정보 조회", responses = {
             @ApiResponse(responseCode = "200", description = "성공"),
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),

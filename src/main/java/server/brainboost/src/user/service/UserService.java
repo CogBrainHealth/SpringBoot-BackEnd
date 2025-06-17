@@ -61,12 +61,12 @@ public class UserService {
 
     }
 
-    public void setGender(Long userId, UserRequestDTO.@Valid GenderRequestDTO genderRequestDTO) {
+    public void setGender(Long userId, UserRequestDTO.@Valid GenderRequestDTO genderRequestDTO) throws BaseException {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
 
-        user.setGender(genderRequestDTO.getGender());
+        user.updateGender(genderRequestDTO.getGender());
 
         userRepository.save(user);
     }
