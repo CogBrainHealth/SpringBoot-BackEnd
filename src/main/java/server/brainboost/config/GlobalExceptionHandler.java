@@ -1,5 +1,7 @@
 package server.brainboost.config;
 
+import org.springframework.core.Ordered;
+import org.springframework.core.annotation.Order;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -9,11 +11,13 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 
 @Slf4j
 @RestControllerAdvice
+//@Order(Ordered.HIGHEST_PRECEDENCE)
 public class GlobalExceptionHandler {
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)

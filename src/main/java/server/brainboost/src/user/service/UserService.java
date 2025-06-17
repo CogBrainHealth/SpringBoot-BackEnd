@@ -45,13 +45,18 @@ public class UserService {
 
     public UserIdResponseDTO join(@Valid JoinDTO joinDTO) throws BaseException {
 
+        //TODO 에러 handler 및 로직 수정하기
+        if(!(joinDTO.getGender().equals('W') || joinDTO.getGender().equals('M'))){
+            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
+        }
+
        if(userRepository.existsAllByUsername(joinDTO.getUsername())) {
            throw new BaseException(BaseResponseStatus.USER_ALREADY_EXIST);
        }
 
         UserEntity userEntity;
 
-        userEntity = new UserEntity(joinDTO.getUsername());
+        userEntity = new UserEntity(joinDTO);
         userEntity.setPassword(bCryptPasswordEncoder.encode(joinDTO.getPassword()));
         userEntity.setIsPremium(Boolean.FALSE);
         userRepository.save(userEntity);
