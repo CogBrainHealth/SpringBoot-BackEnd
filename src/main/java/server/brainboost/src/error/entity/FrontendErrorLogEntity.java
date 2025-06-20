@@ -11,7 +11,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.src.error.dto.FrontendErrorDTO;
+import server.brainboost.src.error.dto.ErrorRequestDTO;
 
 @Entity
 @Getter
@@ -32,7 +32,7 @@ public class FrontendErrorLogEntity extends BaseEntity {
 	private String errorMessage;
 
 
-	public FrontendErrorLogEntity(FrontendErrorDTO frontendErrorDTO){
+	public FrontendErrorLogEntity(ErrorRequestDTO.FrontendErrorDTO frontendErrorDTO){
 		this.errorName = frontendErrorDTO.getErrorName();
 		this.errorMessage = frontendErrorDTO.getErrorMessage();
 	}

@@ -17,7 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.enums.NutrientName;
-import server.brainboost.src.medical.dto.NutrientDetails;
+import server.brainboost.src.medical.dto.test.NutrientDetails;
 
 @Entity
 @Getter

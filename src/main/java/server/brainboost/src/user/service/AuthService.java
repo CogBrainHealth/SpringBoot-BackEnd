@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.jwt.JWTUtil;
-import server.brainboost.src.user.dto.RefreshTokenRequestDTO;
-import server.brainboost.src.user.dto.JoinDTO;
-import server.brainboost.src.user.dto.TokenResponseDTO;
+import server.brainboost.src.user.dto.AuthRequestDTO;
+import server.brainboost.src.user.dto.AuthResponseDTO;
+import server.brainboost.src.user.dto.UserRequestDTO;
 import server.brainboost.src.user.entity.RefreshEntity;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.RefreshRepository;
@@ -26,10 +26,10 @@ public class AuthService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JWTUtil jwtUtil;
     private final RefreshRepository refreshRepository;
-    public void signUp(JoinDTO joinDTO) {
+    public void signUp(UserRequestDTO.JoinRequestDTO joinRequestDTO) {
 
-        String username = joinDTO.getUsername();
-        String password = joinDTO.getPassword();
+        String username = joinRequestDTO.getUsername();
+        String password = joinRequestDTO.getPassword();
 
         String encodedPassword = bCryptPasswordEncoder.encode(password);
 
@@ -38,7 +38,7 @@ public class AuthService {
         userRepository.save(newUser);
     }
 
-    public TokenResponseDTO reissue(RefreshTokenRequestDTO refreshTokenRequestDTO) {
+    public AuthResponseDTO.TokenResponseDTO reissue(AuthRequestDTO.RefreshTokenRequestDTO refreshTokenRequestDTO) {
 
         // get refresh token
         String refresh = refreshTokenRequestDTO.getRefreshToken();
@@ -79,7 +79,7 @@ public class AuthService {
         refreshRepository.deleteByRefresh(refresh);
         addRefreshEntity(username, newRefresh, 30*24*60*60*1000L);
 
-        return new TokenResponseDTO(newAccess, newRefresh);
+        return new AuthResponseDTO.TokenResponseDTO(newAccess, newRefresh);
 
 
     }
@@ -96,7 +96,7 @@ public class AuthService {
         refreshRepository.save(refreshEntity);
     }
 
-    public void logout(RefreshTokenRequestDTO refreshTokenRequestDTO) {
+    public void logout(AuthRequestDTO.RefreshTokenRequestDTO refreshTokenRequestDTO) {
 
         // get refresh token
         String refresh = refreshTokenRequestDTO.getRefreshToken();

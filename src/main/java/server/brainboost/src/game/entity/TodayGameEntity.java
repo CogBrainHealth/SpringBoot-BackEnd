@@ -5,11 +5,8 @@ import java.time.LocalDate;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.src.game.dto.GameInterface;
-import server.brainboost.src.game.entity.GameTypeEntity;
 
 @Entity
 @Getter

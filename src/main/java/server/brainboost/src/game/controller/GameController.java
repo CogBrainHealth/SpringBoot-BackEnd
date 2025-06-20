@@ -14,11 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.base.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.game.dto.GamePageDTO;
-import server.brainboost.src.game.dto.MapNavigationResultDTO;
-import server.brainboost.src.game.dto.MentalRotationDTO;
-import server.brainboost.src.game.dto.ScroopTestResultDTO;
-import server.brainboost.src.game.dto.TodayGameDTO;
+import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.service.GameService;
 import server.brainboost.utils.SecurityUtil;
 
@@ -36,7 +32,7 @@ public class GameController {
             @ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다")
     })
-    public ResponseEntity<BaseResponse<GamePageDTO>> getGamePage(){
+    public ResponseEntity<BaseResponse<GameResponseDTO.GameByCognitionDTO>> getGamePage(){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
@@ -57,7 +53,7 @@ public class GameController {
             @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
             @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> saveMapNavigationResult(@RequestBody @Valid MapNavigationResultDTO mapNavigationResultDTO){
+    public ResponseEntity<BaseResponse<String>> saveMapNavigationResult(@RequestBody @Valid GameRequestDTO.MapNavigationResultDTO mapNavigationResultDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
@@ -80,7 +76,7 @@ public class GameController {
             @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
             @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> saveScroopTestResult(@RequestBody @Valid ScroopTestResultDTO scroopTestResultDTO){
+    public ResponseEntity<BaseResponse<String>> saveScroopTestResult(@RequestBody @Valid GameRequestDTO.ScroopTestResultDTO scroopTestResultDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
@@ -103,7 +99,7 @@ public class GameController {
             @ApiResponse(responseCode = "500", description = "게임이 존재하지 않습니다"),
             @ApiResponse(responseCode = "500", description = "게임 타입이 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> saveMentalRotationResult(@RequestBody @Valid MentalRotationDTO mentalRotationDTO){
+    public ResponseEntity<BaseResponse<String>> saveMentalRotationResult(@RequestBody @Valid GameRequestDTO.MentalRotationDTO mentalRotationDTO){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                     .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
@@ -123,7 +119,7 @@ public class GameController {
         @ApiResponse(responseCode = "400", description = "파라미터 오류"),
         @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
     })
-    public ResponseEntity<BaseResponse<TodayGameDTO>> getTodayGame(){
+    public ResponseEntity<BaseResponse<GameResponseDTO.GameDetailsDTO>> getTodayGame(){
         try{
             Long userId = SecurityUtil.getCurrentUserId()
                 .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));

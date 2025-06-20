@@ -14,8 +14,8 @@ public class SwaggerConfig {
     @Bean
     public OpenAPI openAPI() {
         Info info = new Info()
-                .title("UMC Server WorkBook API")
-                .description("UMC Server WorkBook API 명세서")
+                .title("BrainBoost Develop Server API")
+                .description("BrainBoost Develop Server API 명세서")
                 .version("1.0.0");
 
         String jwtSchemeName = "JWT TOKEN";

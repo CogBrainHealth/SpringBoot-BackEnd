@@ -6,8 +6,10 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.base.BaseException;
+import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.medical.entity.MedicalChecklistEntity;
-import server.brainboost.src.user.dto.JoinDTO;
+import server.brainboost.src.user.dto.UserRequestDTO;
 
 import java.time.LocalDate;
 
@@ -76,13 +78,21 @@ public class UserEntity extends BaseEntity {
         this.role = "ROLE_USER";
     }
 
-    public UserEntity(JoinDTO joinDTO){
-        this.username = joinDTO.getUsername();
-        this.nickname = joinDTO.getNickname();
-        this.gender = joinDTO.getGender();
-        this.birthDate = joinDTO.getBirthDate();
+    public UserEntity(UserRequestDTO.JoinRequestDTO joinRequestDTO){
+        this.username = joinRequestDTO.getUsername();
+        this.nickname = joinRequestDTO.getNickname();
+        this.gender = joinRequestDTO.getGender();
+        this.birthDate = joinRequestDTO.getBirthDate();
         this.role = "ROLE_USER";
     }
 
+    public void updateGender(Character gender) throws BaseException {
+
+        if(!(gender.equals('M') || gender.equals('W'))){
+            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
+        }
+
+        this.gender = gender;
+    }
 
 }
