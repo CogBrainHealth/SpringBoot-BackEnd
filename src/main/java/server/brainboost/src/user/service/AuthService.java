@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.jwt.JWTUtil;
 import server.brainboost.src.user.dto.AuthRequestDTO;

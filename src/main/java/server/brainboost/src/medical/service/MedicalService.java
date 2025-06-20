@@ -6,7 +6,7 @@ import java.util.List;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.config.Status;

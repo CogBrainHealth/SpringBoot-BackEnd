@@ -5,7 +5,7 @@ import java.io.IOException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.servlet.http.HttpServletResponse;
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 

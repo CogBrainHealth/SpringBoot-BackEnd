@@ -5,7 +5,7 @@ import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.game.dto.inter.GameInterface;
 import server.brainboost.src.game.entity.GameEntity;

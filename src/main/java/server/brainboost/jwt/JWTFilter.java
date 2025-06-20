@@ -9,7 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.brainboost.auth.CustomUserDetails;
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.utils.ResponseUtil;
