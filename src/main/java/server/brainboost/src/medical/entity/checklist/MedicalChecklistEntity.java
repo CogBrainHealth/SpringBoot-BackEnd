@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.entity;
+package server.brainboost.src.medical.entity.checklist;
 
 import jakarta.persistence.*;
 import lombok.Builder;

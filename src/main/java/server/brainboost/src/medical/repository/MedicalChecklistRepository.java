@@ -6,7 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
-import server.brainboost.src.medical.entity.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
 import server.brainboost.src.user.entity.UserEntity;
 
 public interface MedicalChecklistRepository extends JpaRepository<MedicalChecklistEntity, Long> {

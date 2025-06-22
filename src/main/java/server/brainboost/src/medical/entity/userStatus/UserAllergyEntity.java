@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.entity;
+package server.brainboost.src.medical.entity.userStatus;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -17,30 +17,29 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.enums.AllergyTag;
-import server.brainboost.enums.ConditionTag;
 import server.brainboost.src.user.entity.UserEntity;
 
 @Entity
 @Getter
-@Table(name = "user_condition")
+@Table(name = "user_allergy")
 @NoArgsConstructor
 @DynamicInsert
-public class UserConditionEntity extends BaseEntity {
+public class UserAllergyEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, name = "condition_tag")
-	private ConditionTag conditionTag;
+	@Column(nullable = false, name = "allergy_tag")
+	private AllergyTag allergyTag;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
-	public UserConditionEntity(ConditionTag conditionTag, UserEntity user){
-		this.conditionTag = conditionTag;
+	public UserAllergyEntity(AllergyTag allergyTag, UserEntity user){
+		this.allergyTag = allergyTag;
 		this.user = user;
 	}
 
