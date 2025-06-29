@@ -84,6 +84,7 @@ public class MedicalResponseDTO {
         private Long nutrientId;
         private String nutrientName;
         private String details;
+        private String couPangLink;
 
     }
 

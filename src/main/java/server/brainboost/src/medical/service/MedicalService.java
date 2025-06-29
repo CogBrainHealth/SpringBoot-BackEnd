@@ -639,8 +639,9 @@ public class MedicalService {
                 orElseThrow(()-> new GeneralException(ErrorStatus._UNAUTHORIZED));
 
 
-        return MedicalConverter.toNutrientInfoDTO(nutrient);
+        MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = MedicalConverter.toNutrientInfoDTO(nutrient);
+        nutrientResponseDTO.setCouPangLink("https://www.coupang.com/np/search?component=&q=" + nutrient.getNutrientName());
 
-
+        return nutrientResponseDTO;
     }
 }
