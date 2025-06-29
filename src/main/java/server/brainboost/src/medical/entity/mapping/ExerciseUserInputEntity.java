@@ -10,7 +10,7 @@ import server.brainboost.base.BaseEntity;
 @Getter
 @NoArgsConstructor
 @DynamicInsert
-@Table(name = "user_input")
+@Table(name = "exercise_user_input")
 public class ExerciseUserInputEntity extends BaseEntity {
 
     @Id
@@ -24,9 +24,9 @@ public class ExerciseUserInputEntity extends BaseEntity {
 
     private Integer mmseScore;
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private String gameResult;  // JSON 문자열 (or JsonNode 매핑도 가능)
 
-    @Column(columnDefinition = "jsonb")
+    @Column(columnDefinition = "json")
     private String physicalInfo;  // JSON 문자열
 }

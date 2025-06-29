@@ -41,6 +41,7 @@ public enum ErrorStatus implements BaseErrorCode {
     PREMIUM_MEDICAL_CHECKLIST_NO_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "MEDICAL4003", "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
     PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST(HttpStatus.CONFLICT, "MEDICAL4004", "프리미엄 건강 정보를 이미 작성하셨습니다"),
 
+    NUTRIENT_NOT_EXIST(HttpStatus.NOT_FOUND, "NUTRIENT4005", "영양소 정보가 존재하지 않습니다"),
 
     //global 오류 -> 5000번
     DATA_CONFLICT(HttpStatus.CONFLICT, "COMMON409", "데이터 충돌로 업데이트 실패"),

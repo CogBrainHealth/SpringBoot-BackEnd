@@ -4,8 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
@@ -15,7 +17,10 @@ import server.brainboost.enums.ConditionTag;
 import server.brainboost.enums.DiscomfortTag;
 import server.brainboost.enums.MedicineTag;
 import server.brainboost.enums.PregnancyTag;
+import server.brainboost.exception.GeneralException;
+import server.brainboost.src.medical.controller.MedicalController;
 import server.brainboost.src.medical.dto.*;
+import server.brainboost.src.medical.dto.converter.MedicalConverter;
 import server.brainboost.src.medical.dto.test.NutrientDetails;
 import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
 import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
@@ -626,5 +631,16 @@ public class MedicalService {
 
         premiumMedicalChecklist.updatePremiumChecklistEntity(premiumMedicalChecklistDTO);
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
+    }
+
+    public MedicalResponseDTO.NutrientResponseDTO getNutrientDetails(@Valid Long nutrientId) {
+
+        NutrientEntity nutrient = nutrientRepository.findById(nutrientId).
+                orElseThrow(()-> new GeneralException(ErrorStatus._UNAUTHORIZED));
+
+
+        return MedicalConverter.toNutrientInfoDTO(nutrient);
+
+
     }
 }
