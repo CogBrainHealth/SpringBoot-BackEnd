@@ -6,9 +6,9 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.base.BaseException;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.src.medical.entity.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
 import server.brainboost.src.user.dto.UserRequestDTO;
 
 import java.time.LocalDate;

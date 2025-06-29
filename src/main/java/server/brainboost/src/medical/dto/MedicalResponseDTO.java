@@ -39,7 +39,7 @@ public class MedicalResponseDTO {
 
         private Long nutrientId;
         private String nutrientName;
-        private String description;
+        private String details;
 
     }
 
@@ -58,4 +58,33 @@ public class MedicalResponseDTO {
         private NutrientSubDomainDTO nutrientSubDomainDTO;
 
     }
+
+    @Getter
+    @Setter
+    @Schema(description = "영양소 정보를 반환하는 DTO ")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class NutrientInfoDTO{
+
+        private Long nutrientId;
+        private String nutrientName;
+        private String details;
+
+    }
+
+    @Getter
+    @Setter
+    @Schema(description = "영양소 정보 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class NutrientResponseDTO{
+
+        private Long nutrientId;
+        private String nutrientName;
+        private String details;
+
+    }
+
 }

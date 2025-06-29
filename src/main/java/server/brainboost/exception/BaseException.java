@@ -1,6 +1,7 @@
-package server.brainboost.base;
+package server.brainboost.exception;
 
 import lombok.Getter;
+import server.brainboost.base.BaseResponseStatus;
 
 @Getter
 public class BaseException extends RuntimeException{

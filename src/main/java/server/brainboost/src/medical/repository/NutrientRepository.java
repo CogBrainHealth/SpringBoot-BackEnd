@@ -4,7 +4,7 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import server.brainboost.src.medical.entity.NutrientEntity;
+import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
 
 public interface NutrientRepository extends JpaRepository<NutrientEntity, Long> {
 

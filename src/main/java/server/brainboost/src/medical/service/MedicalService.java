@@ -4,9 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.brainboost.base.BaseException;
+import server.brainboost.code.status.ErrorStatus;
+import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.config.Status;
@@ -15,16 +17,19 @@ import server.brainboost.enums.ConditionTag;
 import server.brainboost.enums.DiscomfortTag;
 import server.brainboost.enums.MedicineTag;
 import server.brainboost.enums.PregnancyTag;
+import server.brainboost.exception.GeneralException;
+import server.brainboost.src.medical.controller.MedicalController;
 import server.brainboost.src.medical.dto.*;
+import server.brainboost.src.medical.dto.converter.MedicalConverter;
 import server.brainboost.src.medical.dto.test.NutrientDetails;
-import server.brainboost.src.medical.entity.MedicalChecklistEntity;
-import server.brainboost.src.medical.entity.NutrientEntity;
-import server.brainboost.src.medical.entity.PremiumMedicalChecklistEntity;
-import server.brainboost.src.medical.entity.UserAllergyEntity;
-import server.brainboost.src.medical.entity.UserConditionEntity;
-import server.brainboost.src.medical.entity.UserDiscomfortEntity;
-import server.brainboost.src.medical.entity.UserMedicineEntity;
-import server.brainboost.src.medical.entity.UserPregnancyEntity;
+import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
+import server.brainboost.src.medical.entity.checklist.PremiumMedicalChecklistEntity;
+import server.brainboost.src.medical.entity.userStatus.UserAllergyEntity;
+import server.brainboost.src.medical.entity.userStatus.UserConditionEntity;
+import server.brainboost.src.medical.entity.userStatus.UserDiscomfortEntity;
+import server.brainboost.src.medical.entity.userStatus.UserMedicineEntity;
+import server.brainboost.src.medical.entity.userStatus.UserPregnancyEntity;
 import server.brainboost.src.medical.repository.MedicalChecklistRepository;
 import server.brainboost.src.medical.repository.MedicalRepository;
 import server.brainboost.src.medical.repository.NutrientRepository;
@@ -626,5 +631,16 @@ public class MedicalService {
 
         premiumMedicalChecklist.updatePremiumChecklistEntity(premiumMedicalChecklistDTO);
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
+    }
+
+    public MedicalResponseDTO.NutrientResponseDTO getNutrientDetails(@Valid Long nutrientId) {
+
+        NutrientEntity nutrient = nutrientRepository.findById(nutrientId).
+                orElseThrow(()-> new GeneralException(ErrorStatus._UNAUTHORIZED));
+
+
+        return MedicalConverter.toNutrientInfoDTO(nutrient);
+
+
     }
 }

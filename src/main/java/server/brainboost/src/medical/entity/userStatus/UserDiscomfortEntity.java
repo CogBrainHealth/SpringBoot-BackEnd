@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.entity;
+package server.brainboost.src.medical.entity.userStatus;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -16,27 +16,31 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.AllergyTag;
-import server.brainboost.enums.ConditionTag;
+import server.brainboost.enums.DiscomfortTag;
+import server.brainboost.src.user.entity.UserEntity;
 
 @Entity
 @Getter
-@Table(name = "nutrient_condition")
+@Table(name = "user_discomfort")
 @NoArgsConstructor
 @DynamicInsert
-public class NutrientConditionEntity extends BaseEntity {
+public class UserDiscomfortEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, name = "condition_tag")
-	private ConditionTag conditionTag;
+	@Column(nullable = false, name = "discomfort_tag")
+	private DiscomfortTag discomfortTag;
 
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "nutrient_id")
-	private NutrientEntity nutrient;
+	@JoinColumn(name = "user_id")
+	private UserEntity user;
 
+	public UserDiscomfortEntity(DiscomfortTag discomfortTag, UserEntity user){
+		this.discomfortTag = discomfortTag;
+		this.user = user;
+	}
 
 }

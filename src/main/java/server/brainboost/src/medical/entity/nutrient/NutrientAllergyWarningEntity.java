@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.entity;
+package server.brainboost.src.medical.entity.nutrient;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -16,27 +16,22 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.enums.DomainType;
+import server.brainboost.enums.AllergyTag;
 
 @Entity
 @Getter
-@Table(name = "nutrient_domain")
+@Table(name = "nutrient_allergy_warning")
 @NoArgsConstructor
 @DynamicInsert
-public class NutrientDomainEntity extends BaseEntity {
+public class NutrientAllergyWarningEntity extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, name = "cognitive_domain")
-	private CognitiveDomain cognitiveDomain;
-
-	@Enumerated(EnumType.STRING)
-	@Column(nullable = false, name = "domain_type")
-	private DomainType domainType;
+	@Column(nullable = false, name = "allergy_tag")
+	private AllergyTag allergyTag;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "nutrient_id")
