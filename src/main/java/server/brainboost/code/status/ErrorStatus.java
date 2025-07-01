@@ -5,6 +5,7 @@ import lombok.Getter;
 import org.springframework.http.HttpStatus;
 import server.brainboost.code.BaseErrorCode;
 import server.brainboost.code.ErrorReasonDTO;
+import server.brainboost.code.ReasonDTO;
 
 
 @Getter
@@ -55,11 +56,20 @@ public enum ErrorStatus implements BaseErrorCode {
 
     @Override
     public ErrorReasonDTO getReason() {
-        return null;
+        return ErrorReasonDTO.builder()
+                .message(message)
+                .code(code)
+                .isSuccess(true)
+                .build();
     }
 
     @Override
     public ErrorReasonDTO getReasonHttpStatus() {
-        return null;
+        return ErrorReasonDTO.builder()
+                .message(message)
+                .code(code)
+                .isSuccess(true)
+                .httpStatus(httpStatus)
+                .build();
     }
 }

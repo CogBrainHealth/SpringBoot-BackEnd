@@ -14,6 +14,7 @@ import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.exception.GeneralException;
+import server.brainboost.exception.handler.AuthenticationHandler;
 import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.dto.converter.MedicalConverter;
 import server.brainboost.src.medical.service.MedicalService;
@@ -261,14 +262,14 @@ public class MedicalController {
     public ApiResponse<MedicalResponseDTO.NutrientResponseDTO> getNutrientDetails(@Valid @PathVariable("nutrient_id") Long nutrientId){
 
         try{
-//            Long userId = SecurityUtil.getCurrentUserId()
-//                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId()
+                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
             MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = medicalService.getNutrientDetails(nutrientId);
             return ApiResponse.onSuccess(nutrientResponseDTO);
 
         }catch (BaseException e){
-           throw new GeneralException(ErrorStatus._UNAUTHORIZED);
+           throw new AuthenticationHandler(ErrorStatus.USER_NO_EXIST);
         }
 
     }
