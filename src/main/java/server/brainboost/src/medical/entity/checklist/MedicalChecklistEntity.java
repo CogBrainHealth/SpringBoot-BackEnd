@@ -22,10 +22,10 @@ public class MedicalChecklistEntity extends BaseEntity {
     private Long id;
 
     // 1번째 질문: 해당 사항
-    private Boolean isPregnant;    // 임신 중
-    private Boolean isBreastfeeding; // 수유 중
-    private Boolean isPlanningChild; // 자녀 계획 여부
-    private Boolean isMenopause;     // 폐경 여부
+    private Boolean isPregnant = Boolean.FALSE;    // 임신 중
+    private Boolean isBreastfeeding = Boolean.FALSE; // 수유 중
+    private Boolean isPlanningChild = Boolean.FALSE; // 자녀 계획 여부
+    private Boolean isMenopause = Boolean.FALSE;     // 폐경 여부
 
     // 2번째 질문: 알레르기 여부
     private Boolean isUnknownAllergy;        // 원인 알 수 없음

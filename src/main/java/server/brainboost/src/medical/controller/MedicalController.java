@@ -57,7 +57,7 @@ public class MedicalController {
     }
 
 
-
+    //TODO 테스트 필요
     @PostMapping("/api/medical/premium/checklist")
     @Operation(summary = "프리미엄 건강 체크 결과 작성 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 작성 ", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
@@ -68,16 +68,17 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 이미 작성하셨습니다"),
     })
     public ApiResponse<String> createPremiumMedicalCheckList(@Valid @RequestBody
-                                                                              MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+                                                             MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
         Long userId = SecurityUtil.getCurrentUserId();
 
-        medicalService.createPremiumMedicalCheckList(userId, premiumMedicalChecklistDTO);
+        medicalService.createPremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
         return ApiResponse.onSuccess("프리미엄 건강 체크리스트 정보가 작성되었습니다");
 
 
     }
 
+    //TODO 테스트 필요
     @PatchMapping("/api/medical/premium/checklist")
     @Operation(summary = "프리미엄 건강 체크 리스트 수정 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 수정 ", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
@@ -88,12 +89,12 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
     })
     public ResponseEntity<BaseResponse<String>> updatePremiumMedicalCheckList(@Valid @RequestBody
-                                                                              MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
+                                                                              MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
         try{
             Long userId = SecurityUtil.getCurrentUserId();
 
-            medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistDTO);
+            medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
             return ResponseEntity.ok(new BaseResponse<>("프리미엄 건강 체크 리스트가 작성됐습니다"));
 
         }catch (BaseException e){

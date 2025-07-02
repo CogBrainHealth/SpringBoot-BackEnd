@@ -31,6 +31,9 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NO_PREMIUM(HttpStatus.NOT_FOUND, "USER4008", "프리미엄 유저가 아닙니다"),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER4009", "해당 유저가 이미 존재합니다"),
 
+    //statistic 오류
+    GAMEPLAY_NOT_YET(HttpStatus.NOT_FOUND, "STATISTIC4001", "아직 게임을 하지 않아 점수 통계가 없습니다"),
+
     //game 오류 -> 3000번
     GAME_NO_EXIST(HttpStatus.NOT_FOUND, "GAME4001", "해당 게임이 존재하지 않습니다"),
     TODAY_GAME_NO_EXIST(HttpStatus.NOT_FOUND, "GAME4002", "오늘의 게임이 존재하지 않습니다"),

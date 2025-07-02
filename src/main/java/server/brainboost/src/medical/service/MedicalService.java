@@ -570,44 +570,40 @@ public class MedicalService {
 
     }
 
-	public void createPremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO) throws BaseException{
+	public void createPremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO) throws BaseException{
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+            .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         if(user.getIsPremium().equals(Boolean.FALSE)){
-            throw new BaseException(BaseResponseStatus.USER_NO_PREMIUM);
+            throw new GeneralException(ErrorStatus.USER_NO_PREMIUM);
         }
 
         Boolean isExistUser = premiumMedicalChecklistRepository.existsByUser(user);
 
         if(isExistUser.equals(Boolean.TRUE)){
-            throw new BaseException(BaseResponseStatus.PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST);
+            throw new GeneralException(ErrorStatus.PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST);
         }
 
-        PremiumMedicalChecklistEntity premiumMedicalChecklist = new PremiumMedicalChecklistEntity(premiumMedicalChecklistDTO, user);
+        PremiumMedicalChecklistEntity premiumMedicalChecklist = new PremiumMedicalChecklistEntity(premiumMedicalChecklistRequestDTO, user);
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
 
     }
 
-    public void updatePremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO) {
+    public void updatePremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+            .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         if(user.getIsPremium().equals(Boolean.FALSE)){
-            throw new BaseException(BaseResponseStatus.USER_NO_PREMIUM);
+            throw new GeneralException(ErrorStatus.USER_NO_PREMIUM);
         }
 
         PremiumMedicalChecklistEntity premiumMedicalChecklist =
            premiumMedicalChecklistRepository.findPremiumMedicalChecklistEntityByUser(user)
-               .orElse(null);
+               .orElseThrow(()->new GeneralException(ErrorStatus.PREMIUM_MEDICAL_CHECKLIST_NO_EXIST));
 
-        if(premiumMedicalChecklist == null){
-            throw new BaseException(BaseResponseStatus.PREMIUM_MEDICAL_CHECKLIST_NO_EXIST);
-        }
-
-        premiumMedicalChecklist.updatePremiumChecklistEntity(premiumMedicalChecklistDTO);
+        premiumMedicalChecklist.updatePremiumChecklistEntity(premiumMedicalChecklistRequestDTO);
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
     }
 
