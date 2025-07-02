@@ -8,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.exception.GeneralException;
 import server.brainboost.src.user.dto.*;
 import server.brainboost.src.user.service.UserService;
 import server.brainboost.utils.SecurityUtil;
@@ -114,7 +116,7 @@ public class UserController {
 
         try{
             Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+                    .orElseThrow(() -> new GeneralException(ErrorStatus._UNAUTHORIZED));
 
             return ResponseEntity.ok(new BaseResponse<>(userService.getProfile(userId)));
         }catch (BaseException e){

@@ -5,6 +5,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -12,6 +14,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.brainboost.auth.CustomUserDetails;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.dto.UserRequestDTO;
@@ -25,6 +28,7 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
+@Slf4j
 @RequiredArgsConstructor
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
@@ -46,30 +50,22 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         try {
             loginRequestDTO = om.readValue(request.getInputStream(), UserRequestDTO.LoginRequestDTO.class);
         } catch (IOException e) {
-            //throw new RuntimeException(e);
-
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.NO_VALID_LOGINDTO));
+            ResponseUtil.handleException(response, ErrorStatus._BAD_REQUEST);
             return null;
         }
 
         if(loginRequestDTO == null){
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
-                BaseResponseStatus.NO_VALID_LOGINDTO));
-
+            ResponseUtil.handleException(response, ErrorStatus._BAD_REQUEST);
             return null;
         }
 
         if(loginRequestDTO.getUsername() == null || loginRequestDTO.getUsername().isBlank()){
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
-                BaseResponseStatus.NO_VALID_LOGINDTO));
-
+            ResponseUtil.handleException(response, ErrorStatus._BAD_REQUEST);
             return null;
         }
 
         if(loginRequestDTO.getPassword() == null || loginRequestDTO.getPassword().isBlank()){
-            ResponseUtil.handleException(response, HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(
-                BaseResponseStatus.NO_VALID_LOGINDTO));
-
+            ResponseUtil.handleException(response, ErrorStatus._BAD_REQUEST);
             return null;
         }
 
@@ -121,8 +117,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     //로그인 실패시 실행하는 메소드
     @Override
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
-        System.out.println("fail");
-        ResponseUtil.handleException(response,HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.FAILED_LOGIN));
+        // log.warn("로그인 실패");
+        ResponseUtil.handleException(response, ErrorStatus.INVALID_CREDENTIALS);
     }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {

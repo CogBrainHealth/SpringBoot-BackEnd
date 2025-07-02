@@ -4,18 +4,24 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.brainboost.auth.CustomUserDetails;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.exception.GeneralException;
+import server.brainboost.exception.handler.AuthenticationHandler;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.utils.ResponseUtil;
 
 import java.io.IOException;
 
+@Slf4j
 public class JWTFilter extends OncePerRequestFilter {
 
     private final JWTUtil jwtUtil;
@@ -46,46 +52,55 @@ public class JWTFilter extends OncePerRequestFilter {
             //request에서 Authorization 헤더를 찾음
             accessToken = request.getHeader("Authorization");
         }catch (IllegalArgumentException e){
-            ResponseUtil.handleException(response,HttpServletResponse.SC_INTERNAL_SERVER_ERROR ,new BaseException(BaseResponseStatus.HEADER_ERROR));
+
+            log.error("Authorization header 가 올바르지 않습니다");
+            // throw new AuthenticationHandler(ErrorStatus.AUTHENTICATION_HEADER_ERROR);
+            ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
         }
 
         //Authorization 헤더 검증
         if (accessToken == null) {
 
-            System.out.println("Authorization이 비어있습니다");
+            log.info("accessToken이 존재하지 않은 request가 들어왔습니다");
             filterChain.doFilter(request, response);
 
-            //조건이 해당되면 메소드 종료 (필수)
+            //조건이 해당되면 메소드 종료 (필수), 다음 필터 또는 컨트롤러로 제어권을 넘김
             return;
         }
-
-        System.out.println("authorization now");
 
         //토큰 소멸 시간 검증
         try{
             if (jwtUtil.isExpired(accessToken)) {
 
-                System.out.println("token expired");
+                log.warn("토큰 시간이 만료되었습니다.");
                 filterChain.doFilter(request, response);
 
-                //조건이 해당되면 메소드 종료 (필수)
+                //조건이 해당되면 메소드 종료, 다음 필터 또는 컨트롤러로 제어권을 넘김
                 return;
             }
         }catch (io.jsonwebtoken.security.SignatureException e){
-            ResponseUtil.handleException(response,HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            // 토큰 값이 다르경우
+            log.error("시크릿키가 다릅니다.");
+            //throw new GeneralException(ErrorStatus.INVALID_TOKEN);
+
+            ResponseUtil.handleException(response,ErrorStatus.INVALID_TOKEN);
             return;
         }catch (io.jsonwebtoken.MalformedJwtException e){
-            ResponseUtil.handleException(response, HttpServletResponse.SC_UNAUTHORIZED, new BaseException(BaseResponseStatus.INVALID_TOKEN));
+            // 토큰 형식이 다른 경우
+            log.error("토큰 형식이 다릅니다.");
+            //throw new GeneralException(ErrorStatus.INVALID_TOKEN);
+
+            ResponseUtil.handleException(response, ErrorStatus.INVALID_TOKEN);
             return;
         }catch (io.jsonwebtoken.ExpiredJwtException e){
-            System.out.println("token expired");
-            //filterChain.doFilter(request, response);
-            ResponseUtil.handleException(response, HttpServletResponse.SC_UNAUTHORIZED ,new BaseException(BaseResponseStatus.EXPIRED_ACCESS_TOKEN));
-            //조건이 해당되면 메소드 종료 (필수)
+            //System.out.println("token expired");
+            log.error("access 토큰 유효시간이 만료되었습니다.");
+            //throw new AuthenticationHandler(ErrorStatus.EXPIRED_ACCESS_TOKEN);
+            filterChain.doFilter(request, response);
+            ResponseUtil.handleException(response, ErrorStatus.EXPIRED_ACCESS_TOKEN);
+
             return;
-
         }
-
 
         //이 후 과정은 액세스 토큰이 정상적으로 발급된 경우이다.
 

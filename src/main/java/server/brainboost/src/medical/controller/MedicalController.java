@@ -261,16 +261,14 @@ public class MedicalController {
     })
     public ApiResponse<MedicalResponseDTO.NutrientResponseDTO> getNutrientDetails(@Valid @PathVariable("nutrient_id") Long nutrientId){
 
-        try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-            MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = medicalService.getNutrientDetails(nutrientId);
-            return ApiResponse.onSuccess(nutrientResponseDTO);
+        Long userId = SecurityUtil.getCurrentUserId()
+                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
 
-        }catch (BaseException e){
-           throw new AuthenticationHandler(ErrorStatus.USER_NO_EXIST);
-        }
+        MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = medicalService.getNutrientDetails(nutrientId);
+        return ApiResponse.onSuccess(nutrientResponseDTO);
+
+
 
     }
 
