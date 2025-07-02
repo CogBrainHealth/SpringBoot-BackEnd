@@ -56,32 +56,7 @@ public class MedicalController {
 
     }
 
-    @PostMapping("/api/medical/premium/checklist")
-    @Operation(summary = "프리미엄 건강 체크 결과 작성 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 작성 ", responses = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 이미 작성하셨습니다"),
-    })
-    public ResponseEntity<BaseResponse<String>> createPremiumMedicalCheckList(@Valid @RequestBody
-                                                                              MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
 
-        try{
-            Long userId = SecurityUtil.getCurrentUserId();
-
-            medicalService.createPremiumMedicalCheckList(userId, premiumMedicalChecklistDTO);
-            return ResponseEntity.ok(new BaseResponse<>("프리미엄 건강 체크 리스트가 작성됐습니다"));
-
-        }catch (BaseException e){
-            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
-
-        }
-
-
-    }
 
     @PostMapping("/api/medical/premium/checklist")
     @Operation(summary = "프리미엄 건강 체크 결과 작성 api", description = "PremiumMedicalChecklistDTO 정보를 받아 프리미엄 건강 체크 리스트 작성 ", responses = {
@@ -92,7 +67,7 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 이미 작성하셨습니다"),
     })
-    public ApiResponse<String> createPremiumMedicalCheckList2(@Valid @RequestBody
+    public ApiResponse<String> createPremiumMedicalCheckList(@Valid @RequestBody
                                                                               MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
 
         Long userId = SecurityUtil.getCurrentUserId();
@@ -196,7 +171,7 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "데이터베이스 에러입니다"),
     })
-    public ApiResponse<MedicalResponseDTO.NutrientSuggestionDto> recommendMemoryNutrients2(){
+    public ApiResponse<MedicalResponseDTO.NutrientSuggestionDto> recommendMemoryNutrients(){
 
 
         Long userId = SecurityUtil.getCurrentUserId();
