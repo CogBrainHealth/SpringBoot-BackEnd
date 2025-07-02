@@ -10,7 +10,7 @@ public class MedicalRequestDTO {
     @Setter
     @Getter
     @Schema(description = "개인 정보 건강 리스트 정보를 가져올 DTO")
-    public static class MedicalChecklistDTO {
+    public static class MedicalChecklistRequestDTO {
 
         @Schema(description = "1번째 질문: 출산/임신 관련 상태 질문 DTO, 사용자가 남성일 경우 내부의 변수를 false로 채워주세요", nullable = true)
         private ReproductiveHealthDTO reproductiveHealthDTO;

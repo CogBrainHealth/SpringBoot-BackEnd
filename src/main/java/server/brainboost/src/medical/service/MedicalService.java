@@ -6,6 +6,7 @@ import java.util.List;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.exception.BaseException;
@@ -18,7 +19,6 @@ import server.brainboost.enums.DiscomfortTag;
 import server.brainboost.enums.MedicineTag;
 import server.brainboost.enums.PregnancyTag;
 import server.brainboost.exception.GeneralException;
-import server.brainboost.src.medical.controller.MedicalController;
 import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.dto.converter.MedicalConverter;
 import server.brainboost.src.medical.dto.test.NutrientDetails;
@@ -42,6 +42,7 @@ import server.brainboost.src.medical.repository.UserPregnancyRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class MedicalService {
@@ -59,25 +60,21 @@ public class MedicalService {
 
 
     @Transactional
-    public void createMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistDTO medicalChecklistDTO) throws BaseException{
+    public MedicalResponseDTO.MedicalChecklistResponseDTO createMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistRequestDTO medicalChecklistRequestDTO) throws BaseException{
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        if(!(user.getGender().equals('M') || user.getGender().equals('W'))){
-            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
-        }
+                .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         MedicalChecklistEntity medicalChecklist = user.getMedicalChecklist();
 
         // 기존에 건강 체크 리스트를 작성하지 않은 경우
         if(medicalChecklist == null){
-            medicalChecklist = new MedicalChecklistEntity(medicalChecklistDTO, user);
+            medicalChecklist = new MedicalChecklistEntity(medicalChecklistRequestDTO, user);
             user.setMedicalChecklist(medicalChecklist);
             medicalChecklistRepository.save(medicalChecklist);
         }
         else{ // 기존에 건강 체크 리스트가 작성된 경우
-           throw new BaseException(BaseResponseStatus.MEDICAL_CHECKLIST_ALREADY_EXIST);
+           throw new GeneralException(ErrorStatus.MEDICAL_CHECKLIST_ALREADY_EXIST);
         }
 
         List<UserPregnancyEntity> userPregnancyEntityList;
@@ -88,18 +85,18 @@ public class MedicalService {
 
         // 각 user_medical info 에 정보 넣기
         if(user.getGender().equals('M')){
-            userConditionEntityList = createUserConditionList(medicalChecklistDTO.getHealthConditionDTO(), user);
-            userAllergyEntityList = createUserAllergyList(medicalChecklistDTO.getAllergyStatusDTO(), user);
-            userMedicineEntityList = createUserMedicineList(medicalChecklistDTO.getMedicationUsageDTO(), user);
-            userDiscomfortEntityList = createUserDiscomfortList(medicalChecklistDTO.getDailyDiscomfortDTO(), user);
+            userConditionEntityList = createUserConditionList(medicalChecklistRequestDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalChecklistRequestDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalChecklistRequestDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalChecklistRequestDTO.getDailyDiscomfortDTO(), user);
 
         }
         else{
-            userPregnancyEntityList = createUserPregnancyList(medicalChecklistDTO.getReproductiveHealthDTO(), user);
-            userConditionEntityList = createUserConditionList(medicalChecklistDTO.getHealthConditionDTO(), user);
-            userAllergyEntityList = createUserAllergyList(medicalChecklistDTO.getAllergyStatusDTO(), user);
-            userMedicineEntityList = createUserMedicineList(medicalChecklistDTO.getMedicationUsageDTO(), user);
-            userDiscomfortEntityList = createUserDiscomfortList(medicalChecklistDTO.getDailyDiscomfortDTO(), user);
+            userPregnancyEntityList = createUserPregnancyList(medicalChecklistRequestDTO.getReproductiveHealthDTO(), user);
+            userConditionEntityList = createUserConditionList(medicalChecklistRequestDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalChecklistRequestDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalChecklistRequestDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalChecklistRequestDTO.getDailyDiscomfortDTO(), user);
 
             userPregnancyRepository.saveAll(userPregnancyEntityList);
         }
@@ -109,28 +106,24 @@ public class MedicalService {
         userMedicineRepository.saveAll(userMedicineEntityList);
         userDiscomfortRepository.saveAll(userDiscomfortEntityList);
 
-
+        return MedicalConverter.toMedicalChecklistResponseDTO(medicalChecklist);
     }
 
     @Transactional
-    public void updateMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistDTO medicalCheckListDTO) {
+    public MedicalResponseDTO.MedicalChecklistResponseDTO updateMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistRequestDTO medicalCheckListRequestDTO) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        if(!(user.getGender().equals('M') || user.getGender().equals('W'))){
-            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
-        }
+            .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         MedicalChecklistEntity medicalChecklist = user.getMedicalChecklist();
 
         // 기존에 건강 체크 리스트를 작성하지 않은 경우
         if(medicalChecklist == null){
-            throw new BaseException(BaseResponseStatus.MEDICAL_CHECKLIST_NO_EXIST);
+            throw new GeneralException(ErrorStatus.MEDICAL_CHECKLIST_NO_EXIST);
         }
         else{ // 기존에 건강 체크 리스트가 작성된 경우
 
-            medicalChecklist.updateMedicalChecklist(medicalCheckListDTO);
+            medicalChecklist.updateMedicalChecklist(medicalCheckListRequestDTO);
             medicalChecklistRepository.save(medicalChecklist);
         }
 
@@ -149,18 +142,18 @@ public class MedicalService {
 
         // 각 user_medical info 에 정보 넣기
         if(user.getGender().equals('M')){
-            userConditionEntityList = createUserConditionList(medicalCheckListDTO.getHealthConditionDTO(), user);
-            userAllergyEntityList = createUserAllergyList(medicalCheckListDTO.getAllergyStatusDTO(), user);
-            userMedicineEntityList = createUserMedicineList(medicalCheckListDTO.getMedicationUsageDTO(), user);
-            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListDTO.getDailyDiscomfortDTO(), user);
+            userConditionEntityList = createUserConditionList(medicalCheckListRequestDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalCheckListRequestDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalCheckListRequestDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListRequestDTO.getDailyDiscomfortDTO(), user);
 
         }
         else{
-            userPregnancyEntityList = createUserPregnancyList(medicalCheckListDTO.getReproductiveHealthDTO(), user);
-            userConditionEntityList = createUserConditionList(medicalCheckListDTO.getHealthConditionDTO(), user);
-            userAllergyEntityList = createUserAllergyList(medicalCheckListDTO.getAllergyStatusDTO(), user);
-            userMedicineEntityList = createUserMedicineList(medicalCheckListDTO.getMedicationUsageDTO(), user);
-            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListDTO.getDailyDiscomfortDTO(), user);
+            userPregnancyEntityList = createUserPregnancyList(medicalCheckListRequestDTO.getReproductiveHealthDTO(), user);
+            userConditionEntityList = createUserConditionList(medicalCheckListRequestDTO.getHealthConditionDTO(), user);
+            userAllergyEntityList = createUserAllergyList(medicalCheckListRequestDTO.getAllergyStatusDTO(), user);
+            userMedicineEntityList = createUserMedicineList(medicalCheckListRequestDTO.getMedicationUsageDTO(), user);
+            userDiscomfortEntityList = createUserDiscomfortList(medicalCheckListRequestDTO.getDailyDiscomfortDTO(), user);
 
             userPregnancyRepository.saveAll(userPregnancyEntityList);
         }
@@ -170,33 +163,31 @@ public class MedicalService {
         userMedicineRepository.saveAll(userMedicineEntityList);
         userDiscomfortRepository.saveAll(userDiscomfortEntityList);
 
+        return MedicalConverter.toMedicalChecklistResponseDTO(medicalChecklist);
 
     }
 
-    public MedicalRequestDTO.MedicalChecklistDTO getMedicalCheckList(Long userId) {
+    @Transactional
+    public MedicalResponseDTO.MedicalChecklistResponseDTO getMedicalCheckList(Long userId) {
         UserEntity user = userRepository.findUserEntityLeftJoinMedicalChecklistByUserId(userId)
-            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-        if(!(user.getGender().equals('M') || user.getGender().equals('W'))){
-            throw new BaseException(BaseResponseStatus.UNEXPECTED_GENDER);
-        }
+            .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         MedicalChecklistEntity medicalChecklist = user.getMedicalChecklist();
 
-        MedicalRequestDTO.MedicalChecklistDTO medicalChecklistDTO = new MedicalRequestDTO.MedicalChecklistDTO();
-        MedicalRequestDTO.ReproductiveHealthDTO reproductiveHealthDTO = null;
-        MedicalRequestDTO.HealthConditionDTO healthConditionDTO = null;
-        MedicalRequestDTO.AllergyStatusDTO allergyStatusDTO = null;
-        MedicalRequestDTO.MedicationUsageDTO medicationUsageDTO = null;
-        MedicalRequestDTO.DailyDiscomfortDTO dailyDiscomfortDTO = null;
+        MedicalResponseDTO.MedicalChecklistResponseDTO medicalChecklistResponseDTO = new MedicalResponseDTO.MedicalChecklistResponseDTO();
+        MedicalResponseDTO.ReproductiveHealthDTO reproductiveHealthDTO = null;
+        MedicalResponseDTO.HealthConditionDTO healthConditionDTO = null;
+        MedicalResponseDTO.AllergyStatusDTO allergyStatusDTO = null;
+        MedicalResponseDTO.MedicationUsageDTO medicationUsageDTO = null;
+        MedicalResponseDTO.DailyDiscomfortDTO dailyDiscomfortDTO = null;
 
         // 기존에 건강 체크 리스트를 작성하지 않은 경우
         if(medicalChecklist == null){
-            throw new BaseException(BaseResponseStatus.MEDICAL_CHECKLIST_NO_EXIST);
+            throw new GeneralException(ErrorStatus.MEDICAL_CHECKLIST_NO_EXIST);
         }
 
         if(user.getGender().equals('W')){
-           reproductiveHealthDTO = new MedicalRequestDTO.ReproductiveHealthDTO(
+           reproductiveHealthDTO = new MedicalResponseDTO.ReproductiveHealthDTO(
                medicalChecklist.getIsPregnant(),
                medicalChecklist.getIsBreastfeeding(),
                medicalChecklist.getIsPlanningChild(),
@@ -205,7 +196,7 @@ public class MedicalService {
         }
 
         //남녀 모두 있는 항목
-        healthConditionDTO = new MedicalRequestDTO.HealthConditionDTO(
+        healthConditionDTO = new MedicalResponseDTO.HealthConditionDTO(
             medicalChecklist.getIsHyperlipidemiaCondition(),
             medicalChecklist.getIsHypertensionCondition(),
             medicalChecklist.getIsLiverCondition(),
@@ -227,7 +218,7 @@ public class MedicalService {
         );
 
         //남녀 모두 있는 항목
-        allergyStatusDTO = new MedicalRequestDTO.AllergyStatusDTO(
+        allergyStatusDTO = new MedicalResponseDTO.AllergyStatusDTO(
             medicalChecklist.getIsUnknownAllergy(),
             medicalChecklist.getIsPeanutAllergy(),
             medicalChecklist.getIsShellfishAllergy(),
@@ -252,7 +243,7 @@ public class MedicalService {
         );
 
         //남녀 모두 있는 항목
-        medicationUsageDTO = new MedicalRequestDTO.MedicationUsageDTO(
+        medicationUsageDTO = new MedicalResponseDTO.MedicationUsageDTO(
             medicalChecklist.getIsTakingAntihyperlipidemic(),
             medicalChecklist.getIsTakingAntihypertensive(),
             medicalChecklist.getIsTakingHormonal(),
@@ -272,7 +263,7 @@ public class MedicalService {
             medicalChecklist.getIsTakingNephrotoxicDrug()
         );
 
-        dailyDiscomfortDTO = new MedicalRequestDTO.DailyDiscomfortDTO(
+        dailyDiscomfortDTO = new MedicalResponseDTO.DailyDiscomfortDTO(
             medicalChecklist.getIsExperiencingSleepDifficulty(),
             medicalChecklist.getIsExperiencingStress(),
             medicalChecklist.getIsExperiencingMemoryLoss(),
@@ -280,13 +271,13 @@ public class MedicalService {
             medicalChecklist.getIsExperiencingDepression()
         );
 
-        medicalChecklistDTO.setReproductiveHealthDTO(reproductiveHealthDTO);
-        medicalChecklistDTO.setHealthConditionDTO(healthConditionDTO);
-        medicalChecklistDTO.setAllergyStatusDTO(allergyStatusDTO);
-        medicalChecklistDTO.setMedicationUsageDTO(medicationUsageDTO);
-        medicalChecklistDTO.setDailyDiscomfortDTO(dailyDiscomfortDTO);
+        medicalChecklistResponseDTO.setReproductiveHealthDTO(reproductiveHealthDTO);
+        medicalChecklistResponseDTO.setHealthConditionDTO(healthConditionDTO);
+        medicalChecklistResponseDTO.setAllergyStatusDTO(allergyStatusDTO);
+        medicalChecklistResponseDTO.setMedicationUsageDTO(medicationUsageDTO);
+        medicalChecklistResponseDTO.setDailyDiscomfortDTO(dailyDiscomfortDTO);
 
-        return medicalChecklistDTO;
+        return medicalChecklistResponseDTO;
     }
 
 
@@ -294,7 +285,7 @@ public class MedicalService {
     public MedicalResponseDTO.NutrientSuggestionDto recommendNutrients(Long userId, CognitiveDomain typeName) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-            .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+            .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         MedicalResponseDTO.NutrientMainDomainDTO nutrientMainDomainDTO = new MedicalResponseDTO.NutrientMainDomainDTO();
         MedicalResponseDTO.NutrientSubDomainDTO nutrientSubDomainDTO = new MedicalResponseDTO.NutrientSubDomainDTO();
@@ -310,23 +301,10 @@ public class MedicalService {
             }
             return new MedicalResponseDTO.NutrientSuggestionDto(nutrientMainDomainDTO, nutrientSubDomainDTO);
         }catch (Exception e){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            log.error(e.getMessage());
+            throw new GeneralException(ErrorStatus._INTERNAL_SERVER_ERROR);
         }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
     private List<UserPregnancyEntity> createUserPregnancyList(MedicalRequestDTO.ReproductiveHealthDTO reproductiveHealthDTO, UserEntity user){
         List<UserPregnancyEntity> userPregnancyEntityList = new ArrayList<>();

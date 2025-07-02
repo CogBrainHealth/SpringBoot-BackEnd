@@ -47,7 +47,7 @@ public class PremiumMedicalChecklistEntity extends BaseEntity {
 	private LocalTime localTime;
 	private Integer totalScore;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id") // 외래 키 설정
 	private UserEntity user;
 

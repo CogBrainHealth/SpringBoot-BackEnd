@@ -25,8 +25,6 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH4014", "아이디 또는 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요."),
 
     //user 오류 -> 2000번
-    FAILED_LOGIN(HttpStatus.BAD_REQUEST, "USER4001", "로그인에 실패했습니다"),
-    NO_VALID_LOGINDTO(HttpStatus.BAD_REQUEST, "USER4001", "LoginDTO의 형식에 맞게 로그인 해주세요"),
     EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "USER4004", "refresh 토큰의 만료시간이 지났습니다"),
     UNEXPECTED_GENDER(HttpStatus.BAD_REQUEST, "USER4005", "성별이 올바르지 않습니다"),
     USER_NO_EXIST(HttpStatus.NOT_FOUND, "USER4007", "존재하지 않는 유저입니다"),
@@ -40,10 +38,10 @@ public enum ErrorStatus implements BaseErrorCode {
     GAME_TYPE_NO_EXIST(HttpStatus.NOT_FOUND, "GAME4003", "해당 유형의 게임이 존재하지 않습니다"),
 
     //medical 오류 -> 4000번
-    MEDICAL_CHECKLIST_NO_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "MEDICAL4001", "기본 건강 정보를 아직 작성하지 않으셨습니다"),
-    MEDICAL_CHECKLIST_ALREADY_EXIST(HttpStatus.CONFLICT, "MEDICAL4002", "기본 건강 정보를 이미 작성하셨습니다"),
-    PREMIUM_MEDICAL_CHECKLIST_NO_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "MEDICAL4003", "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
-    PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST(HttpStatus.CONFLICT, "MEDICAL4004", "프리미엄 건강 정보를 이미 작성하셨습니다"),
+    MEDICAL_CHECKLIST_NO_EXIST(HttpStatus.NOT_FOUND, "MEDICAL4001", "기본 건강 정보를 아직 작성하지 않으셨습니다"),
+    MEDICAL_CHECKLIST_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "MEDICAL4002", "기본 건강 정보를 이미 작성하셨습니다"),
+    PREMIUM_MEDICAL_CHECKLIST_NO_EXIST(HttpStatus.NOT_FOUND, "MEDICAL4003", "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
+    PREMIUM_MEDICAL_CHECKLIST_ALREADY_EXIST(HttpStatus.UNPROCESSABLE_ENTITY, "MEDICAL4004", "프리미엄 건강 정보를 이미 작성하셨습니다"),
 
     NUTRIENT_NOT_EXIST(HttpStatus.NOT_FOUND, "NUTRIENT4005", "영양소 정보가 존재하지 않습니다"),
 
