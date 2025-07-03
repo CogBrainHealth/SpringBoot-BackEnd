@@ -2,6 +2,7 @@ package server.brainboost.src.medical.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import server.brainboost.enums.MealPeriod;
 
 import java.util.List;
 
@@ -59,19 +60,7 @@ public class MedicalResponseDTO {
 
     }
 
-    @Getter
-    @Setter
-    @Schema(description = "영양소 정보를 반환하는 DTO ")
-    @Builder
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class NutrientInfoDTO{
 
-        private Long nutrientId;
-        private String nutrientName;
-        private String details;
-
-    }
 
     @Getter
     @Setter
@@ -374,9 +363,57 @@ public class MedicalResponseDTO {
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class MedicalChecklistIdDTO{
+    public static class PremiumMedicalChecklistResponseDTO{
 
-        private Long checklistId;
+        @Schema(description = "평가")
+        private String evaluation;
+
+        @Schema(description = "총점")
+        private Integer totalScore;
+
+        @Schema(description = "주의력 점수")
+        private Integer attentionScore;
+
+        @Schema(description = "기억회상 점수")
+        private Integer memoryScore;
+
+        @Schema(description = "시공간 구상 점수")
+        private Integer spatialPerceptionScore;
+
+        @Schema(description = "코멘트")
+        private String comment;
+
+        @Schema(description = "증상 리스트")
+        private List<String> feedbackList;
+
+        List<NutrientCombinationsDTO> nutrientCombinationsDTOList;
+        List<MealPlanDTO> mealPlanDTOList;
+    }
+
+    @Getter
+    @Setter
+    @Schema(description = "음식 정보를 저장하는 DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class MealPlanDTO {
+
+        String foodName;
+        MealPeriod mealPeriod;
+
+    }
+
+    @Getter
+    @Setter
+    @Schema(description = "영양성분 조합을 저장하는 DTO ")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class NutrientCombinationsDTO {
+
+        private Long nutrientId;
+        private String nutrientName;
+
     }
 
 }

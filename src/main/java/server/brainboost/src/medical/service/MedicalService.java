@@ -1,7 +1,10 @@
 package server.brainboost.src.medical.service;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ThreadLocalRandom;
 
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -9,36 +12,35 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import server.brainboost.code.status.ErrorStatus;
+import server.brainboost.enums.*;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.config.Status;
-import server.brainboost.enums.AllergyTag;
-import server.brainboost.enums.ConditionTag;
-import server.brainboost.enums.DiscomfortTag;
-import server.brainboost.enums.MedicineTag;
-import server.brainboost.enums.PregnancyTag;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.dto.converter.MedicalConverter;
 import server.brainboost.src.medical.dto.test.NutrientDetails;
 import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.food.MealPlanEntity;
 import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
 import server.brainboost.src.medical.entity.checklist.PremiumMedicalChecklistEntity;
+import server.brainboost.src.medical.entity.nutrientCombinations.NutrientCombinationsEntity;
 import server.brainboost.src.medical.entity.userStatus.UserAllergyEntity;
 import server.brainboost.src.medical.entity.userStatus.UserConditionEntity;
 import server.brainboost.src.medical.entity.userStatus.UserDiscomfortEntity;
 import server.brainboost.src.medical.entity.userStatus.UserMedicineEntity;
 import server.brainboost.src.medical.entity.userStatus.UserPregnancyEntity;
-import server.brainboost.src.medical.repository.MedicalChecklistRepository;
+import server.brainboost.src.medical.repository.checklist.MedicalChecklistRepository;
 import server.brainboost.src.medical.repository.MedicalRepository;
-import server.brainboost.src.medical.repository.NutrientRepository;
-import server.brainboost.src.medical.repository.PremiumMedicalChecklistRepository;
-import server.brainboost.src.medical.repository.UserAllergyRepository;
-import server.brainboost.src.medical.repository.UserConditionRepository;
-import server.brainboost.src.medical.repository.UserDiscomfortRepository;
-import server.brainboost.src.medical.repository.UserMedicineRepository;
-import server.brainboost.src.medical.repository.UserPregnancyRepository;
+import server.brainboost.src.medical.repository.food.MealPlanRepository;
+import server.brainboost.src.medical.repository.nutrient.NutrientRepository;
+import server.brainboost.src.medical.repository.checklist.PremiumMedicalChecklistRepository;
+import server.brainboost.src.medical.repository.nutrientCombinations.NutrientCombinationsRepository;
+import server.brainboost.src.medical.repository.userStatus.UserAllergyRepository;
+import server.brainboost.src.medical.repository.userStatus.UserConditionRepository;
+import server.brainboost.src.medical.repository.userStatus.UserDiscomfortRepository;
+import server.brainboost.src.medical.repository.userStatus.UserMedicineRepository;
+import server.brainboost.src.medical.repository.userStatus.UserPregnancyRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
 
@@ -57,6 +59,9 @@ public class MedicalService {
     private final MedicalRepository medicalRepository;
     private final NutrientRepository nutrientRepository;
     private final PremiumMedicalChecklistRepository premiumMedicalChecklistRepository;
+
+    private final MealPlanRepository mealPlanRepository;
+    private final NutrientCombinationsRepository nutrientCombinationsRepository;
 
 
     @Transactional
@@ -570,6 +575,7 @@ public class MedicalService {
 
     }
 
+    @Transactional
 	public void createPremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO) throws BaseException{
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
@@ -590,6 +596,7 @@ public class MedicalService {
 
     }
 
+    @Transactional
     public void updatePremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO) {
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
@@ -607,15 +614,58 @@ public class MedicalService {
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
     }
 
+    @Transactional
     public MedicalResponseDTO.NutrientResponseDTO getNutrientDetails(@Valid Long nutrientId) {
 
         NutrientEntity nutrient = nutrientRepository.findById(nutrientId).
                 orElseThrow(()-> new GeneralException(ErrorStatus._UNAUTHORIZED));
 
 
-        MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = MedicalConverter.toNutrientInfoDTO(nutrient);
+        MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = MedicalConverter.toNutrientResponseDTO(nutrient);
         nutrientResponseDTO.setCouPangLink("https://www.coupang.com/np/search?component=&q=" + nutrient.getNutrientName());
 
         return nutrientResponseDTO;
+    }
+
+    @Transactional
+    public MedicalResponseDTO.PremiumMedicalChecklistResponseDTO getPremiumMedicalCheckList(Long userId) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
+
+        PremiumMedicalChecklistEntity premiumMedicalChecklistEntity = premiumMedicalChecklistRepository.findPremiumMedicalChecklistEntityByUser(user)
+                .orElseThrow(()->new GeneralException(ErrorStatus.PREMIUM_MEDICAL_CHECKLIST_NO_EXIST));
+
+
+        EnumMap<CognitiveDomain, Integer> scores = new EnumMap<>(CognitiveDomain.class);
+
+        scores.put(CognitiveDomain.ATTENTION, premiumMedicalChecklistEntity.getAttentionScore());
+        scores.put(CognitiveDomain.MEMORY, premiumMedicalChecklistEntity.getMemoryScore());
+        scores.put(CognitiveDomain.SPATIAL_PERCEPTION, premiumMedicalChecklistEntity.getSpatialPerceptionScore());
+
+        CognitiveDomain weakCognitiveDomain = scores.entrySet().stream()
+                .min(Map.Entry.comparingByValue())
+                .orElseThrow(() -> new GeneralException(ErrorStatus.PREMIUM_MEDICAL_CHECKLIST_NO_EXIST))
+                .getKey();
+
+        //TODO DB 마이그레이션 공부 및 적용해보기
+        MealPeriod randomMealPeriod = MealPeriod.randomPeriod();
+        List<MealPlanEntity> mealPlanEntityList = mealPlanRepository.findMealPlanEntitiesByCognitiveDomainAndMealPeriod(weakCognitiveDomain, randomMealPeriod);
+
+        int randomGroupNumber = randomGroupNumber();
+        List<NutrientCombinationsEntity> nutrientCombinationsEntityList = nutrientCombinationsRepository.findNutrientCombinationsEntitiesByCognitiveDomainAndGroupNumber(weakCognitiveDomain, randomGroupNumber);
+
+        return MedicalConverter.toPremiumMedicalChecklistResponseDTO(premiumMedicalChecklistEntity, nutrientCombinationsEntityList, mealPlanEntityList);
+
+    }
+
+    public static Integer randomGroupNumber() {
+        int[] options = {1, 2};
+
+        // 0부터 options.length 미만의 인덱스를 랜덤으로 뽑아
+        int idx = ThreadLocalRandom.current().nextInt(options.length);
+        int randomValue = options[idx];
+
+        return randomValue;
     }
 }

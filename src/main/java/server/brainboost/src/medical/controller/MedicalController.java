@@ -88,27 +88,38 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
     })
-    public ResponseEntity<BaseResponse<String>> updatePremiumMedicalCheckList(@Valid @RequestBody
+    public ApiResponse<String> updatePremiumMedicalCheckList(@Valid @RequestBody
                                                                               MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
-        try{
-            Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = SecurityUtil.getCurrentUserId();
 
-            medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
-            return ResponseEntity.ok(new BaseResponse<>("프리미엄 건강 체크 리스트가 작성됐습니다"));
-
-        }catch (BaseException e){
-            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
-
-        }
-
+        medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
+        return ApiResponse.onSuccess("프리미엄 건강 체크 리스트가 작성됐습니다");
 
     }
 
 
+    //TODO 꼭 테스트해보기
+    // 하드코딩으로 id = 1L, mealPeriod = "아침" 부분 랜덤 값으로 수정하기
+    @GetMapping("/api/medical/premium/checklist")
+    @Operation(summary = "프리미엄 건강 체크 리스트 결과 조회 api", description = "프리미엄 건강 체크 리스트 결과 조회", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "성별이 올바르지 않습니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
+    })
+    public ApiResponse<MedicalResponseDTO.PremiumMedicalChecklistResponseDTO> getPremiumMedicalCheckList(){
+            Long userId = SecurityUtil.getCurrentUserId();
+
+            MedicalResponseDTO.PremiumMedicalChecklistResponseDTO premiumMedicalChecklistResponseDTO = medicalService.getPremiumMedicalCheckList(userId);
+            return ApiResponse.onSuccess(premiumMedicalChecklistResponseDTO);
+
+    }
+
     @GetMapping("/api/medical/checklist")
-    @Operation(summary = "기본 건강 체크 리스트 조회 api", description = "체크 리스트 조회", responses = {
+    @Operation(summary = "기본 건강 체크 리스트 결과 조회 api", description = "건강 체크 리스트 결과 조회", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
@@ -117,10 +128,10 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "기본 건강 정보를 아직 작성하지 않으셨습니다"),
     })
     public ApiResponse<MedicalResponseDTO.MedicalChecklistResponseDTO> getMedicalCheckList(){
-            Long userId = SecurityUtil.getCurrentUserId();
+        Long userId = SecurityUtil.getCurrentUserId();
 
-            MedicalResponseDTO.MedicalChecklistResponseDTO medicalChecklistResponseDTO = medicalService.getMedicalCheckList(userId);
-            return ApiResponse.onSuccess(medicalChecklistResponseDTO);
+        MedicalResponseDTO.MedicalChecklistResponseDTO medicalChecklistResponseDTO = medicalService.getMedicalCheckList(userId);
+        return ApiResponse.onSuccess(medicalChecklistResponseDTO);
 
     }
 

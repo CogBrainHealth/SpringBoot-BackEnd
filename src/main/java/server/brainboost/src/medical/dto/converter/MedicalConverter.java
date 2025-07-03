@@ -1,17 +1,21 @@
 package server.brainboost.src.medical.dto.converter;
 
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.exception.BaseException;
+import server.brainboost.enums.PremiumScoreLevel;
 import server.brainboost.exception.GeneralException;
-import server.brainboost.src.medical.dto.MedicalRequestDTO;
 import server.brainboost.src.medical.dto.MedicalResponseDTO;
 import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
+import server.brainboost.src.medical.entity.checklist.PremiumMedicalChecklistEntity;
+import server.brainboost.src.medical.entity.food.MealPlanEntity;
 import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
+import server.brainboost.src.medical.entity.nutrientCombinations.NutrientCombinationsEntity;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class MedicalConverter {
 
-    public static MedicalResponseDTO.NutrientResponseDTO toNutrientInfoDTO(NutrientEntity nutrientEntity) {
+    public static MedicalResponseDTO.NutrientResponseDTO toNutrientResponseDTO(NutrientEntity nutrientEntity) {
         return MedicalResponseDTO.NutrientResponseDTO.builder()
                 .nutrientId(nutrientEntity.getId())
                 .nutrientName(nutrientEntity.getNutrientName().name())
@@ -126,6 +130,44 @@ public class MedicalConverter {
         return medicalChecklistResponseDTO;
 
 
+    }
+
+    public static MedicalResponseDTO.PremiumMedicalChecklistResponseDTO toPremiumMedicalChecklistResponseDTO(PremiumMedicalChecklistEntity premiumMedicalChecklistEntity, List<NutrientCombinationsEntity> nutrientCombinationsEntityList, List<MealPlanEntity> mealPlanEntityList){
+
+        PremiumScoreLevel level = PremiumScoreLevel.of(premiumMedicalChecklistEntity.getTotalScore());
+
+        //TODO DB 마이그레이션 공부 및 적용해보기
+
+        return MedicalResponseDTO.PremiumMedicalChecklistResponseDTO.builder()
+                .evaluation(level.getEvaluation())
+                .totalScore(premiumMedicalChecklistEntity.getTotalScore())
+                .attentionScore(premiumMedicalChecklistEntity.getAttentionScore())
+                .memoryScore(premiumMedicalChecklistEntity.getMemoryScore())
+                .spatialPerceptionScore(premiumMedicalChecklistEntity.getSpatialPerceptionScore())
+                .comment(level.getComment())
+                .feedbackList(level.getFeedbackList())
+                .nutrientCombinationsDTOList(toListNutrientCombinationsDTO(nutrientCombinationsEntityList))
+                .mealPlanDTOList(toListMealPlanDTO(mealPlanEntityList))
+                .build();
+    }
+
+    public static List<MedicalResponseDTO.MealPlanDTO> toListMealPlanDTO(List<MealPlanEntity> mealPlanEntityList){
+        return mealPlanEntityList.stream()
+                .map(entity -> MedicalResponseDTO.MealPlanDTO.builder()
+                        .foodName(entity.getFoodName())
+                        .mealPeriod(entity.getMealPeriod())
+                        .build())
+                .collect(Collectors.toList());
+
+    }
+
+    public static List<MedicalResponseDTO.NutrientCombinationsDTO> toListNutrientCombinationsDTO(List<NutrientCombinationsEntity> nutrientCombinationsEntityList){
+        return nutrientCombinationsEntityList.stream()
+                .map(entity -> MedicalResponseDTO.NutrientCombinationsDTO.builder()
+                        .nutrientId(entity.getNutrientEntity().getId())
+                        .nutrientName(entity.getNutrientEntity().getNutrientName().name())
+                        .build())
+                .collect(Collectors.toList());
     }
 
 }
