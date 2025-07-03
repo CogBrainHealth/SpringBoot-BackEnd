@@ -30,66 +30,38 @@ public class PremiumMedicalChecklistEntity extends BaseEntity {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private Integer number1;
-	private Integer number2;
-	private Integer number3;
-	private Integer number4;
-	private Integer number5;
-	private Integer number6;
-	private Integer number7;
-	private Integer number8;
-	private Integer number9;
-	private Integer number10;
-	private Integer number11;
-	private Integer number12;
-	private Integer number13;
+	private Integer memoryScore;
+	private Integer attentionScore;
+	private Integer SpatialPerceptionScore;
 
 	private LocalTime localTime;
 	private Integer totalScore;
 
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+	@OneToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id") // 외래 키 설정
 	private UserEntity user;
 
-	public PremiumMedicalChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO, UserEntity user){
-		this.number1 = premiumMedicalChecklistDTO.getNumber1();
-		this.number2 = premiumMedicalChecklistDTO.getNumber2();
-		this.number3 = premiumMedicalChecklistDTO.getNumber3();
-		this.number4 = premiumMedicalChecklistDTO.getNumber4();
-		this.number5 = premiumMedicalChecklistDTO.getNumber5();
-		this.number6 = premiumMedicalChecklistDTO.getNumber6();
-		this.number7 = premiumMedicalChecklistDTO.getNumber7();
-		this.number8 = premiumMedicalChecklistDTO.getNumber8();
-		this.number9 = premiumMedicalChecklistDTO.getNumber9();
-		this.number10 = premiumMedicalChecklistDTO.getNumber10();
-		this.number11 = premiumMedicalChecklistDTO.getNumber11();
-		this.number12 = premiumMedicalChecklistDTO.getNumber12();
-		this.number13 = premiumMedicalChecklistDTO.getNumber13();
+	public PremiumMedicalChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO, UserEntity user){
+		this.attentionScore = premiumMedicalChecklistRequestDTO.getAttentionScore();
+		this.memoryScore = premiumMedicalChecklistRequestDTO.getMemoryScore();
+		this.SpatialPerceptionScore = premiumMedicalChecklistRequestDTO.getSpatialPerceptionScore();
 
-		this.localTime = premiumMedicalChecklistDTO.getLocalTime();
+		this.totalScore = premiumMedicalChecklistRequestDTO.getTotalScore();
+
+		this.localTime = premiumMedicalChecklistRequestDTO.getLocalTime();
 		this.user = user;
 
-		this.totalScore = premiumMedicalChecklistDTO.getTotalScore();
 	}
 
-	public void updatePremiumChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistDTO premiumMedicalChecklistDTO){
-		this.number1 = premiumMedicalChecklistDTO.getNumber1();
-		this.number2 = premiumMedicalChecklistDTO.getNumber2();
-		this.number3 = premiumMedicalChecklistDTO.getNumber3();
-		this.number4 = premiumMedicalChecklistDTO.getNumber4();
-		this.number5 = premiumMedicalChecklistDTO.getNumber5();
-		this.number6 = premiumMedicalChecklistDTO.getNumber6();
-		this.number7 = premiumMedicalChecklistDTO.getNumber7();
-		this.number8 = premiumMedicalChecklistDTO.getNumber8();
-		this.number9 = premiumMedicalChecklistDTO.getNumber9();
-		this.number10 = premiumMedicalChecklistDTO.getNumber10();
-		this.number11 = premiumMedicalChecklistDTO.getNumber11();
-		this.number12 = premiumMedicalChecklistDTO.getNumber12();
-		this.number13 = premiumMedicalChecklistDTO.getNumber13();
+	public void updatePremiumChecklistEntity(MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
+		this.attentionScore = premiumMedicalChecklistRequestDTO.getAttentionScore();
+		this.memoryScore = premiumMedicalChecklistRequestDTO.getMemoryScore();
+		this.SpatialPerceptionScore = premiumMedicalChecklistRequestDTO.getSpatialPerceptionScore();
 
-		this.localTime = premiumMedicalChecklistDTO.getLocalTime();
+		this.totalScore = premiumMedicalChecklistRequestDTO.getTotalScore();
 
-		this.totalScore = premiumMedicalChecklistDTO.getTotalScore();
+		this.localTime = premiumMedicalChecklistRequestDTO.getLocalTime();
+
 	}
 
 

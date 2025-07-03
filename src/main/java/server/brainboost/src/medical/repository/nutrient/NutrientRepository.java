@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.repository;
+package server.brainboost.src.medical.repository.nutrient;
 
 import java.util.Optional;
 

@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.repository;
+package server.brainboost.src.medical.repository.userStatus;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

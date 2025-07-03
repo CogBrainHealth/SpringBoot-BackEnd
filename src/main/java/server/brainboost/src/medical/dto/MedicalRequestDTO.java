@@ -10,7 +10,7 @@ public class MedicalRequestDTO {
     @Setter
     @Getter
     @Schema(description = "개인 정보 건강 리스트 정보를 가져올 DTO")
-    public static class MedicalChecklistDTO {
+    public static class MedicalChecklistRequestDTO {
 
         @Schema(description = "1번째 질문: 출산/임신 관련 상태 질문 DTO, 사용자가 남성일 경우 내부의 변수를 false로 채워주세요", nullable = true)
         private ReproductiveHealthDTO reproductiveHealthDTO;
@@ -285,58 +285,27 @@ public class MedicalRequestDTO {
 
     @Getter
     @Setter
-    @Schema(description = "프리미엄 개인 정보 건강 리스트 정보를 담을 DTO")
+    @Schema(description = "프리미엄 건강 리스트 점수를 담을 DTO")
     @Builder
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class PremiumMedicalChecklistDTO {
+    public static class PremiumMedicalChecklistRequestDTO {
 
-        @Schema(description = "1번 문항", nullable = false, example = "1")
-        private Integer number1;
+        @Schema(description = "집중력 점수", nullable = false, example = "3")
+        private Integer attentionScore;
 
-        @Schema(description = "2번 문항", nullable = false, example = "3")
-        private Integer number2;
+        @Schema(description = "기억력 점수", nullable = false, example = "4")
+        private Integer memoryScore;
 
-        @Schema(description = "3번 문항", nullable = false, example = "1")
-        private Integer number3;
+        @Schema(description = "공간지각능력 점수", nullable = false, example = "5")
+        private Integer spatialPerceptionScore;
 
-        @Schema(description = "4번 문항", nullable = false, example = "1")
-        private Integer number4;
-
-        @Schema(description = "5번 문항", nullable = false, example = "1")
-        private Integer number5;
-
-        @Schema(description = "6번 문항", nullable = false, example = "1")
-        private Integer number6;
-
-        @Schema(description = "7번 문항", nullable = false, example = "1")
-        private Integer number7;
-
-        @Schema(description = "8번 문항", nullable = false, example = "1")
-        private Integer number8;
-
-        @Schema(description = "9번 문항", nullable = false, example = "1")
-        private Integer number9;
-
-        @Schema(description = "10번 문항", nullable = false, example = "1")
-        private Integer number10;
-
-        @Schema(description = "11번 문항", nullable = false, example = "1")
-        private Integer number11;
-
-        @Schema(description = "12번 문항", nullable = false, example = "1")
-        private Integer number12;
-
-        @Schema(description = "13번 문항", nullable = false, example = "1")
-        private Integer number13;
+        @Schema(description = "총 점수", nullable = false, example = "24")
+        private Integer totalScore;
 
         @Schema(description = "걸린 시간", nullable = true, example = "14:30:15")
         private LocalTime localTime;
 
-        public Integer getTotalScore(){
-            return number1 + number2 + number3+ number4 + number5 + number6 + number7 + number8 + number9
-                + number10 + number11 + number12 + number13;
-        }
 
     }
 }

@@ -34,8 +34,7 @@ public class GameController {
     })
     public ResponseEntity<BaseResponse<GameResponseDTO.GameByCognitionDTO>> getGamePage(){
         try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId();
 
             return ResponseEntity.ok(new BaseResponse<>(gameService.getGamePage(userId)));
         }catch (BaseException e){
@@ -55,8 +54,7 @@ public class GameController {
     })
     public ResponseEntity<BaseResponse<String>> saveMapNavigationResult(@RequestBody @Valid GameRequestDTO.MapNavigationResultDTO mapNavigationResultDTO){
         try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId();
 
             gameService.saveMapNavigationResult(userId, mapNavigationResultDTO);
             return ResponseEntity.ok(new BaseResponse<>("지도보고 길찾기 결과가 저장되었습니다."));
@@ -78,8 +76,7 @@ public class GameController {
     })
     public ResponseEntity<BaseResponse<String>> saveScroopTestResult(@RequestBody @Valid GameRequestDTO.ScroopTestResultDTO scroopTestResultDTO){
         try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId();
 
             gameService.saveScroopTestResult(userId, scroopTestResultDTO);
             return ResponseEntity.ok(new BaseResponse<>("scroop test 결과가 저장되었습니다."));
@@ -101,8 +98,7 @@ public class GameController {
     })
     public ResponseEntity<BaseResponse<String>> saveMentalRotationResult(@RequestBody @Valid GameRequestDTO.MentalRotationDTO mentalRotationDTO){
         try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId();
 
             gameService.saveMentalRotationResult(userId, mentalRotationDTO);
             return ResponseEntity.ok(new BaseResponse<>("mental-rotation 결과가 저장되었습니다."));
@@ -121,8 +117,7 @@ public class GameController {
     })
     public ResponseEntity<BaseResponse<GameResponseDTO.GameDetailsDTO>> getTodayGame(){
         try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+            Long userId = SecurityUtil.getCurrentUserId();
 
             return ResponseEntity.ok(new BaseResponse<>(gameService.getTodayGame()));
         }catch (BaseException e){

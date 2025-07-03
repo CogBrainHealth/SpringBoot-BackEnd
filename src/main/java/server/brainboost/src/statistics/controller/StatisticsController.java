@@ -1,13 +1,13 @@
 package server.brainboost.src.statistics.controller;
 
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
+import server.brainboost.code.ApiResponse;
 import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponse;
 import server.brainboost.base.BaseResponseStatus;
@@ -23,25 +23,82 @@ public class StatisticsController {
     private final UserService userService;
     private final StatisticsService statisticsService;
 
-    @GetMapping("/api/statistics/score")
-    @Operation(summary = "총합 점수 및 각 영역 점수 조회 api", description = "전체 점수 + 주의력 영역 점수 + 공간지각능력 점수 + 기억력 점수", responses = {
-            @ApiResponse(responseCode = "200", description = "성공"),
-            @ApiResponse(responseCode = "400", description = "파라미터 오류"),
-            @ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
-            @ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+    //TODO Test 해보기!!
+    @GetMapping("/api/statistics/total")
+    @Operation(summary = "통계 영역의 총합 점수 조회 api", description = "전체 점수 출력", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
     })
-    public ResponseEntity<BaseResponse<StatisticResponse.GameStatisticsDTO>> getMyGameStatistics(){
+    public ApiResponse<StatisticResponse.TotalScoreResponseDTO> getMyTotalScore(){
 
-        try{
-            Long userId = SecurityUtil.getCurrentUserId()
-                    .orElseThrow(() -> new BaseException(BaseResponseStatus.REQUIRED_LOGIN));
+        Long userId = SecurityUtil.getCurrentUserId();
+        return ApiResponse.onSuccess(statisticsService.getMyTotalScore(userId));
 
-            return ResponseEntity.ok(new BaseResponse<>(statisticsService.getMyGameStatistics(userId)));
-        }catch (BaseException e){
-            HttpStatus httpStatus = HttpStatus.INTERNAL_SERVER_ERROR;
-            return ResponseEntity.status(httpStatus).body(new BaseResponse<>(e.getStatus()));
-        }
     }
+
+    //TODO Test 해보기!!
+    @GetMapping("/api/statistics")
+    @Operation(summary = "통계 영역의 기본 화면 api", description = "통계 영역 기본 화면", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+    })
+    public ApiResponse<StatisticResponse.StatisticsHomeResponseDTO> getStatisticsByUser(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+        return ApiResponse.onSuccess(statisticsService.getStatisticsByUser(userId));
+
+    }
+
+    //TODO Test 해보기!!
+    @GetMapping("/api/statistics/attention")
+    @Operation(summary = "주의력 영역 점수 통계 api", description = "주의력 점수 및 설명", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+    })
+    public ApiResponse<StatisticResponse.AttentionScoreResponseDTO> getAttentionScoreByUser(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+        return ApiResponse.onSuccess(statisticsService.getAttentionScoreByUser(userId));
+
+    }
+
+    //TODO Test 해보기!!
+    @GetMapping("/api/statistics/memory")
+    @Operation(summary = "기억력 영역 점수 통계 api", description = "기억력 점수 및 설명", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+    })
+    public ApiResponse<StatisticResponse.MemoryScoreResponseDTO> getMemoryScoreByUser(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+        return ApiResponse.onSuccess(statisticsService.getMemoryScoreByUser(userId));
+
+    }
+
+    //TODO Test 해보기!!
+    @GetMapping("/api/statistics/spatial-perception")
+    @Operation(summary = "공간지각능력 영역 점수 통계 api", description = "공간지각능력 점수 및 설명", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
+    })
+    public ApiResponse<StatisticResponse.SpatialPerceptionScoreResponseDTO> getSpatialPerceptionScoreByUser(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+        return ApiResponse.onSuccess(statisticsService.getSpatialPerceptionScoreByUser(userId));
+
+    }
+
+
 
     /*@GetMapping("/api/statistics/{cognitive_domain}")
     @Operation(summary = "해당 영역의 점소 보기 api", description = "MyGameScoreDTO에서 정보 가져오기", responses = {

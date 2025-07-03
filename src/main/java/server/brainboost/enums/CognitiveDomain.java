@@ -2,8 +2,9 @@ package server.brainboost.enums;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 
-import server.brainboost.exception.BaseException;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.exception.GeneralException;
 
 public enum CognitiveDomain {
 
@@ -13,7 +14,7 @@ public enum CognitiveDomain {
     public static CognitiveDomain from(String value) {
 
         if (value == null || value.isBlank()) {
-            throw new BaseException(BaseResponseStatus.PARAMETER_ERROR);
+            throw new GeneralException(ErrorStatus.PARAMETER_ERROR);
         }
 
         return CognitiveDomain.valueOf(value.toUpperCase());

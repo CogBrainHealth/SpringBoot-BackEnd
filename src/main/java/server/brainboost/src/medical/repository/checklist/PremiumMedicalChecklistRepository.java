@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.repository;
+package server.brainboost.src.medical.repository.checklist;
 
 import java.util.Optional;
 
@@ -12,5 +12,4 @@ public interface PremiumMedicalChecklistRepository extends JpaRepository<Premium
 	Boolean existsByUser(UserEntity user);
 
 	Optional<PremiumMedicalChecklistEntity> findPremiumMedicalChecklistEntityByUser(UserEntity user);
-
 }

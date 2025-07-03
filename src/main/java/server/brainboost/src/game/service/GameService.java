@@ -16,7 +16,7 @@ import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.repository.GameTypeRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
 import server.brainboost.src.statistics.entity.GlobalStatisticsEntity;
-import server.brainboost.src.statistics.entity.UserStatisticsEntity;
+import server.brainboost.src.statistics.entity.CategoryScoreEntity;
 import server.brainboost.src.statistics.repository.GlobalStatisticsRepository;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
@@ -98,16 +98,16 @@ public class GameService {
     }
 
     @Transactional
-    public UserStatisticsEntity updateUserStatistics(UserEntity user, GameTypeEntity gameType, Long newScore){
+    public CategoryScoreEntity updateUserStatistics(UserEntity user, GameTypeEntity gameType, Long newScore){
         // 2번
-        UserStatisticsEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndGameType(user, gameType)
+        CategoryScoreEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndGameType(user, gameType)
                 .orElse(null);
 
         if(userStatistics == null){
             // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 userStatistics 생성
-            userStatistics = new UserStatisticsEntity(newScore, 1L, user, gameType);
+            userStatistics = new CategoryScoreEntity(newScore, 1L, user, gameType);
         }else{
-            userStatistics.updateUserStatisticEntity(newScore, 1L);
+            userStatistics.updateCategoryScoreEntity(newScore, 1L);
         }
 
         return userStatistics;
@@ -143,7 +143,7 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game, mapNavigationResultDTO.getScore());
 
         // 2번
-        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, mapNavigationResultDTO.getScore().longValue());
+        CategoryScoreEntity userStatistics = updateUserStatistics(user, gameType, mapNavigationResultDTO.getScore().longValue());
 
         //3번
         GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, mapNavigationResultDTO.getScore().longValue());
@@ -180,7 +180,7 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game,scroopTestResultDTO.getScore());
 
         // 2번
-        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, scroopTestResultDTO.getScore().longValue());
+        CategoryScoreEntity userStatistics = updateUserStatistics(user, gameType, scroopTestResultDTO.getScore().longValue());
 
         //3번
         GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, scroopTestResultDTO.getScore().longValue());
@@ -218,7 +218,7 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game, mentalRotationDTO.getScore());
 
         // 2번
-        UserStatisticsEntity userStatistics = updateUserStatistics(user, gameType, mentalRotationDTO.getScore().longValue());
+        CategoryScoreEntity userStatistics = updateUserStatistics(user, gameType, mentalRotationDTO.getScore().longValue());
 
         //3번
         GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(gameType, mentalRotationDTO.getScore().longValue());

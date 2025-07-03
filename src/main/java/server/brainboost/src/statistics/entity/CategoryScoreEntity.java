@@ -12,15 +12,15 @@ import server.brainboost.src.user.entity.UserEntity;
 @Entity
 @Getter
 @Setter
-@Table(name = "user_statistics")
+@Table(name = "category_score")
 @NoArgsConstructor
 @DynamicInsert
-public class UserStatisticsEntity extends BaseEntity {
+public class CategoryScoreEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private Long userStatisticsId;
+    private Long categoryScoreId;
 
     @Column(name = "total_score")
     private Long totalScore;
@@ -36,14 +36,14 @@ public class UserStatisticsEntity extends BaseEntity {
     @JoinColumn(name = "game_type_id")
     private GameTypeEntity gameType;
 
-    public UserStatisticsEntity(Long totalScore, Long count, UserEntity user, GameTypeEntity gameType){
+    public CategoryScoreEntity(Long totalScore, Long count, UserEntity user, GameTypeEntity gameType){
         this.totalScore = totalScore;
         this.count = count;
         this.user = user;
         this.gameType = gameType;
     }
 
-    public void updateUserStatisticEntity(Long score, Long count){
+    public void updateCategoryScoreEntity(Long score, Long count){
         this.totalScore += score;
         this.count += count;
     }

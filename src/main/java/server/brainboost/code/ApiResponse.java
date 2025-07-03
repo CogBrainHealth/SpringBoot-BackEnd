@@ -3,6 +3,7 @@ package server.brainboost.code;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import server.brainboost.code.status.ErrorStatus;
@@ -11,6 +12,7 @@ import server.brainboost.code.status.SuccessStatus;
 @Getter
 @AllArgsConstructor
 @JsonPropertyOrder({"isSuccess", "code", "message", "result"})
+@Schema(name = "ApiResponse", description = "공통 응답 포맷")
 public class ApiResponse<T> {
 
     @JsonProperty("isSuccess")

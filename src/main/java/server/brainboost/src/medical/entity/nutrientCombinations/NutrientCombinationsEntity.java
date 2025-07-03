@@ -1,4 +1,5 @@
-package server.brainboost.src.medical.entity.food;
+package server.brainboost.src.medical.entity.nutrientCombinations;
+
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -6,26 +7,25 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.enums.MealPeriod;
+import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
 
 @Entity
 @Getter
-@Table(name = "meal_plan")
+@Table(name = "nutrient_combinations")
 @NoArgsConstructor
 @DynamicInsert
-public class MealPlanEntity extends BaseEntity {
+public class NutrientCombinationsEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long mealPlanId;
+    private Long id;
 
-    @Column(nullable = false)
-    private String foodName;
+    @Column(nullable = true)
+    private Integer groupNumber;
 
-    @Enumerated(EnumType.STRING)
-    @Column(nullable = false, name = "meal_period")
-    private MealPeriod mealPeriod;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "nutrient_id")
+    private NutrientEntity nutrientEntity;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false, name = "cognitive_domain")
