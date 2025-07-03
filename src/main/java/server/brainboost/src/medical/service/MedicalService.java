@@ -581,9 +581,9 @@ public class MedicalService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
             .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        if(user.getIsPremium().equals(Boolean.FALSE)){
+ /*       if(user.getIsPremium().equals(Boolean.FALSE)){
             throw new GeneralException(ErrorStatus.USER_NO_PREMIUM);
-        }
+        }*/
 
         Boolean isExistUser = premiumMedicalChecklistRepository.existsByUser(user);
 
@@ -594,6 +594,8 @@ public class MedicalService {
         PremiumMedicalChecklistEntity premiumMedicalChecklist = new PremiumMedicalChecklistEntity(premiumMedicalChecklistRequestDTO, user);
         premiumMedicalChecklistRepository.save(premiumMedicalChecklist);
 
+
+
     }
 
     @Transactional
@@ -602,9 +604,9 @@ public class MedicalService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
             .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        if(user.getIsPremium().equals(Boolean.FALSE)){
+        /*if(user.getIsPremium().equals(Boolean.FALSE)){
             throw new GeneralException(ErrorStatus.USER_NO_PREMIUM);
-        }
+        }*/
 
         PremiumMedicalChecklistEntity premiumMedicalChecklist =
            premiumMedicalChecklistRepository.findPremiumMedicalChecklistEntityByUser(user)

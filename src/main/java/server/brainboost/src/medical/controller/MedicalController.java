@@ -67,13 +67,14 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 이미 작성하셨습니다"),
     })
-    public ApiResponse<String> createPremiumMedicalCheckList(@Valid @RequestBody
+    public ApiResponse<MedicalResponseDTO.PremiumMedicalChecklistResponseDTO> createPremiumMedicalCheckList(@Valid @RequestBody
                                                              MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
         Long userId = SecurityUtil.getCurrentUserId();
 
         medicalService.createPremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
-        return ApiResponse.onSuccess("프리미엄 건강 체크리스트 정보가 작성되었습니다");
+        MedicalResponseDTO.PremiumMedicalChecklistResponseDTO premiumMedicalChecklistResponseDTO = medicalService.getPremiumMedicalCheckList(userId);
+        return ApiResponse.onSuccess(premiumMedicalChecklistResponseDTO);
 
 
     }
@@ -88,13 +89,15 @@ public class MedicalController {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 유저가 아닙니다"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "프리미엄 건강 정보를 아직 작성하지 않으셨습니다"),
     })
-    public ApiResponse<String> updatePremiumMedicalCheckList(@Valid @RequestBody
+    public ApiResponse<MedicalResponseDTO.PremiumMedicalChecklistResponseDTO> updatePremiumMedicalCheckList(@Valid @RequestBody
                                                                               MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
         Long userId = SecurityUtil.getCurrentUserId();
 
         medicalService.updatePremiumMedicalCheckList(userId, premiumMedicalChecklistRequestDTO);
-        return ApiResponse.onSuccess("프리미엄 건강 체크 리스트가 작성됐습니다");
+        MedicalResponseDTO.PremiumMedicalChecklistResponseDTO premiumMedicalChecklistResponseDTO = medicalService.getPremiumMedicalCheckList(userId);
+
+        return ApiResponse.onSuccess(premiumMedicalChecklistResponseDTO);
 
     }
 
