@@ -5,8 +5,9 @@ import java.time.LocalDate;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import server.brainboost.exception.BaseException;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.exception.GeneralException;
 import server.brainboost.src.game.dto.inter.GameInterface;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.repository.GameRepository;
@@ -25,10 +26,10 @@ public class SchedulerTable {
     @Scheduled(cron = "0 0 0 * * ?")  // 매일 자정에 실행
     public void changeTodayGame(){
         GameInterface gameInterface = gameRepository.findGameInterfaceOrderByRandom()
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.GAME_NO_EXIST));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
         GameEntity game = gameRepository.findGameEntityByGameId(gameInterface.getId())
-                .orElseThrow(() -> new BaseException(BaseResponseStatus.GAME_NO_EXIST));
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
         TodayGameEntity todayGame = new TodayGameEntity(LocalDate.now(), game);
         todayGameRepository.save(todayGame);

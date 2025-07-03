@@ -12,7 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.exception.handler.AuthenticationHandler;
@@ -56,14 +55,17 @@ public class JWTFilter extends OncePerRequestFilter {
             log.error("Authorization header 가 올바르지 않습니다");
             // throw new AuthenticationHandler(ErrorStatus.AUTHENTICATION_HEADER_ERROR);
             ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
+
+            return;
         }
 
         //Authorization 헤더 검증
         if (accessToken == null) {
 
             log.info("accessToken이 존재하지 않은 request가 들어왔습니다");
-            filterChain.doFilter(request, response);
+            //filterChain.doFilter(request, response);
 
+            ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
             //조건이 해당되면 메소드 종료 (필수), 다음 필터 또는 컨트롤러로 제어권을 넘김
             return;
         }
@@ -73,8 +75,9 @@ public class JWTFilter extends OncePerRequestFilter {
             if (jwtUtil.isExpired(accessToken)) {
 
                 log.warn("토큰 시간이 만료되었습니다.");
-                filterChain.doFilter(request, response);
+                //filterChain.doFilter(request, response);
 
+                ResponseUtil.handleException(response,ErrorStatus.EXPIRED_ACCESS_TOKEN);
                 //조건이 해당되면 메소드 종료, 다음 필터 또는 컨트롤러로 제어권을 넘김
                 return;
             }
@@ -96,7 +99,7 @@ public class JWTFilter extends OncePerRequestFilter {
             //System.out.println("token expired");
             log.error("access 토큰 유효시간이 만료되었습니다.");
             //throw new AuthenticationHandler(ErrorStatus.EXPIRED_ACCESS_TOKEN);
-            filterChain.doFilter(request, response);
+
             ResponseUtil.handleException(response, ErrorStatus.EXPIRED_ACCESS_TOKEN);
 
             return;

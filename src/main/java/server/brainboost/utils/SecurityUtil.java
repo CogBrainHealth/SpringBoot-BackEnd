@@ -28,7 +28,8 @@ public class SecurityUtil {
             customUserDetails = (CustomUserDetails) authentication.getPrincipal();
         }catch (ClassCastException e){
             log.error("accessToken을 입력해야 합니다.");
-            throw new AuthenticationHandler(ErrorStatus._UNAUTHORIZED);
+            // throw new AuthenticationHandler(ErrorStatus._UNAUTHORIZED);
+            return null;
         }catch (Exception e){
             throw new AuthenticationHandler(ErrorStatus.USER_NO_EXIST);
         }

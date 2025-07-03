@@ -15,7 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.exception.BaseException;
 import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.dto.UserRequestDTO;
 import server.brainboost.src.user.dto.UserResponseDTO;
@@ -119,6 +118,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) {
         // log.warn("로그인 실패");
         ResponseUtil.handleException(response, ErrorStatus.INVALID_CREDENTIALS);
+        return;
     }
 
     private void addRefreshEntity(String username, String refresh, Long expiredMs) {

@@ -7,9 +7,9 @@ import server.brainboost.exception.GeneralException;
 @Slf4j
 public enum AttentionScoreLevel {
 
-    LOW   (0,  33, "길찾기는 기억력과 집중력, 공간지각 능력을 향상하기 위해 만들어졌어요."),
-    MID   (34, 66, "길찾기는 기억력과 집중력, 공간지각 능력을 향상하기 위해 만들어졌어요."),
-    HIGH  (67,100, "길찾기는 기억력과 집중력, 공간지각 능력을 향상하기 위해 만들어졌어요.");
+    LOW   (0,  33, "주의력 영역 점수 낮음"),
+    MID   (34, 66, "주의력 영역 점수 중간"),
+    HIGH  (67,100, "주의력 영역 점수 높음");
 
     private final int min, max;
     private final String message;

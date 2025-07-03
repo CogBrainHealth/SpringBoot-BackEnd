@@ -65,7 +65,7 @@ public class MedicalService {
 
 
     @Transactional
-    public MedicalResponseDTO.MedicalChecklistResponseDTO createMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistRequestDTO medicalChecklistRequestDTO) throws BaseException{
+    public MedicalResponseDTO.MedicalChecklistResponseDTO createMedicalCheckList(Long userId, MedicalRequestDTO.MedicalChecklistRequestDTO medicalChecklistRequestDTO){
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
@@ -552,7 +552,7 @@ public class MedicalService {
             .orElse(null);
 
         if(nutrient == null){
-            throw new BaseException(BaseResponseStatus.DATABASE_ERROR);
+            throw new GeneralException(ErrorStatus.DATA_CONFLICT);
         }
 
 
@@ -576,7 +576,7 @@ public class MedicalService {
     }
 
     @Transactional
-	public void createPremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO) throws BaseException{
+	public void createPremiumMedicalCheckList(Long userId, MedicalRequestDTO.PremiumMedicalChecklistRequestDTO premiumMedicalChecklistRequestDTO){
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
             .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
@@ -618,7 +618,7 @@ public class MedicalService {
     public MedicalResponseDTO.NutrientResponseDTO getNutrientDetails(@Valid Long nutrientId) {
 
         NutrientEntity nutrient = nutrientRepository.findById(nutrientId).
-                orElseThrow(()-> new GeneralException(ErrorStatus._UNAUTHORIZED));
+                orElseThrow(()-> new GeneralException(ErrorStatus.NUTRIENT_NOT_EXIST));
 
 
         MedicalResponseDTO.NutrientResponseDTO nutrientResponseDTO = MedicalConverter.toNutrientResponseDTO(nutrient);
