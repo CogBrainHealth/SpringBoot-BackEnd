@@ -54,7 +54,7 @@ public class JWTFilter extends OncePerRequestFilter {
 
             log.error("Authorization header 가 올바르지 않습니다");
             // throw new AuthenticationHandler(ErrorStatus.AUTHENTICATION_HEADER_ERROR);
-            ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
+            // ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
 
             return;
         }
@@ -63,9 +63,9 @@ public class JWTFilter extends OncePerRequestFilter {
         if (accessToken == null) {
 
             log.info("accessToken이 존재하지 않은 request가 들어왔습니다");
-            //filterChain.doFilter(request, response);
+            filterChain.doFilter(request, response);
 
-            ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
+            //ResponseUtil.handleException(response,ErrorStatus.AUTHENTICATION_HEADER_ERROR);
             //조건이 해당되면 메소드 종료 (필수), 다음 필터 또는 컨트롤러로 제어권을 넘김
             return;
         }
