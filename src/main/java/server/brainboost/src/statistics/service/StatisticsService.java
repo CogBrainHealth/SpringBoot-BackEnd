@@ -5,13 +5,14 @@ import org.springframework.stereotype.Service;
 import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.config.Status;
 import server.brainboost.exception.GeneralException;
+import server.brainboost.src.game.entity.GameEntity;
+import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 import server.brainboost.src.statistics.dto.StatisticResponse;
 import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
-import server.brainboost.src.statistics.entity.enums.AttentionScoreLevel;
-import server.brainboost.src.statistics.entity.enums.MemoryScoreLevel;
-import server.brainboost.src.statistics.entity.enums.SpatialPerceptionScoreLevel;
-import server.brainboost.src.statistics.entity.enums.TotalScoreLevel;
+import server.brainboost.src.statistics.entity.GameStatisticsEntity;
+import server.brainboost.src.statistics.entity.enums.*;
+import server.brainboost.src.statistics.repository.GameStatisticsRepository;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
@@ -23,6 +24,10 @@ import java.util.List;
 public class StatisticsService {
 
     private final UserRepository userRepository;
+
+    private final GameStatisticsRepository gameStatisticsRepository;
+    private final GameRepository gameRepository;
+
     private final UserStatisticsRepository userStatisticsRepository;
 
     public StatisticResponse.GameStatisticsDTO getMyGameStatistics(Long userId) {
@@ -199,39 +204,24 @@ public class StatisticsService {
 
         return new StatisticResponse.AttentionScoreResponseDTO(totalScore, message);
     }*/
+
+    //TODO - 자바 stream 공부하면서 아래 로직을 stream 사용해서 바꿔보기!!
     public StatisticResponse.AttentionScoreResponseDTO getAttentionScoreByUser(Long userId) {
         // 1) 사용자 존재 확인
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        // 2) 해당 유저의 모든 카테고리별 통계 조회
-        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
+        GameEntity game = gameRepository.findGameEntityByGameId(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        long totalScore = 0;
-        long count = 0;
 
-        // 3) ATTENTION 영역만 골라서 평균 점수 계산
-        for (CognitiveDomainStatisticsEntity s : stats) {
-            if (s == null || s.getCount() == 0) continue;
-            if (s.getCognitiveDomain() == CognitiveDomain.ATTENTION) {
-                long avgLong = s.getTotalScore() / s.getCount();          // long ÷ long -> long
-                int avg = Math.toIntExact(avgLong);                       // 안전하게 int 로 변환
-                totalScore += avg;
-                count++;
-            }
-        }
+        GameStatisticsEntity gameStatisticsEntity = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, game)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET));
 
-        if (count == 0) {
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
+        AttentionMessage attentionMessage = AttentionMessage.fromAgeGroup(gameStatisticsEntity.getAgeGroup());
+        String message = attentionMessage.getMessage();
 
-        // 4) 누적한 평균들의 평균을 최종 avgScore 로 계산
-        int finalAvg = Math.toIntExact(totalScore / count);
-
-        AttentionScoreLevel level = AttentionScoreLevel.of(finalAvg);
-        String message = level.getMessage();
-
-        return new StatisticResponse.AttentionScoreResponseDTO(finalAvg, message);
+        return new StatisticResponse.AttentionScoreResponseDTO(gameStatisticsEntity.getAgeGroup(), message);
     }
 
     public StatisticResponse.MemoryScoreResponseDTO getMemoryScoreByUser(Long userId) {

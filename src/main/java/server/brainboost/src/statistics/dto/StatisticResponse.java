@@ -2,6 +2,7 @@ package server.brainboost.src.statistics.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
+import server.brainboost.src.statistics.entity.enums.AgeGroup;
 
 public class StatisticResponse {
 
@@ -79,14 +80,14 @@ public class StatisticResponse {
     @Builder
     public static class AttentionScoreResponseDTO {
 
-        @Schema(description = "전체 점수")
-        public final int attentionScore;
+        @Schema(description = "나잇대(결과)")
+        public final AgeGroup ageGroup;
 
         @Schema(description = "전체 점수에 대한 설명")
         public final String description;
 
-        public AttentionScoreResponseDTO(int score, String description) {
-            this.attentionScore = score;
+        public AttentionScoreResponseDTO(AgeGroup ageGroup, String description) {
+            this.ageGroup = ageGroup;
             this.description = description;
         }
 
