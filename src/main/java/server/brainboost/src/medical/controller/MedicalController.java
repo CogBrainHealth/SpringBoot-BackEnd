@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.*;
 import server.brainboost.code.ApiResponse;
-import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.service.MedicalService;
 import server.brainboost.utils.SecurityUtil;

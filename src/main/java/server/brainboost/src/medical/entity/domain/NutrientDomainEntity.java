@@ -1,4 +1,4 @@
-package server.brainboost.src.medical.entity.mapping;
+package server.brainboost.src.medical.entity.domain;
 
 import org.hibernate.annotations.DynamicInsert;
 
@@ -16,8 +16,8 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.enums.DomainType;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.domain.enums.DomainType;
 import server.brainboost.src.medical.entity.nutrient.NutrientEntity;
 
 @Entity

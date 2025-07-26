@@ -1,4 +1,4 @@
-package server.brainboost.enums;
+package server.brainboost.src.medical.entity.check.enums;
 
 public enum MedicineTag {
 

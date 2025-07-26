@@ -16,7 +16,7 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.ConditionTag;
+import server.brainboost.src.medical.entity.check.enums.ConditionTag;
 import server.brainboost.src.user.entity.UserEntity;
 
 @Entity

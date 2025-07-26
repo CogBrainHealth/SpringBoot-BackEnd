@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.config.Status;
-import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;

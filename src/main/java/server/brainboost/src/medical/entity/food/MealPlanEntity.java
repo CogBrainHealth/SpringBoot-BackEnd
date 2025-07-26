@@ -5,8 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.enums.MealPeriod;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.food.enums.MealPeriod;
 
 @Entity
 @Getter

@@ -3,10 +3,9 @@ package server.brainboost.src.game.entity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
-import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 
 @Entity
 @Getter

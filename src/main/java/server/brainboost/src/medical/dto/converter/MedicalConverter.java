@@ -1,7 +1,7 @@
 package server.brainboost.src.medical.dto.converter;
 
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.enums.PremiumScoreLevel;
+import server.brainboost.src.medical.entity.checklist.enums.PremiumScoreLevel;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.medical.dto.MedicalResponseDTO;
 import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;

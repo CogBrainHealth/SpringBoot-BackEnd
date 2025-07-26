@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
-import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.enums.Possibility;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.check.enums.Possibility;
 import server.brainboost.src.medical.dto.MedicalResponseDTO;
 
 @Repository

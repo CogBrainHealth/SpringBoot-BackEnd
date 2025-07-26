@@ -2,7 +2,7 @@ package server.brainboost.src.game.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 
 import java.util.ArrayList;
 import java.util.List;

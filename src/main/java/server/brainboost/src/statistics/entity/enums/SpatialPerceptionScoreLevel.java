@@ -1,4 +1,4 @@
-package server.brainboost.enums;
+package server.brainboost.src.statistics.entity.enums;
 
 import lombok.extern.slf4j.Slf4j;
 import server.brainboost.code.status.ErrorStatus;

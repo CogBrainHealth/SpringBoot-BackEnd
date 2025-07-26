@@ -2,7 +2,7 @@ package server.brainboost.src.medical.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
-import server.brainboost.enums.MealPeriod;
+import server.brainboost.src.medical.entity.food.enums.MealPeriod;
 
 import java.util.List;
 

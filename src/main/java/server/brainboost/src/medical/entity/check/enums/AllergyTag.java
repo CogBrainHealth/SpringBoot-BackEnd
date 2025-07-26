@@ -1,6 +1,4 @@
-package server.brainboost.enums;
-
-import io.swagger.v3.oas.annotations.media.Schema;
+package server.brainboost.src.medical.entity.check.enums;
 
 public enum AllergyTag {
 
