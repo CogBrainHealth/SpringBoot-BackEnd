@@ -8,7 +8,6 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.medical.entity.checklist.MedicalChecklistEntity;
 import server.brainboost.src.user.dto.UserRequestDTO;

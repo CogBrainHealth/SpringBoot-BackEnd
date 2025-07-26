@@ -4,12 +4,8 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import server.brainboost.code.ApiResponse;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponse;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.src.medical.dto.*;
 import server.brainboost.src.medical.service.MedicalService;

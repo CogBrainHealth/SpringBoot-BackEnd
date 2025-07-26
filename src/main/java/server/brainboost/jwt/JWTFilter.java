@@ -12,9 +12,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.exception.GeneralException;
-import server.brainboost.exception.handler.AuthenticationHandler;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.utils.ResponseUtil;
 

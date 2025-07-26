@@ -13,8 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.enums.*;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.config.Status;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.medical.dto.*;

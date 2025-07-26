@@ -3,14 +3,9 @@ package server.brainboost.src.statistics.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import server.brainboost.code.ApiResponse;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponse;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.statistics.dto.StatisticResponse;
 import server.brainboost.src.statistics.service.StatisticsService;
 import server.brainboost.src.user.service.UserService;
@@ -25,7 +20,7 @@ public class StatisticsController {
 
     //TODO Test 해보기!!
     @GetMapping("/api/statistics/total")
-    @Operation(summary = "통계 영역의 총합 점수 조회 api", description = "전체 점수 출력", responses = {
+    @Operation(summary = "점수 통계-합산 점수 조회 api", description = "전체 점수 출력", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
@@ -55,7 +50,7 @@ public class StatisticsController {
 
     //TODO Test 해보기!!
     @GetMapping("/api/statistics/attention")
-    @Operation(summary = "주의력 영역 점수 통계 api", description = "주의력 점수 및 설명", responses = {
+    @Operation(summary = "점수 통계-주의력 점수 조회 api", description = "주의력 점수 및 설명", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
@@ -70,7 +65,7 @@ public class StatisticsController {
 
     //TODO Test 해보기!!
     @GetMapping("/api/statistics/memory")
-    @Operation(summary = "기억력 영역 점수 통계 api", description = "기억력 점수 및 설명", responses = {
+    @Operation(summary = "점수 통계-기억력 점수 조회 api", description = "기억력 점수 및 설명", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
@@ -85,7 +80,7 @@ public class StatisticsController {
 
     //TODO Test 해보기!!
     @GetMapping("/api/statistics/spatial-perception")
-    @Operation(summary = "공간지각능력 영역 점수 통계 api", description = "공간지각능력 점수 및 설명", responses = {
+    @Operation(summary = "점수 통계-공간지각능력 점수 조회 api", description = "공간지각능력 점수 및 설명", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),

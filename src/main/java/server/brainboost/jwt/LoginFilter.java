@@ -15,7 +15,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.src.user.dto.UserRequestDTO;
 import server.brainboost.src.user.dto.UserResponseDTO;
 import server.brainboost.src.user.entity.RefreshEntity;

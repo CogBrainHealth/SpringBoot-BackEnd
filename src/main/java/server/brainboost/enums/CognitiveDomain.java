@@ -3,7 +3,6 @@ package server.brainboost.enums;
 import com.fasterxml.jackson.annotation.JsonCreator;
 
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.exception.GeneralException;
 
 public enum CognitiveDomain {

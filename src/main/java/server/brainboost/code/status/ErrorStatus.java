@@ -21,11 +21,11 @@ public enum ErrorStatus implements BaseErrorCode {
     // 인증 오류
     INVALID_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4011",  "토큰이 유효하지 않습니다."),
     EXPIRED_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4012",  "액세스 토큰이 만료되었습니다."),
-    AUTHENTICATION_HEADER_ERROR(HttpStatus.UNAUTHORIZED, "AUTH4013",  "Authorization 헤더가 올바르지 않습니다."),
-    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH4014", "아이디 또는 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요."),
+    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "AUTH4013",  "리프레쉬 토큰이 만료되었습니다."),
+    AUTHENTICATION_HEADER_ERROR(HttpStatus.UNAUTHORIZED, "AUTH4015",  "Authorization 헤더가 올바르지 않습니다."),
+    INVALID_CREDENTIALS(HttpStatus.UNAUTHORIZED, "AUTH4020", "아이디 또는 비밀번호가 일치하지 않습니다. 다시 로그인 해주세요."),
 
     //user 오류 -> 2000번
-    EXPIRED_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "USER4004", "refresh 토큰의 만료시간이 지났습니다"),
     UNEXPECTED_GENDER(HttpStatus.BAD_REQUEST, "USER4005", "성별이 올바르지 않습니다"),
     USER_NO_EXIST(HttpStatus.NOT_FOUND, "USER4007", "존재하지 않는 유저입니다"),
     USER_NO_PREMIUM(HttpStatus.NOT_FOUND, "USER4008", "프리미엄 유저가 아닙니다"),

@@ -11,8 +11,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import server.brainboost.code.ApiResponse;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponse;
 import server.brainboost.src.error.dto.ErrorRequestDTO;
 import server.brainboost.src.error.service.ErrorService;
 

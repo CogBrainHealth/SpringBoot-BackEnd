@@ -3,10 +3,10 @@ package server.brainboost.src.game.service;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponseStatus;
+import server.brainboost.code.status.ErrorStatus;
 import server.brainboost.config.Status;
 import server.brainboost.enums.CognitiveDomain;
+import server.brainboost.exception.GeneralException;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.TodayGameEntity;
@@ -116,10 +116,10 @@ public class GameService {
         String gameName = "지도보고 길찾기";
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         GameEntity game = gameRepository.findGameEntityByName(gameName)
-                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
+                .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
 
         // 저장할 내용
@@ -149,10 +149,10 @@ public class GameService {
         String gameName = "scroop test";
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         GameEntity game = gameRepository.findGameEntityByName(gameName)
-                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
+                .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
 
         // 저장할 내용
@@ -183,10 +183,10 @@ public class GameService {
         String gameName = "mental rotation";
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(()->new BaseException(BaseResponseStatus.USER_NO_EXIST));
+                .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         GameEntity game = gameRepository.findGameEntityByName(gameName)
-                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
+                .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
 
         // 저장할 내용

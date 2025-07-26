@@ -7,9 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.http.HttpServletResponse;
 import server.brainboost.code.ApiResponse;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponse;
-import server.brainboost.base.BaseResponseStatus;
+
 
 public class ResponseUtil {
 

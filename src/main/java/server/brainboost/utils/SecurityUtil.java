@@ -6,9 +6,6 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import server.brainboost.auth.CustomUserDetails;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.exception.BaseException;
-import server.brainboost.base.BaseResponseStatus;
-import server.brainboost.exception.GeneralException;
 import server.brainboost.exception.handler.AuthenticationHandler;
 
 import java.util.Collection;

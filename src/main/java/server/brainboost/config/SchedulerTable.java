@@ -6,7 +6,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import server.brainboost.code.status.ErrorStatus;
-import server.brainboost.base.BaseResponseStatus;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.game.dto.inter.GameInterface;
 import server.brainboost.src.game.entity.GameEntity;

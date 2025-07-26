@@ -3,8 +3,6 @@ package server.brainboost.src.error.service;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import server.brainboost.exception.BaseException;
-import server.brainboost.exception.GeneralException;
 import server.brainboost.src.error.dto.ErrorRequestDTO;
 import server.brainboost.src.error.entity.FrontendErrorLogEntity;
 import server.brainboost.src.error.repository.FrontendErrorLogRepository;
