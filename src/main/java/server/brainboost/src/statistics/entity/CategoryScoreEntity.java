@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.src.game.entity.GameTypeEntity;
 import server.brainboost.src.user.entity.UserEntity;
 
 @Entity

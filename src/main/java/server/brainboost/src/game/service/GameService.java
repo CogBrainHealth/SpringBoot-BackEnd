@@ -10,10 +10,8 @@ import server.brainboost.config.Status;
 import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.src.game.dto.*;
 import server.brainboost.src.game.entity.GameEntity;
-import server.brainboost.src.game.entity.GameTypeEntity;
 import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.GameRepository;
-import server.brainboost.src.game.repository.GameTypeRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
 import server.brainboost.src.statistics.entity.GlobalStatisticsEntity;
 import server.brainboost.src.statistics.entity.CategoryScoreEntity;
@@ -24,7 +22,6 @@ import server.brainboost.src.user.entity.UserRecordEntity;
 import server.brainboost.src.user.repository.UserRecordRepository;
 import server.brainboost.src.user.repository.UserRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -34,7 +31,6 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final UserStatisticsRepository userStatisticsRepository;
-    private final GameTypeRepository gameTypeRepository;
     private final GlobalStatisticsRepository globalStatisticsRepository;
     private final UserRecordRepository userRecordRepository;
     private final TodayGameRepository todayGameRepository;
@@ -201,8 +197,6 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_NO_EXIST)));
 
-        GameTypeEntity gameType = gameTypeRepository.findGameTypeEntityByCognitiveDomain(CognitiveDomain.MEMORY)
-                .orElseThrow(()->new BaseException((BaseResponseStatus.GAME_TYPE_NO_EXIST)));
 
         // 저장할 내용
         // 1. user record 작성 -> score 점수 작성
