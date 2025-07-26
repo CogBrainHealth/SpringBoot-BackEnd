@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface GameRepository extends JpaRepository<GameEntity, Long> {
 
 
-    @Query("select g from GameEntity g inner join fetch g.gameType where g.status =:status and g.gameType.status =:status")
+    @Query("select g from GameEntity g where g.status =:status")
     List<GameEntity> findGames(@Param("status")Status status);
 
     Optional<GameEntity> findGameEntityByName(String name);

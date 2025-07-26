@@ -13,12 +13,6 @@ public interface TodayGameRepository extends JpaRepository<TodayGameEntity, Long
 
     Optional<TodayGameEntity> findByTodayGameId(Long todayGameId);
 
-    @Query("SELECT tg FROM TodayGameEntity tg " +
-        "JOIN FETCH tg.game g " +
-        "JOIN FETCH g.gameType gt " +
-        "WHERE tg.date = :date")
-    Optional<TodayGameEntity> findByDateWithGameAndGameType(@Param("date") LocalDate date);
-
-
+    Optional<TodayGameEntity> findTopByOrderByCreateAtAsc();
 
 }

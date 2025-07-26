@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.enums.CognitiveDomain;
 import server.brainboost.src.game.entity.GameTypeEntity;
 import server.brainboost.src.user.entity.UserEntity;
 
@@ -28,18 +29,17 @@ public class GlobalStatisticsEntity extends BaseEntity {
     @Column(name = "count")
     private Long count;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_type_id")
-    private GameTypeEntity gameType;
+    @Enumerated(EnumType.STRING)
+    private CognitiveDomain cognitiveDomain;
 
     @Version
     private Long OLock;  // 'version' 대신 'lock' 사용
 
 
-    public GlobalStatisticsEntity(Long totalScore, Long count, GameTypeEntity gameType){
+    public GlobalStatisticsEntity(Long totalScore, Long count, CognitiveDomain cognitiveDomain){
         this.totalScore = totalScore;
         this.count = count;
-        this.gameType = gameType;
+        this.cognitiveDomain = cognitiveDomain;
     }
 
     public void updateGlobalStatisticsEntity(Long score, Long count){

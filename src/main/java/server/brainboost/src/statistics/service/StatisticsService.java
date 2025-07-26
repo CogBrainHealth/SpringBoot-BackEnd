@@ -42,16 +42,16 @@ public class StatisticsService {
 
             int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
 
-            if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.ATTENTION){
+            if(userStatistics.getCognitiveDomain() == CognitiveDomain.ATTENTION){
 
                 gameStatisticsDTO.setAttentionScore(score);
                 totalScore += score;
-            }else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
+            }else if(userStatistics.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
 
                 gameStatisticsDTO.setSpatialPerceptionScore(score);
                 totalScore += score;
             }
-            else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.MEMORY){
+            else if(userStatistics.getCognitiveDomain() == CognitiveDomain.MEMORY){
 
                 gameStatisticsDTO.setMemoryScore(score);
                 totalScore += score;
@@ -128,16 +128,16 @@ public class StatisticsService {
 
             int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
 
-            if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.ATTENTION){
+            if(userStatistics.getCognitiveDomain() == CognitiveDomain.ATTENTION){
 
                 statisticsHomeResponseDTO.setAttentionScore(score);
                 totalScore += score;
-            }else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
+            }else if(userStatistics.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
 
                 statisticsHomeResponseDTO.setSpatialPerceptionScore(score);
                 totalScore += score;
             }
-            else if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.MEMORY){
+            else if(userStatistics.getCognitiveDomain() == CognitiveDomain.MEMORY){
 
                 statisticsHomeResponseDTO.setMemoryScore(score);
                 totalScore += score;
@@ -209,7 +209,7 @@ public class StatisticsService {
         // 3) ATTENTION 영역만 골라서 평균 점수 계산
         for (CategoryScoreEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
-            if (s.getGameType().getCognitiveDomain() == CognitiveDomain.ATTENTION) {
+            if (s.getCognitiveDomain() == CognitiveDomain.ATTENTION) {
                 long avgLong = s.getTotalScore() / s.getCount();          // long ÷ long -> long
                 int avg = Math.toIntExact(avgLong);                       // 안전하게 int 로 변환
                 totalScore += avg;
@@ -241,7 +241,7 @@ public class StatisticsService {
 
         for (CategoryScoreEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
-            if (s.getGameType().getCognitiveDomain() == CognitiveDomain.MEMORY) {
+            if (s.getCognitiveDomain() == CognitiveDomain.MEMORY) {
                 long avgLong = s.getTotalScore() / s.getCount();
                 int avg = Math.toIntExact(avgLong);
                 totalScore += avg;
@@ -313,7 +313,7 @@ public class StatisticsService {
 
         for (CategoryScoreEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
-            if (s.getGameType().getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION) {
+            if (s.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION) {
                 long avgLong = s.getTotalScore() / s.getCount();
                 int avg = Math.toIntExact(avgLong);
                 totalScore += avg;

@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.enums.CognitiveDomain;
 
 @Entity
 @Getter
@@ -36,9 +37,8 @@ public class GameEntity extends BaseEntity {
     @Column(nullable = false)
     private String version;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "game_type_id")
-    private GameTypeEntity gameType;
+    @Enumerated(EnumType.STRING)
+    private CognitiveDomain cognitiveDomain;
 
 
 
