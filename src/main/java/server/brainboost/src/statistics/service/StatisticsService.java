@@ -17,6 +17,7 @@ import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -28,51 +29,6 @@ public class StatisticsService {
     private final GameStatisticsRepository gameStatisticsRepository;
     private final GameRepository gameRepository;
 
-    private final UserStatisticsRepository userStatisticsRepository;
-
-    public StatisticResponse.GameStatisticsDTO getMyGameStatistics(Long userId) {
-
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
-
-        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
-
-        StatisticResponse.GameStatisticsDTO gameStatisticsDTO = new StatisticResponse.GameStatisticsDTO();
-        int totalScore = 0;
-        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
-            if(userStatistics == null){
-                continue;
-            }
-
-            // 아직 특정 영역의 점수 측정이 안 됐을 때
-            if(userStatistics.getCount() == 0){
-                continue;
-            }
-
-            int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
-
-            if(userStatistics.getCognitiveDomain() == CognitiveDomain.ATTENTION){
-
-                gameStatisticsDTO.setAttentionScore(score);
-                totalScore += score;
-            }else if(userStatistics.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
-
-                gameStatisticsDTO.setSpatialPerceptionScore(score);
-                totalScore += score;
-            }
-            else if(userStatistics.getCognitiveDomain() == CognitiveDomain.MEMORY){
-
-                gameStatisticsDTO.setMemoryScore(score);
-                totalScore += score;
-            }
-        }
-
-        //totalScore 계산 로직 추가하기
-        gameStatisticsDTO.setTotalScore(totalScore);
-        return gameStatisticsDTO;
-
-
-    }
 
     //HACK 추후 나눗셈 처리 및 반복문을 stream으로 변경
     public StatisticResponse.TotalScoreResponseDTO getMyTotalScore(Long userId) {
@@ -80,90 +36,39 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
+        List<AgeGroup> input = new ArrayList<>();
 
-        int totalScore = 0;
-        int count = 0;
+        GameEntity scroopTest = gameRepository.findGameEntityByGameId(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
-            if(userStatistics == null){
-                continue;
-            }
+        GameStatisticsEntity scroopTestStatistics = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, scroopTest)
+                .orElse(null);
 
-            // 아직 특정 영역의 점수 측정이 안 됐을 때
-            if(userStatistics.getCount() == 0){
-                continue;
-            }
+        input.add(scroopTestStatistics.getAgeGroup());
 
-            int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
-            totalScore += score;
-            count++;
+        GameEntity mapNavigation = gameRepository.findGameEntityByGameId(2L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        }
+        GameStatisticsEntity mapNavigationStatistics = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, mapNavigation)
+                .orElse(null);
 
-        if(count == 0){
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
+        input.add(mapNavigationStatistics.getAgeGroup());
 
-        totalScore = totalScore / count;
+        GameEntity mentalRotation = gameRepository.findGameEntityByGameId(3L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        TotalScoreLevel level = TotalScoreLevel.of(totalScore);
-        String message = level.getMessage();
+        GameStatisticsEntity mentalRotationStatistics = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, mapNavigation)
+                .orElse(null);
 
-        return new StatisticResponse.TotalScoreResponseDTO(totalScore, message);
+        input.add(mentalRotationStatistics.getAgeGroup());
+
+        AgeGroup ageGroup = AgeGroup.fromGroupList(input);
+
+        return new StatisticResponse.TotalScoreResponseDTO(ageGroup, "각 영역에 대한 점수를 확인해주세요.");
 
     }
 
-    public StatisticResponse.StatisticsHomeResponseDTO getStatisticsByUser(Long userId) {
 
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
-
-        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
-
-        StatisticResponse.StatisticsHomeResponseDTO statisticsHomeResponseDTO = new StatisticResponse.StatisticsHomeResponseDTO();
-
-        int totalScore = 0;
-        int count = 0;
-        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
-            if(userStatistics == null){
-                continue;
-            }
-
-            // 아직 특정 영역의 점수 측정이 안 됐을 때
-            if(userStatistics.getCount() == 0){
-                continue;
-            }
-
-            int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
-
-            if(userStatistics.getCognitiveDomain() == CognitiveDomain.ATTENTION){
-
-                statisticsHomeResponseDTO.setAttentionScore(score);
-                totalScore += score;
-            }else if(userStatistics.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
-
-                statisticsHomeResponseDTO.setSpatialPerceptionScore(score);
-                totalScore += score;
-            }
-            else if(userStatistics.getCognitiveDomain() == CognitiveDomain.MEMORY){
-
-                statisticsHomeResponseDTO.setMemoryScore(score);
-                totalScore += score;
-            }
-
-            count++;
-
-        }
-        if(count == 0){
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
-
-        totalScore = totalScore / count;
-        statisticsHomeResponseDTO.setTotalScore(totalScore);
-
-        return statisticsHomeResponseDTO;
-    }
 
     /*public StatisticResponse.AttentionScoreResponseDTO getAttentionScoreByUser(Long userId) {
 
@@ -300,7 +205,7 @@ public class StatisticsService {
         SpatialPerceptionMessage perceptionMessage = SpatialPerceptionMessage.fromAgeGroup(gameStatisticsEntity.getAgeGroup());
         String message = perceptionMessage.getMessage();
 
-        return new StatisticResponse.SpatialPerceptionScoreResponseDTO(finalAvg, message);
+        return new StatisticResponse.SpatialPerceptionScoreResponseDTO(gameStatisticsEntity.getAgeGroup(), message);
     }
 
    /* public MyCognitiveDomainDTO getMyCertainDomainStatistics(Long userId, CognitiveDomain cognitiveDomain) {

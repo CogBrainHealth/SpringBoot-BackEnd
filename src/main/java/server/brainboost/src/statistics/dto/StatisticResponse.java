@@ -37,13 +37,13 @@ public class StatisticResponse {
 
 
         @Schema(description = "전체 점수")
-        public final int totalScore;
+        public final AgeGroup ageGroup;
 
         @Schema(description = "전체 점수에 대한 설명")
         public final String description;
 
-        public TotalScoreResponseDTO(int score, String description) {
-            this.totalScore = score;
+        public TotalScoreResponseDTO(AgeGroup ageGroup, String description) {
+            this.ageGroup = ageGroup;
             this.description = description;
         }
 

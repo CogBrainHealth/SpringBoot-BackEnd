@@ -33,20 +33,6 @@ public class StatisticsController {
 
     }
 
-    //TODO Test 해보기!!
-    @GetMapping("/api/statistics")
-    @Operation(summary = "통계 영역의 기본 화면 api", description = "통계 영역 기본 화면", responses = {
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "로그인이 필요한 서비스 입니다"),
-            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다"),
-    })
-    public ApiResponse<StatisticResponse.StatisticsHomeResponseDTO> getStatisticsByUser(){
-
-        Long userId = SecurityUtil.getCurrentUserId();
-        return ApiResponse.onSuccess(statisticsService.getStatisticsByUser(userId));
-
-    }
 
     //TODO Test 해보기!!
     @GetMapping("/api/statistics/attention")
