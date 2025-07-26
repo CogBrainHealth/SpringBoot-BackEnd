@@ -111,6 +111,8 @@ public class MedicalService {
         userMedicineRepository.saveAll(userMedicineEntityList);
         userDiscomfortRepository.saveAll(userDiscomfortEntityList);
 
+        user.setIsMedicalTest(Boolean.TRUE);
+
         return MedicalConverter.toMedicalChecklistResponseDTO(medicalChecklist);
     }
 
@@ -656,6 +658,8 @@ public class MedicalService {
 
         int randomGroupNumber = randomGroupNumber();
         List<NutrientCombinationsEntity> nutrientCombinationsEntityList = nutrientCombinationsRepository.findNutrientCombinationsEntitiesByCognitiveDomainAndGroupNumber(weakCognitiveDomain, randomGroupNumber);
+
+        user.setIsPremiumMedicalTest(Boolean.TRUE);
 
         return MedicalConverter.toPremiumMedicalChecklistResponseDTO(premiumMedicalChecklistEntity, nutrientCombinationsEntityList, mealPlanEntityList);
 
