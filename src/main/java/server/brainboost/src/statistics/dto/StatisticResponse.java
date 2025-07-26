@@ -99,14 +99,14 @@ public class StatisticResponse {
     @Builder
     public static class MemoryScoreResponseDTO {
 
-        @Schema(description = "전체 점수")
-        public final int memoryScore;
+        @Schema(description = "나잇대(결과)")
+        public final AgeGroup ageGroup;
 
         @Schema(description = "전체 점수에 대한 설명")
         public final String description;
 
-        public MemoryScoreResponseDTO(int score, String description) {
-            this.memoryScore = score;
+        public MemoryScoreResponseDTO(AgeGroup ageGroup, String description) {
+            this.ageGroup = ageGroup;
             this.description = description;
         }
 

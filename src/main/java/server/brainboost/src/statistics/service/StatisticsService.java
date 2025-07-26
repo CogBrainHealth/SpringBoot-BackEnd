@@ -225,34 +225,22 @@ public class StatisticsService {
     }
 
     public StatisticResponse.MemoryScoreResponseDTO getMemoryScoreByUser(Long userId) {
+        // 1) 사용자 존재 확인
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
+        GameEntity game = gameRepository.findGameEntityByGameId(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        long totalScore = 0;
-        long count = 0;
 
-        for (CognitiveDomainStatisticsEntity s : stats) {
-            if (s == null || s.getCount() == 0) continue;
-            if (s.getCognitiveDomain() == CognitiveDomain.MEMORY) {
-                long avgLong = s.getTotalScore() / s.getCount();
-                int avg = Math.toIntExact(avgLong);
-                totalScore += avg;
-                count++;
-            }
-        }
+        GameStatisticsEntity gameStatisticsEntity = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, game)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET));
 
-        if (count == 0) {
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
 
-        int finalAvg = Math.toIntExact(totalScore / count);
+        MemoryMessage memoryMessage = MemoryMessage.fromAgeGroup(gameStatisticsEntity.getAgeGroup());
+        String message = memoryMessage.getMessage();
 
-        MemoryScoreLevel level = MemoryScoreLevel.of(finalAvg);
-        String message = level.getMessage();
-
-        return new StatisticResponse.MemoryScoreResponseDTO(finalAvg, message);
+        return new StatisticResponse.MemoryScoreResponseDTO(gameStatisticsEntity.getAgeGroup(), message);
     }
 
     /*public StatisticResponse.SpatialPerceptionScoreResponseDTO getSpatialPerceptionScoreByUser(Long userId) {
