@@ -99,7 +99,17 @@ public class UserController {
         return ApiResponse.onSuccess(userService.getProfile(userId));
     }
 
+    @GetMapping("/api/users/check/medical")
+    @Operation(summary = "일반 건강 체크리스트 수행 여부 보기 api", description = "건강 체크리스트 수행 여부 조회", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다")
+    })
+    public ApiResponse<UserResponseDTO.checkMedicalResponseDTO> checkMedical(){
 
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        return ApiResponse.onSuccess(userService.checkMedical(userId));
+    }
 
 
 }

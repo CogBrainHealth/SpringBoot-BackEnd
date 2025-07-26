@@ -63,4 +63,15 @@ public class UserResponseDTO {
 
         Long userId;
     }
+
+    @Getter
+    @Setter
+    @Schema(description = "us DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class checkMedicalResponseDTO {
+
+        Boolean isMedicalTest;
+    }
 }

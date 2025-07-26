@@ -82,4 +82,15 @@ public class UserService {
 
         userRepository.save(user);
     }
+
+    public UserResponseDTO.checkMedicalResponseDTO checkMedical(Long userId) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
+
+        return UserResponseDTO.checkMedicalResponseDTO.builder()
+                .isMedicalTest(user.getIsMedicalTest())
+                .build();
+
+    }
 }

@@ -1,6 +1,7 @@
 package server.brainboost.src.user.entity;
 
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -52,8 +53,11 @@ public class UserEntity extends BaseEntity {
     @Column
     private String role;
 
+    @Column(name = "is_medical_test", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isMedicalTest = false;
+
     @Column(name = "is_premium", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
-    private Boolean isPremium;
+    private Boolean isPremium = false;
 
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_checklist_id") // 외래 키 설정
