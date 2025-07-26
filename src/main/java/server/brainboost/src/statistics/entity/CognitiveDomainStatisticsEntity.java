@@ -25,9 +25,6 @@ public class CognitiveDomainStatisticsEntity extends BaseEntity {
     @Column(name = "total_score")
     private Long totalScore;
 
-    @Column(name = "count")
-    private Long count;
-
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private UserEntity user;

@@ -6,25 +6,27 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.src.game.entity.GameEntity;
-import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
-import server.brainboost.src.statistics.entity.enums.AgeGroup;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.entity.UserRecordEntity;
 
 @Entity
 @Getter
-@Table(name = "game_statistics")
+@Table(name = "game_details_statistics")
 @NoArgsConstructor
 @DynamicInsert
-public class GameStatisticsEntity extends BaseEntity {
+public class GameDetailsStatisticsEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_record_id")
     private Long gameRecordId;
 
-    @Enumerated(EnumType.STRING)
-    private AgeGroup ageGroup;
+    //record_key의 값이 자주 변하지 않는다고 판단해 정규화 x
+    @Column(name = "record_key")
+    private String recordKey;
+
+    @Column(name = "record_value")
+    private String recordValue;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
@@ -33,11 +35,5 @@ public class GameStatisticsEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "game_id")
     private GameEntity game;
-
-    public GameStatisticsEntity(AgeGroup ageGroup, UserEntity user, GameEntity game) {
-        this.ageGroup = ageGroup;
-        this.user = user;
-        this.game = game;
-    }
 
 }

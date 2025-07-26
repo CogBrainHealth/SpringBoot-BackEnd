@@ -13,6 +13,8 @@ import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
 import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
+import server.brainboost.src.statistics.entity.GameStatisticsEntity;
+import server.brainboost.src.statistics.repository.GameStatisticsRepository;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.entity.UserRecordEntity;
@@ -26,6 +28,8 @@ import java.util.List;
 public class GameService {
 
     private final GameRepository gameRepository;
+    private final GameStatisticsRepository gameStatisticsRepository;
+
     private final UserRepository userRepository;
     private final UserStatisticsRepository userStatisticsRepository;
     private final UserRecordRepository userRecordRepository;
@@ -113,7 +117,7 @@ public class GameService {
     @Transactional
     public void saveMapNavigationResult(Long userId, GameRequestDTO.MapNavigationResultDTO mapNavigationResultDTO) {
 
-        String gameName = "지도보고 길찾기";
+        final String gameName = "지도보고 길찾기";
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
@@ -121,32 +125,18 @@ public class GameService {
         GameEntity game = gameRepository.findGameEntityByName(gameName)
                 .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-
-        // 저장할 내용
-        // 1. user record 작성 -> score 점수 작성
-        // 2. user statitics 작성 -> DB에서 spatial_perception 값을 찾기
-        // 3. statistics 작성 -> DB에서 spatial_perception 값을 같이 찾기
-        // 4. game record 작성 -> row data 그대로 작성
-
         //1번
-        UserRecordEntity userRecord = saveUserRecord(user, game, mapNavigationResultDTO.getScore());
-
+        GameStatisticsEntity gameStatisticsEntity = new GameStatisticsEntity(mapNavigationResultDTO.getAgeGroup(), user, game);
         // 2번
-        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mapNavigationResultDTO.getScore().longValue());
+        //GameDetailsStatisticsEntity 처리
 
-        //3번
-
-        //4번
-        //TODO: row data 받은 내용 추후에 추가
-
-        userRecordRepository.save(userRecord);
-        userStatisticsRepository.save(userStatistics);
+        gameStatisticsRepository.save(gameStatisticsEntity);
     }
 
     @Transactional
     public void saveScroopTestResult(Long userId, GameRequestDTO.ScroopTestResultDTO scroopTestResultDTO) {
 
-        String gameName = "scroop test";
+        final String gameName = "scroop test";
 
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(()->new GeneralException(ErrorStatus.USER_NO_EXIST));
@@ -155,25 +145,12 @@ public class GameService {
                 .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
 
-        // 저장할 내용
-        // 1. user record 작성 -> score 점수 작성
-        // 2. user statitics 작성 -> DB에서 ATTENTION 값을 찾기
-        // 3. statistics 작성 -> DB에서 ATTENTION 값을 같이 찾기
-        // 4. game record 작성 -> row data 그대로 작성
-
         //1번
-        UserRecordEntity userRecord = saveUserRecord(user, game,scroopTestResultDTO.getScore());
-
+        GameStatisticsEntity gameStatisticsEntity = new GameStatisticsEntity(scroopTestResultDTO.getAgeGroup(), user, game);
         // 2번
-        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), scroopTestResultDTO.getScore().longValue());
+        //GameDetailsStatisticsEntity 처리
 
-        //3번
-
-        //4번
-        //TODO: row data 받은 내용 추후에 추가
-
-        userRecordRepository.save(userRecord);
-        userStatisticsRepository.save(userStatistics);
+        gameStatisticsRepository.save(gameStatisticsEntity);
 
     }
 
@@ -189,25 +166,13 @@ public class GameService {
                 .orElseThrow(()->new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
 
-        // 저장할 내용
-        // 1. user record 작성 -> score 점수 작성
-        // 2. user statitics 작성 -> DB에서 spatial_perception 값을 찾기
-        // 3. statistics 작성 -> DB에서 spatial_perception 값을 같이 찾기
-        // 4. game record 작성 -> row data 그대로 작성
-
         //1번
-        UserRecordEntity userRecord = saveUserRecord(user, game, mentalRotationDTO.getScore());
-
+        GameStatisticsEntity gameStatisticsEntity = new GameStatisticsEntity(mentalRotationDTO.getAgeGroup(), user, game);
         // 2번
-        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mentalRotationDTO.getScore().longValue());
+        //GameDetailsStatisticsEntity 처리
 
-        //3번
+        gameStatisticsRepository.save(gameStatisticsEntity);
 
-        //4번
-        //TODO: row data 받은 내용 추후에 추가
-
-        userRecordRepository.save(userRecord);
-        userStatisticsRepository.save(userStatistics);
 
     }
 
