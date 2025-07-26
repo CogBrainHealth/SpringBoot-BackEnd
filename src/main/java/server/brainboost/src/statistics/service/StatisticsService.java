@@ -7,7 +7,7 @@ import server.brainboost.config.Status;
 import server.brainboost.enums.*;
 import server.brainboost.exception.GeneralException;
 import server.brainboost.src.statistics.dto.StatisticResponse;
-import server.brainboost.src.statistics.entity.CategoryScoreEntity;
+import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
@@ -26,11 +26,11 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CategoryScoreEntity> categoryScoreEntityList = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         StatisticResponse.GameStatisticsDTO gameStatisticsDTO = new StatisticResponse.GameStatisticsDTO();
         int totalScore = 0;
-        for(CategoryScoreEntity userStatistics : categoryScoreEntityList){
+        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
             if(userStatistics == null){
                 continue;
             }
@@ -71,12 +71,12 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CategoryScoreEntity> categoryScoreEntityList = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         int totalScore = 0;
         int count = 0;
 
-        for(CategoryScoreEntity userStatistics : categoryScoreEntityList){
+        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
             if(userStatistics == null){
                 continue;
             }
@@ -110,13 +110,13 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CategoryScoreEntity> categoryScoreEntityList = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> cognitiveDomainStatisticsEntityList = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         StatisticResponse.StatisticsHomeResponseDTO statisticsHomeResponseDTO = new StatisticResponse.StatisticsHomeResponseDTO();
 
         int totalScore = 0;
         int count = 0;
-        for(CategoryScoreEntity userStatistics : categoryScoreEntityList){
+        for(CognitiveDomainStatisticsEntity userStatistics : cognitiveDomainStatisticsEntityList){
             if(userStatistics == null){
                 continue;
             }
@@ -201,13 +201,13 @@ public class StatisticsService {
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
         // 2) 해당 유저의 모든 카테고리별 통계 조회
-        List<CategoryScoreEntity> stats = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         long totalScore = 0;
         long count = 0;
 
         // 3) ATTENTION 영역만 골라서 평균 점수 계산
-        for (CategoryScoreEntity s : stats) {
+        for (CognitiveDomainStatisticsEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
             if (s.getCognitiveDomain() == CognitiveDomain.ATTENTION) {
                 long avgLong = s.getTotalScore() / s.getCount();          // long ÷ long -> long
@@ -234,12 +234,12 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CategoryScoreEntity> stats = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         long totalScore = 0;
         long count = 0;
 
-        for (CategoryScoreEntity s : stats) {
+        for (CognitiveDomainStatisticsEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
             if (s.getCognitiveDomain() == CognitiveDomain.MEMORY) {
                 long avgLong = s.getTotalScore() / s.getCount();
@@ -306,12 +306,12 @@ public class StatisticsService {
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CategoryScoreEntity> stats = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
+        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
 
         long totalScore = 0;
         long count = 0;
 
-        for (CategoryScoreEntity s : stats) {
+        for (CognitiveDomainStatisticsEntity s : stats) {
             if (s == null || s.getCount() == 0) continue;
             if (s.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION) {
                 long avgLong = s.getTotalScore() / s.getCount();

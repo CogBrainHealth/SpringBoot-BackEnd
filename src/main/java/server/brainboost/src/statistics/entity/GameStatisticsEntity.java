@@ -1,19 +1,20 @@
-package server.brainboost.src.game.entity;
+package server.brainboost.src.statistics.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
+import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.entity.UserRecordEntity;
 
 @Entity
 @Getter
-@Table(name = "game_record")
+@Table(name = "game_statistics")
 @NoArgsConstructor
 @DynamicInsert
-public class GameRecordEntity extends BaseEntity {
+public class GameStatisticsEntity extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

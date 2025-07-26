@@ -3,18 +3,18 @@ package server.brainboost.src.statistics.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import server.brainboost.enums.CognitiveDomain;
-import server.brainboost.src.statistics.entity.CategoryScoreEntity;
+import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
 import server.brainboost.src.user.entity.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface UserStatisticsRepository extends JpaRepository<CategoryScoreEntity, Long> {
+public interface UserStatisticsRepository extends JpaRepository<CognitiveDomainStatisticsEntity, Long> {
 
-    @Query("select us from CategoryScoreEntity us inner join fetch us.user")
-    List<CategoryScoreEntity> findUserStatisticsEntitiesByUser(UserEntity user);
+    @Query("select us from CognitiveDomainStatisticsEntity us inner join fetch us.user")
+    List<CognitiveDomainStatisticsEntity> findCognitiveDomainStatisticsEntitiesByUser(UserEntity user);
 
-    Optional<CategoryScoreEntity> findUserStatisticsEntityByUserAndCognitiveDomain(UserEntity user, CognitiveDomain cognitiveDomain);
+    Optional<CognitiveDomainStatisticsEntity> findUserStatisticsEntityByUserAndCognitiveDomain(UserEntity user, CognitiveDomain cognitiveDomain);
 
 
 }

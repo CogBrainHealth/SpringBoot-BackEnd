@@ -7,7 +7,6 @@ import lombok.Setter;
 import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.src.game.entity.GameEntity;
-import server.brainboost.src.game.entity.GameRecordEntity;
 
 @Entity
 @Getter

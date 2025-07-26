@@ -1,6 +1,5 @@
 package server.brainboost.src.game.service;
 
-import jakarta.persistence.OptimisticLockException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,9 +12,7 @@ import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
-import server.brainboost.src.statistics.entity.GlobalStatisticsEntity;
-import server.brainboost.src.statistics.entity.CategoryScoreEntity;
-import server.brainboost.src.statistics.repository.GlobalStatisticsRepository;
+import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
 import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.entity.UserRecordEntity;
@@ -31,7 +28,6 @@ public class GameService {
     private final GameRepository gameRepository;
     private final UserRepository userRepository;
     private final UserStatisticsRepository userStatisticsRepository;
-    private final GlobalStatisticsRepository globalStatisticsRepository;
     private final UserRecordRepository userRecordRepository;
     private final TodayGameRepository todayGameRepository;
 
@@ -65,15 +61,14 @@ public class GameService {
 
     }
 
-    @Transactional
+    /*@Transactional
     public GlobalStatisticsEntity updateGlobalStatistics(CognitiveDomain cognitiveDomain, Long newScore) {
         int retryCount = 3;
         GlobalStatisticsEntity globalStatistics = null;
 
         while (retryCount > 0) {
             try {
-                globalStatistics = globalStatisticsRepository.findStatisticsEntityByCognitiveDomain(cognitiveDomain)
-                        .orElse(null);
+                globalStatistics = null;
 
                 if(globalStatistics == null){
                     // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 globalStatistics 생성
@@ -91,17 +86,17 @@ public class GameService {
             }
         }
         return globalStatistics; // 성공적으로 저장했으면 종료
-    }
+    }*/
 
     @Transactional
-    public CategoryScoreEntity updateUserStatistics(UserEntity user, CognitiveDomain cognitiveDomain, Long newScore){
+    public CognitiveDomainStatisticsEntity updateUserStatistics(UserEntity user, CognitiveDomain cognitiveDomain, Long newScore){
         // 2번
-        CategoryScoreEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndCognitiveDomain(user, cognitiveDomain)
+        CognitiveDomainStatisticsEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndCognitiveDomain(user, cognitiveDomain)
                 .orElse(null);
 
         if(userStatistics == null){
             // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 userStatistics 생성
-            userStatistics = new CategoryScoreEntity(newScore, 1L, user, cognitiveDomain);
+            userStatistics = new CognitiveDomainStatisticsEntity(newScore, 1L, user, cognitiveDomain);
         }else{
             userStatistics.updateCategoryScoreEntity(newScore, 1L);
         }
@@ -137,17 +132,15 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game, mapNavigationResultDTO.getScore());
 
         // 2번
-        CategoryScoreEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mapNavigationResultDTO.getScore().longValue());
+        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mapNavigationResultDTO.getScore().longValue());
 
         //3번
-        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(game.getCognitiveDomain(), mapNavigationResultDTO.getScore().longValue());
 
         //4번
         //TODO: row data 받은 내용 추후에 추가
 
         userRecordRepository.save(userRecord);
         userStatisticsRepository.save(userStatistics);
-        globalStatisticsRepository.save(globalStatistics);
     }
 
     @Transactional
@@ -172,17 +165,15 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game,scroopTestResultDTO.getScore());
 
         // 2번
-        CategoryScoreEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), scroopTestResultDTO.getScore().longValue());
+        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), scroopTestResultDTO.getScore().longValue());
 
         //3번
-        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(game.getCognitiveDomain(), scroopTestResultDTO.getScore().longValue());
 
         //4번
         //TODO: row data 받은 내용 추후에 추가
 
         userRecordRepository.save(userRecord);
         userStatisticsRepository.save(userStatistics);
-        globalStatisticsRepository.save(globalStatistics);
 
     }
 
@@ -208,17 +199,15 @@ public class GameService {
         UserRecordEntity userRecord = saveUserRecord(user, game, mentalRotationDTO.getScore());
 
         // 2번
-        CategoryScoreEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mentalRotationDTO.getScore().longValue());
+        CognitiveDomainStatisticsEntity userStatistics = updateUserStatistics(user, game.getCognitiveDomain(), mentalRotationDTO.getScore().longValue());
 
         //3번
-        GlobalStatisticsEntity globalStatistics = updateGlobalStatistics(game.getCognitiveDomain(), mentalRotationDTO.getScore().longValue());
 
         //4번
         //TODO: row data 받은 내용 추후에 추가
 
         userRecordRepository.save(userRecord);
         userStatisticsRepository.save(userStatistics);
-        globalStatisticsRepository.save(globalStatistics);
 
     }
 
