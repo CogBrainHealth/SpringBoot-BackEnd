@@ -111,5 +111,17 @@ public class UserController {
         return ApiResponse.onSuccess(userService.checkMedical(userId));
     }
 
+    @GetMapping("/api/users/check/premium")
+    @Operation(summary = "프리미엄 건강 체크리스트 수행 여부 보기 api", description = "프리미엄 건강 체크리스트 수행 여부 조회", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다")
+    })
+    public ApiResponse<UserResponseDTO.checkPremiumMedicalResponseDTO> checkPremiumMedical(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        return ApiResponse.onSuccess(userService.checkPremiumMedical(userId));
+    }
+
 
 }

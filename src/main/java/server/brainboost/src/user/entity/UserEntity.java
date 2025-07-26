@@ -59,6 +59,9 @@ public class UserEntity extends BaseEntity {
     @Column(name = "is_premium", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isPremium = false;
 
+    @Column(name = "is_premium", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
+    private Boolean isPremiumMedicalTest = false;
+
     @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "medical_checklist_id") // 외래 키 설정
     private MedicalChecklistEntity medicalChecklist;

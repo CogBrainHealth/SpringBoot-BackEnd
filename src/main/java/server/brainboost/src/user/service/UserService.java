@@ -93,4 +93,15 @@ public class UserService {
                 .build();
 
     }
+
+    public UserResponseDTO.checkPremiumMedicalResponseDTO checkPremiumMedical(Long userId) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
+
+        return UserResponseDTO.checkPremiumMedicalResponseDTO.builder()
+                .isPremiumMedicalTest(user.getIsPremiumMedicalTest())
+                .build();
+
+    }
 }

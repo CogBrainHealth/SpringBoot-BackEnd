@@ -74,4 +74,17 @@ public class UserResponseDTO {
 
         Boolean isMedicalTest;
     }
+
+    @Getter
+    @Setter
+    @Schema(description = "us DTO")
+    @Builder
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class checkPremiumMedicalResponseDTO {
+
+        Boolean isPremiumMedicalTest;
+    }
+
+
 }
