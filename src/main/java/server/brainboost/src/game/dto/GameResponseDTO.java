@@ -12,10 +12,11 @@ public class GameResponseDTO {
 
     @Getter
     @Setter
+    @Builder
     @Schema(description = "각 영역별 모든 게임 리스트 DTO")
     @AllArgsConstructor
     @NoArgsConstructor
-    public static class GameByCognitionDTO {
+    public static class GetGamesResponseDTO {
 
         @Schema(description = "주의력 영역에 해당하는 게임 리스트")
         private List<GameDetailsDTO> attentionGameList = new ArrayList<>();
@@ -45,4 +46,5 @@ public class GameResponseDTO {
 
 
     }
+
 }

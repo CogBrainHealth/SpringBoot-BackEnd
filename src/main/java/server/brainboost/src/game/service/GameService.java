@@ -31,9 +31,9 @@ public class GameService {
     private final UserRecordRepository userRecordRepository;
     private final TodayGameRepository todayGameRepository;
 
-    public GameResponseDTO.GameByCognitionDTO getGamePage(Long userId) {
+    public GameResponseDTO.GetGamesResponseDTO getGames() {
 
-        GameResponseDTO.GameByCognitionDTO gameByCognitionDTO = new GameResponseDTO.GameByCognitionDTO();
+        GameResponseDTO.GetGamesResponseDTO getGamesResponseDTO = new GameResponseDTO.GetGamesResponseDTO();
 
         List<GameEntity> gameEntityList = gameRepository.findGames(Status.ACTIVE);
 
@@ -45,19 +45,19 @@ public class GameService {
 
             //attention
             if(cognitiveDomain == CognitiveDomain.ATTENTION){
-                gameByCognitionDTO.getAttentionGameList().add(gameDetailsDTO);
+                getGamesResponseDTO.getAttentionGameList().add(gameDetailsDTO);
             }
             //spatial_perception
             else if(cognitiveDomain == CognitiveDomain.SPATIAL_PERCEPTION){
-                gameByCognitionDTO.getSpatialPerceptionGameList().add(gameDetailsDTO);
+                getGamesResponseDTO.getSpatialPerceptionGameList().add(gameDetailsDTO);
             }
             //memory
             else if(cognitiveDomain == CognitiveDomain.MEMORY){
-                gameByCognitionDTO.getMemoryGameList().add(gameDetailsDTO);
+                getGamesResponseDTO.getMemoryGameList().add(gameDetailsDTO);
             }
         }
 
-        return gameByCognitionDTO;
+        return getGamesResponseDTO;
 
     }
 
