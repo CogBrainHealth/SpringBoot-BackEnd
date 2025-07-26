@@ -9,11 +9,9 @@ import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 import server.brainboost.src.statistics.dto.StatisticResponse;
-import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
 import server.brainboost.src.statistics.entity.GameStatisticsEntity;
 import server.brainboost.src.statistics.entity.enums.*;
 import server.brainboost.src.statistics.repository.GameStatisticsRepository;
-import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
 import server.brainboost.src.user.repository.UserRepository;
 

@@ -9,7 +9,6 @@ import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.medical.entity.nutrient.enums.CognitiveDomain;
 import server.brainboost.src.statistics.entity.enums.AgeGroup;
 import server.brainboost.src.user.entity.UserEntity;
-import server.brainboost.src.user.entity.UserRecordEntity;
 
 @Entity
 @Getter

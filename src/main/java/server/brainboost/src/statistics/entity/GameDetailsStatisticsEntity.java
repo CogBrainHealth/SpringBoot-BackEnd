@@ -7,7 +7,6 @@ import org.hibernate.annotations.DynamicInsert;
 import server.brainboost.base.BaseEntity;
 import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.user.entity.UserEntity;
-import server.brainboost.src.user.entity.UserRecordEntity;
 
 @Entity
 @Getter

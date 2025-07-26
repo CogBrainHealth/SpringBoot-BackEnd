@@ -12,13 +12,9 @@ import server.brainboost.src.game.entity.GameEntity;
 import server.brainboost.src.game.entity.TodayGameEntity;
 import server.brainboost.src.game.repository.GameRepository;
 import server.brainboost.src.game.repository.TodayGameRepository;
-import server.brainboost.src.statistics.entity.CognitiveDomainStatisticsEntity;
 import server.brainboost.src.statistics.entity.GameStatisticsEntity;
 import server.brainboost.src.statistics.repository.GameStatisticsRepository;
-import server.brainboost.src.statistics.repository.UserStatisticsRepository;
 import server.brainboost.src.user.entity.UserEntity;
-import server.brainboost.src.user.entity.UserRecordEntity;
-import server.brainboost.src.user.repository.UserRecordRepository;
 import server.brainboost.src.user.repository.UserRepository;
 
 import java.util.List;
@@ -31,8 +27,6 @@ public class GameService {
     private final GameStatisticsRepository gameStatisticsRepository;
 
     private final UserRepository userRepository;
-    private final UserStatisticsRepository userStatisticsRepository;
-    private final UserRecordRepository userRecordRepository;
     private final TodayGameRepository todayGameRepository;
 
     public GameResponseDTO.GetGamesResponseDTO getGames() {
@@ -92,27 +86,6 @@ public class GameService {
         return globalStatistics; // 성공적으로 저장했으면 종료
     }*/
 
-    @Transactional
-    public CognitiveDomainStatisticsEntity updateUserStatistics(UserEntity user, CognitiveDomain cognitiveDomain, Long newScore){
-        // 2번
-        CognitiveDomainStatisticsEntity userStatistics = userStatisticsRepository.findUserStatisticsEntityByUserAndCognitiveDomain(user, cognitiveDomain)
-                .orElse(null);
-
-        if(userStatistics == null){
-            // 현재 지도보고 길찾기 게임 플레이 내용으로 새로운 userStatistics 생성
-            userStatistics = new CognitiveDomainStatisticsEntity(newScore, 1L, user, cognitiveDomain);
-        }else{
-            userStatistics.updateCategoryScoreEntity(newScore, 1L);
-        }
-
-        return userStatistics;
-    }
-
-    public UserRecordEntity saveUserRecord(UserEntity user, GameEntity game, int newScore){
-        // 1번
-        UserRecordEntity userRecord = new UserRecordEntity(newScore, user, game);
-        return userRecord;
-    }
 
     @Transactional
     public void saveMapNavigationResult(Long userId, GameRequestDTO.MapNavigationResultDTO mapNavigationResultDTO) {
