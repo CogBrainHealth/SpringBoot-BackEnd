@@ -118,14 +118,14 @@ public class StatisticResponse {
     @Builder
     public static class SpatialPerceptionScoreResponseDTO {
 
-        @Schema(description = "전체 점수")
-        public final int spatialPerceptionScore;
+        @Schema(description = "나잇대(결과)")
+        public final AgeGroup ageGroup;
 
         @Schema(description = "전체 점수에 대한 설명")
         public final String description;
 
-        public SpatialPerceptionScoreResponseDTO(int score, String description) {
-            this.spatialPerceptionScore = score;
+        public SpatialPerceptionScoreResponseDTO(AgeGroup ageGroup, String description) {
+            this.ageGroup = ageGroup;
             this.description = description;
         }
 

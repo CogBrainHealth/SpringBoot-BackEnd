@@ -285,32 +285,20 @@ public class StatisticsService {
         return new StatisticResponse.SpatialPerceptionScoreResponseDTO(totalScore, message);
     }*/
     public StatisticResponse.SpatialPerceptionScoreResponseDTO getSpatialPerceptionScoreByUser(Long userId) {
+        // 1) 사용자 존재 확인
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
 
-        List<CognitiveDomainStatisticsEntity> stats = userStatisticsRepository.findCognitiveDomainStatisticsEntitiesByUser(user);
+        GameEntity game = gameRepository.findGameEntityByGameId(1L)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        long totalScore = 0;
-        long count = 0;
 
-        for (CognitiveDomainStatisticsEntity s : stats) {
-            if (s == null || s.getCount() == 0) continue;
-            if (s.getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION) {
-                long avgLong = s.getTotalScore() / s.getCount();
-                int avg = Math.toIntExact(avgLong);
-                totalScore += avg;
-                count++;
-            }
-        }
+        GameStatisticsEntity gameStatisticsEntity = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, game)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET));
 
-        if (count == 0) {
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
 
-        int finalAvg = Math.toIntExact(totalScore / count);
-
-        SpatialPerceptionScoreLevel level = SpatialPerceptionScoreLevel.of(finalAvg);
-        String message = level.getMessage();
+        SpatialPerceptionMessage perceptionMessage = SpatialPerceptionMessage.fromAgeGroup(gameStatisticsEntity.getAgeGroup());
+        String message = perceptionMessage.getMessage();
 
         return new StatisticResponse.SpatialPerceptionScoreResponseDTO(finalAvg, message);
     }
