@@ -32,15 +32,15 @@ public class MedicalRepository {
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
-          	FROM nutrient_recommendation AS nr 
+          	FROM check_recommendation AS cr 
           	INNER JOIN user_discomfort AS ud 
-          	ON nr.discomfort_tag = ud.discomfort_tag 
+          	ON cr.discomfort_tag = ud.discomfort_tag 
           	WHERE ud.user_id = ? 
-            	AND n.id = nr.nutrient_id
+            	AND n.id = cr.nutrient_id
       	)
       	AND NOT EXISTS (
           	SELECT 1 
-          	FROM nutrient_condition AS nc 
+          	FROM check_condition AS nc 
           	INNER JOIN user_condition AS uc 
           	ON nc.condition_tag = uc.condition_tag 
           	WHERE uc.user_id = ?  
@@ -48,7 +48,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_allergy_warning AS naw 
+          	FROM check_allergy_warning AS naw 
           	INNER JOIN user_allergy AS ua 
           	ON naw.allergy_tag = ua.allergy_tag 
           	WHERE ua.user_id = ? 
@@ -56,7 +56,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_drug_interaction AS ndi 
+          	FROM check_drug_interaction AS ndi 
           	INNER JOIN user_medicine AS um 
           	ON ndi.medicine_tag = um.medicine_tag 
           	WHERE um.user_id = ? 
@@ -91,7 +91,7 @@ public class MedicalRepository {
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
-          	FROM nutrient_recommendation AS nr 
+          	FROM check_recommendation AS nr 
           	INNER JOIN user_discomfort AS ud 
           	ON nr.discomfort_tag = ud.discomfort_tag 
           	WHERE ud.user_id = ? 
@@ -99,7 +99,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
           	SELECT 1 
-          	FROM nutrient_condition AS nc 
+          	FROM check_condition AS nc 
           	INNER JOIN user_condition AS uc 
           	ON nc.condition_tag = uc.condition_tag 
           	WHERE uc.user_id = ?  
@@ -107,7 +107,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_allergy_warning AS naw 
+          	FROM check_allergy_warning AS naw 
           	INNER JOIN user_allergy AS ua 
           	ON naw.allergy_tag = ua.allergy_tag 
           	WHERE ua.user_id = ? 
@@ -115,7 +115,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_drug_interaction AS ndi 
+          	FROM check_drug_interaction AS ndi 
           	INNER JOIN user_medicine AS um 
           	ON ndi.medicine_tag = um.medicine_tag 
           	WHERE um.user_id = ? 
@@ -149,7 +149,7 @@ public class MedicalRepository {
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
-          	FROM nutrient_recommendation AS nr 
+          	FROM check_recommendation AS nr 
           	INNER JOIN user_discomfort AS ud 
           	ON nr.discomfort_tag = ud.discomfort_tag 
           	WHERE ud.user_id = ? 
@@ -157,7 +157,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS(
       		SELECT 1
-      		FROM nutrient_pregnancy_safety AS nps
+      		FROM check_pregnancy_safety AS nps
       		INNER JOIN user_pregnancy AS usp
       		ON nps.pregnancy_tag = usp.pregnancy_tag
       		WHERE usp.user_id = ?
@@ -166,7 +166,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
           	SELECT 1 
-          	FROM nutrient_condition AS nc 
+          	FROM check_condition AS nc 
           	INNER JOIN user_condition AS uc 
           	ON nc.condition_tag = uc.condition_tag 
           	WHERE uc.user_id = ?  
@@ -174,7 +174,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_allergy_warning AS naw 
+          	FROM check_allergy_warning AS naw 
           	INNER JOIN user_allergy AS ua 
           	ON naw.allergy_tag = ua.allergy_tag 
           	WHERE ua.user_id = ? 
@@ -182,7 +182,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_drug_interaction AS ndi 
+          	FROM check_drug_interaction AS ndi 
           	INNER JOIN user_medicine AS um 
           	ON ndi.medicine_tag = um.medicine_tag 
           	WHERE um.user_id = ? 
@@ -217,7 +217,7 @@ public class MedicalRepository {
     	WHERE nmd.cognitive_domain = ?
       	AND EXISTS (
           	SELECT 1 
-          	FROM nutrient_recommendation AS nr 
+          	FROM check_recommendation AS nr 
           	INNER JOIN user_discomfort AS ud 
           	ON nr.discomfort_tag = ud.discomfort_tag 
           	WHERE ud.user_id = ? 
@@ -225,7 +225,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS(
       		SELECT 1
-      		FROM nutrient_pregnancy_safety AS nps
+      		FROM check_pregnancy_safety AS nps
       		INNER JOIN user_pregnancy AS usp
       		ON nps.pregnancy_tag = usp.pregnancy_tag
       		WHERE usp.user_id = ?
@@ -234,7 +234,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
           	SELECT 1 
-          	FROM nutrient_condition AS nc 
+          	FROM check_condition AS nc 
           	INNER JOIN user_condition AS uc 
           	ON nc.condition_tag = uc.condition_tag 
           	WHERE uc.user_id = ?  
@@ -242,7 +242,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_allergy_warning AS naw 
+          	FROM check_allergy_warning AS naw 
           	INNER JOIN user_allergy AS ua 
           	ON naw.allergy_tag = ua.allergy_tag 
           	WHERE ua.user_id = ? 
@@ -250,7 +250,7 @@ public class MedicalRepository {
       	)
       	AND NOT EXISTS (
          	 SELECT 1 
-          	FROM nutrient_drug_interaction AS ndi 
+          	FROM check_drug_interaction AS ndi 
           	INNER JOIN user_medicine AS um 
           	ON ndi.medicine_tag = um.medicine_tag 
           	WHERE um.user_id = ? 
