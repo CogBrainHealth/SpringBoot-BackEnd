@@ -40,6 +40,10 @@ public class UserService {
            throw new GeneralException(ErrorStatus.USER_ALREADY_EXIST);
        }
 
+       if(joinRequestDTO.getIsPrivacy().equals(Boolean.FALSE)){
+           throw new GeneralException(ErrorStatus.NEEDED_PRIVACY);
+       }
+
         UserEntity userEntity;
 
         userEntity = new UserEntity(joinRequestDTO);

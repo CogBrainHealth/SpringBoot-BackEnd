@@ -41,6 +41,10 @@ public class UserRequestDTO {
                 example = "1990-01-01")
         @NotNull(message = "생년월일을 입력해주세요")
         private LocalDate birthDate;
+
+        @Schema(description = "개인정보 동의여부")
+        @NotNull(message = "개인정보 동의여부를 입력해주세요")
+        private Boolean isPrivacy;
     }
 
     @Getter

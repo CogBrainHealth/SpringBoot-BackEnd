@@ -31,6 +31,8 @@ public enum ErrorStatus implements BaseErrorCode {
     USER_NO_PREMIUM(HttpStatus.NOT_FOUND, "USER4008", "프리미엄 유저가 아닙니다"),
     USER_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "USER4009", "해당 유저가 이미 존재합니다"),
 
+    NEEDED_PRIVACY(HttpStatus.BAD_REQUEST, "USER4010", "개인정보 동의가 필수입니다"),
+
     //statistic 오류
     GAMEPLAY_NOT_YET(HttpStatus.NOT_FOUND, "STATISTIC4001", "아직 게임을 하지 않아 점수 통계가 없습니다"),
 

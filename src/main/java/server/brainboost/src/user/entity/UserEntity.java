@@ -52,6 +52,9 @@ public class UserEntity extends BaseEntity {
     @Column
     private String role;
 
+    @Column
+    private Boolean isPrivacy;
+
     @Column(name = "is_medical_test", nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isMedicalTest = false;
 
@@ -90,6 +93,7 @@ public class UserEntity extends BaseEntity {
         this.nickname = joinRequestDTO.getNickname();
         this.gender = joinRequestDTO.getGender();
         this.birthDate = joinRequestDTO.getBirthDate();
+        this.isPrivacy = joinRequestDTO.getIsPrivacy();
         this.role = "ROLE_USER";
     }
 

@@ -55,7 +55,7 @@ public class StatisticsService {
         GameEntity mentalRotation = gameRepository.findGameEntityByGameId(3L)
                 .orElseThrow(() -> new GeneralException(ErrorStatus.GAME_NO_EXIST));
 
-        GameStatisticsEntity mentalRotationStatistics = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, mapNavigation)
+        GameStatisticsEntity mentalRotationStatistics = gameStatisticsRepository.findTopByUserAndGameOrderByCreateAtDesc(user, mentalRotation)
                 .orElse(null);
 
         input.add(mentalRotationStatistics.getAgeGroup());
@@ -66,47 +66,6 @@ public class StatisticsService {
 
     }
 
-
-
-    /*public StatisticResponse.AttentionScoreResponseDTO getAttentionScoreByUser(Long userId) {
-
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
-
-        List<CategoryScoreEntity> categoryScoreEntityList = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
-
-        int totalScore = 0;
-        int count = 0;
-
-        for(CategoryScoreEntity userStatistics : categoryScoreEntityList){
-            if(userStatistics == null){
-                continue;
-            }
-
-            // 아직 특정 영역의 점수 측정이 안 됐을 때
-            if(userStatistics.getCount() == 0){
-                continue;
-            }
-
-            int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
-
-            if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.ATTENTION){
-                totalScore += score;
-                count++;
-                break;
-            }
-
-        }
-        if(count == 0){
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
-
-        AttentionScoreLevel level = AttentionScoreLevel.of(totalScore);
-        String message = level.getMessage();
-
-
-        return new StatisticResponse.AttentionScoreResponseDTO(totalScore, message);
-    }*/
 
     //TODO - 자바 stream 공부하면서 아래 로직을 stream 사용해서 바꿔보기!!
     public StatisticResponse.AttentionScoreResponseDTO getAttentionScoreByUser(Long userId) {
@@ -146,47 +105,7 @@ public class StatisticsService {
         return new StatisticResponse.MemoryScoreResponseDTO(gameStatisticsEntity.getAgeGroup(), message);
     }
 
-    /*public StatisticResponse.SpatialPerceptionScoreResponseDTO getSpatialPerceptionScoreByUser(Long userId) {
 
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
-
-        List<CategoryScoreEntity> categoryScoreEntityList = userStatisticsRepository.findUserStatisticsEntitiesByUser(user);
-
-        int totalScore = 0;
-        int count = 0;
-
-        for(CategoryScoreEntity userStatistics : categoryScoreEntityList){
-            if(userStatistics == null){
-                continue;
-            }
-
-            // 아직 특정 영역의 점수 측정이 안 됐을 때
-            if(userStatistics.getCount() == 0){
-                continue;
-            }
-
-            int score = (int)(userStatistics.getTotalScore() / userStatistics.getCount());
-
-            if(userStatistics.getGameType().getCognitiveDomain() == CognitiveDomain.SPATIAL_PERCEPTION){
-                totalScore += score;
-                count++;
-
-                *//** 가장 최근 점수만 얻고 싶으면 break 복구시키기**//*
-                //break;
-            }
-
-        }
-        if(count == 0){
-            throw new GeneralException(ErrorStatus.GAMEPLAY_NOT_YET);
-        }
-
-        SpatialPerceptionScoreLevel level = SpatialPerceptionScoreLevel.of(totalScore);
-        String message = level.getMessage();
-
-
-        return new StatisticResponse.SpatialPerceptionScoreResponseDTO(totalScore, message);
-    }*/
     public StatisticResponse.SpatialPerceptionScoreResponseDTO getSpatialPerceptionScoreByUser(Long userId) {
         // 1) 사용자 존재 확인
         UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
@@ -206,11 +125,4 @@ public class StatisticsService {
         return new StatisticResponse.SpatialPerceptionScoreResponseDTO(gameStatisticsEntity.getAgeGroup(), message);
     }
 
-   /* public MyCognitiveDomainDTO getMyCertainDomainStatistics(Long userId, CognitiveDomain cognitiveDomain) {
-
-        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
-            .orElseThrow(() -> new BaseException(BaseResponseStatus.USER_NO_EXIST));
-
-
-    }*/
 }
