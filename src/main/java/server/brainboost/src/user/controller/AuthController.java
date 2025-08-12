@@ -22,7 +22,7 @@ public class AuthController {
     private final AuthService authService;
 
     //TODO scheduler을 통해 기간이 지난 refresh data 정리하기
-    @PostMapping("/reissue")
+    @PostMapping("/api/reissue")
     @Operation(summary = "새로 accessToken과 refreshToken을 발급해주는 api", description = "유효한 refreshToken을 가지고 있어야 작동", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
@@ -36,7 +36,7 @@ public class AuthController {
 
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/api/logout")
     @Operation(summary = "로그아웃 api", description = "refresh 토큰 유효성 검사 후 refresh storage에서 토큰 삭제", responses = {
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
             @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "400", description = "파라미터 오류"),
