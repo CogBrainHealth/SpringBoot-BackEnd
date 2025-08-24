@@ -118,5 +118,19 @@ public class UserController {
         return ApiResponse.onSuccess(userService.checkPremiumMedical(userId));
     }
 
+    @PatchMapping("/api/users/status")
+    @Operation(summary = "회원탈퇴 api", description = "회원탈퇴", responses = {
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "성공"),
+            @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "500", description = "유저가 존재하지 않습니다")
+    })
+    public ApiResponse<String> removeUser(){
+
+        Long userId = SecurityUtil.getCurrentUserId();
+
+        userService.removeUser(userId);
+
+        return ApiResponse.onSuccess("회원탈퇴가 완료됐습니다");
+
+    }
 
 }

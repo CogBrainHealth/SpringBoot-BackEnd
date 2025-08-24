@@ -106,4 +106,13 @@ public class UserService {
                 .build();
 
     }
+
+    public void removeUser(Long userId) {
+
+        UserEntity user = userRepository.findUserEntityByUserIdAndStatus(userId, Status.ACTIVE)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.USER_NO_EXIST));
+
+        user.changeToInActive();
+
+    }
 }
