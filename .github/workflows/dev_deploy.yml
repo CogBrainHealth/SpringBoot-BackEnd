@@ -51,42 +51,59 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
+
     steps:
       - name: Download build artifact
         uses: actions/download-artifact@v4
         with:
           name: cogcog
-          path: build/libs/
+          path: ./artifact
 
-      - name: Upload JAR to EC2
-        uses: appleboy/scp-action@master
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
-          key: ${{ secrets.EC2_SSH_KEY }}
-          port: 22
-          source: build/libs/*.jar
-          target: /root/cogcog.jar
-
-      - name: Restart Application on EC2
+      - name: Deploy to EC2 via SSH
         uses: appleboy/ssh-action@master
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ${{ secrets.EC2_USERNAME }}
+          username: ${{ secrets.EC2_USER }}
           key: ${{ secrets.EC2_SSH_KEY }}
           port: 22
           script: |
-            echo "🔍 기존 cogcog.jar 프로세스 확인 중..."
-            PID=$(pgrep -f cogcog.jar)
-            if [ -n "$PID" ]; then
-              echo "🛑 기존 프로세스 종료 (PID=$PID)"
-              kill -15 $PID
-              sleep 5
-            else
-              echo "ℹ️ 종료할 프로세스 없음"
+            echo "✅ [1] 배포 디렉토리 준비"
+            mkdir -p ~/deploy
+
+            echo "🧹 [2] 기존 JAR 제거"
+            rm -f ~/deploy/app.jar
+
+            echo "📥 [3] GitHub Actions 서버에서 EC2로 JAR 복사"
+            # 아래에서 SCP처럼 로컬에서 복사되도록 경로 수정
+            exit
+
+      - name: Copy JAR to EC2
+        uses: appleboy/scp-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          source: ./artifact/*.jar
+          target: ~/deploy/app.jar
+
+      - name: Restart Spring Boot App
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_SSH_KEY }}
+          port: 22
+          script: |
+            echo "🛑 [1] 기존 애플리케이션 종료"
+            pkill -f 'java -jar' || echo "기존 프로세스 없음"
+
+            echo "🗑 [2] 이전 로그 백업"
+            if [ -f ~/deploy/app.log ]; then
+              mv ~/deploy/app.log ~/deploy/app_$(date +'%Y%m%d_%H%M%S').log
             fi
-                  
-            echo "🚀 새 JAR 실행 시작..."
-            nohup java -jar /root/cogcog.jar > /root/app.log 2>&1 &
-                  
-            echo "📄 로그는 tail -f /root/app.log 로 확인"
+
+            echo "🚀 [3] 새 애플리케이션 실행"
+            nohup java -jar ~/deploy/app.jar > ~/deploy/app.log 2>&1 &
+
+            echo "✅ 배포 및 실행 완료. 로그: ~/deploy/app.log"
