@@ -72,7 +72,7 @@ jobs:
           echo "✅ 찾은 JAR 파일: $jar_file"
           
           echo "🚀 EC2로 JAR 파일 복사 중..."
-          scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/root/cogcog.jar
+          scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/home/$EC2_USERNAME/cogcog.jar
 
           echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
@@ -86,8 +86,8 @@ jobs:
             fi
 
             echo "✅ 새 JAR 실행 시작..."
-            nohup java -jar /root/cogcog.jar > /root/app.log 2>&1 &
-            echo "📄 로그: tail -f /root/app.log 로 확인 가능"
+            nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
+            echo "📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능"
           EOF
 
           rm -f private_key.pem
