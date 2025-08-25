@@ -58,7 +58,7 @@ jobs:
           name: cogcog
           path: build/libs/
 
-      - name: Deploy to EC2
+      - name: Deploy to EC2 (with rsync)
         env:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
@@ -71,9 +71,9 @@ jobs:
           jar_file=$(find build/libs -name '*.jar' ! -name '*plain.jar' | head -n 1)
           echo "✅ 찾은 JAR 파일: $jar_file"
           
-          echo "🚀 EC2로 JAR 파일 복사 중..."
-          scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/root/cogcog.jar
-
+          echo "🚀 EC2로 JAR 파일 rsync 중..."
+          rsync -avz -e "ssh -i private_key.pem -o StrictHostKeyChecking=no" "$jar_file" $EC2_USERNAME@$EC2_HOST:/root/cogcog.jar
+          
           echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
             PID=$(pgrep -f cogcog.jar)
@@ -84,7 +84,7 @@ jobs:
             else
               echo "ℹ️ 기존 프로세스 없음"
             fi
-
+        
             echo "✅ 새 JAR 실행 시작..."
             nohup java -jar /root/cogcog.jar > /root/app.log 2>&1 &
             echo "📄 로그: tail -f /root/app.log 로 확인 가능"
