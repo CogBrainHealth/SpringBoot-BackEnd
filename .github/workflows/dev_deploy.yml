@@ -66,17 +66,28 @@ jobs:
         run: |
           echo "$EC2_SSH_KEY" > private_key.pem
           chmod 600 private_key.pem
+          
+          echo "📦 JAR 파일 찾는 중..."
           jar_file=$(find build/libs -name '*.jar' ! -name '*plain.jar' | head -n 1)
-          scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/home/$EC2_USERNAME/cogcog.jar
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "
-            PID=\$(pgrep -f cogcog.jar)
-            if [ -n \"\$PID\" ]; then
-              echo \"Stopping cogcog.jar (PID=\$PID)\"
-              kill -15 \$PID
+          echo "✅ 찾은 JAR 파일: $jar_file"
+          
+          echo "🚀 EC2로 JAR 파일 복사 중..."
+          scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/root/cogcog.jar
+
+          echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
+            PID=$(pgrep -f cogcog.jar)
+            if [ -n "$PID" ]; then
+              echo "🛑 기존 cogcog.jar 프로세스 종료 (PID=$PID)"
+              kill -15 $PID
               sleep 5
             else
-              echo \"No cogcog.jar process found\"
+              echo "ℹ️ 기존 프로세스 없음"
             fi
-            nohup java -jar /home/$EC2_USERNAME/cogcog.jar > app.log 2>&1 &
-          "
+
+            echo "✅ 새 JAR 실행 시작..."
+            nohup java -jar /root/cogcog.jar > /root/app.log 2>&1 &
+            echo "📄 로그: tail -f /root/app.log 로 확인 가능"
+          EOF
+
           rm -f private_key.pem
