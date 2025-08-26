@@ -82,3 +82,9 @@ dependencyManagement {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+
+jar {
+	archiveBaseName.set('cogcog')
+	archiveVersion.set('')
+	archiveClassifier.set('')
+}
