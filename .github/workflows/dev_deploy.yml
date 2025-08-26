@@ -81,13 +81,13 @@ jobs:
               echo \"🛑 기존 cogcog.jar 프로세스 종료 (PID=\$PID)\"
               kill -15 \$PID
               sleep 5
-          else
-            echo \"ℹ️ 기존 프로세스 없음\"
-          fi
+            else
+              echo \"ℹ️ 기존 프로세스 없음\"
+            fi
           
-          echo \"✅ 새 JAR 실행 시작...\"
-          nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
-          echo \"📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능\"
+            echo \"✅ 새 JAR 실행 시작...\"
+            nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
+            echo \"📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능\"
           "
 
           rm -f private_key.pem
