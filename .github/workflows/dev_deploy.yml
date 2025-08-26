@@ -73,21 +73,21 @@ jobs:
           
           echo "🚀 EC2로 JAR 파일 복사 중..."
           scp -i private_key.pem -o StrictHostKeyChecking=no "$jar_file" $EC2_USERNAME@$EC2_HOST:/home/$EC2_USERNAME/cogcog.jar
-
+      
           echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST << 'EOF'
-            PID=$(pgrep -f cogcog.jar)
-            if [ -n "$PID" ]; then
-              echo "🛑 기존 cogcog.jar 프로세스 종료 (PID=$PID)"
-              kill -15 $PID
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "
+            PID=\$(pgrep -f cogcog.jar)
+            if [ -n \"\$PID\" ]; then
+              echo \"🛑 기존 cogcog.jar 프로세스 종료 (PID=\$PID)\"
+              kill -15 \$PID
               sleep 5
-            else
-              echo "ℹ️ 기존 프로세스 없음"
-            fi
-
-            echo "✅ 새 JAR 실행 시작..."
-            nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
-            echo "📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능"
-          EOF
+          else
+            echo \"ℹ️ 기존 프로세스 없음\"
+          fi
+          
+          echo \"✅ 새 JAR 실행 시작...\"
+          nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
+          echo \"📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능\"
+          "
 
           rm -f private_key.pem
