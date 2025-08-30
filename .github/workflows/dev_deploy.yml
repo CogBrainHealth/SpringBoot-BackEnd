@@ -63,6 +63,7 @@ jobs:
           EC2_SSH_KEY: ${{ secrets.EC2_SSH_KEY }}
           EC2_USERNAME: ${{ secrets.EC2_USERNAME }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
+          APP_PORT: ${{ secrets.APP_PORT }}
         run: |
           echo "$EC2_SSH_KEY" > private_key.pem
           chmod 600 private_key.pem
@@ -76,15 +77,16 @@ jobs:
       
           echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "
-            PID=\$(pgrep -f cogcog.jar)
+            echo \"🌐 포트 \$APP_PORT를 사용하는 프로세스 종료 시도...\"
+            PID=\$(lsof -ti tcp:\$APP_PORT)
             if [ -n \"\$PID\" ]; then
-              echo \"🛑 기존 cogcog.jar 프로세스 종료 (PID=\$PID)\"
+              echo \"🛑 포트 \$APP_PORT 사용 중인 프로세스 종료 (PID=\$PID)\"
               kill -15 \$PID
               sleep 5
             else
-              echo \"ℹ️ 기존 프로세스 없음\"
+              echo \"ℹ️ 해당 포트를 사용하는 프로세스 없음\"
             fi
-          
+
             echo \"✅ 새 JAR 실행 시작...\"
             nohup java -jar /home/$EC2_USERNAME/cogcog.jar > /home/$EC2_USERNAME/app.log 2>&1 &
             echo \"📄 로그: tail -f /home/$EC2_USERNAME/app.log 로 확인 가능\"
