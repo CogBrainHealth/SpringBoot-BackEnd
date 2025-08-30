@@ -77,10 +77,10 @@ jobs:
       
           echo "🔄 EC2에서 기존 프로세스 종료 + 새로 실행"
           ssh -i private_key.pem -o StrictHostKeyChecking=no $EC2_USERNAME@$EC2_HOST "
-            echo \"🌐 포트 \$APP_PORT를 사용하는 프로세스 종료 시도...\"
-            PID=\$(lsof -ti tcp:\$APP_PORT)
+            echo \"🌐 포트 $APP_PORT를 사용하는 프로세스 종료 시도...\"
+            PID=\$(lsof -ti tcp:$APP_PORT)
             if [ -n \"\$PID\" ]; then
-              echo \"🛑 포트 \$APP_PORT 사용 중인 프로세스 종료 (PID=\$PID)\"
+              echo \"🛑 포트 $APP_PORT 사용 중인 프로세스 종료 (PID=\$PID)\"
               kill -15 \$PID
               sleep 5
             else
